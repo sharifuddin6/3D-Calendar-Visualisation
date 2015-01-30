@@ -1,7 +1,7 @@
 # Makefile
 
 # files to be compiled
-FILES = main.cpp cube.h cube.cpp calendar.h calendar.cpp
+FILES = main.cpp appView.h appView.cpp appModel.h appModel.cpp appController.h appController.cpp calendar.h calendar.cpp
 
 # output file
 OUTPUT = prototype
