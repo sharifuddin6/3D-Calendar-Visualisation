@@ -9,7 +9,7 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   frame = 0;
   width = 800; height = 600;
   windowTitle = "3D Calendar Visualisation";
-  prototype_name = "Prototype 1: Flat perspective view";
+  prototype_name = "Prototype 1: Flat Perspective view";
   name_size = strlen(prototype_name);
 
   // assign a default value
@@ -44,7 +44,7 @@ void AppView::display() {
   glTranslatef(0, 0, 0+pos_z);
 
   // draw objects
-  calendar.draw(frame);
+  visualisation.draw(frame);
   
   // vertical axis
   glBegin(GL_LINES);
@@ -61,8 +61,8 @@ void AppView::display() {
 
 
   // draw text
-  calendar.drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
-  calendar.drawText(width*(0.5f)-name_size*(10*0.5), height-10, prototype_name);
+  drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
+  drawText(width*(0.5f)-name_size*(10*0.5), height-10, prototype_name);
 
   glutSwapBuffers();
 }
@@ -79,23 +79,23 @@ void AppView::timer(int extra) {
 void AppView::menu(int item) {
   switch (item) {
     case MENU_1:
-      calendar.setPrototype(1);
-      prototype_name = "Prototype 1: Flat perspective view";
+      visualisation.setPrototype(1);
+      prototype_name = "Prototype 1: Flat Perspective view";
       reset();
       break;
     case MENU_2:
-      calendar.setPrototype(2);
-      prototype_name = "Prototype 2: Time tunnel view";
+      visualisation.setPrototype(2);
+      prototype_name = "Prototype 2: Time Tunnel view";
       reset();
       break;
     case MENU_3:
-      calendar.setPrototype(3);
-      prototype_name = "Prototype 3: 3D Fibonacci spiral";
+      visualisation.setPrototype(3);
+      prototype_name = "Prototype 3: 3D Fibonacci Spiral";
       reset();
       break;
     case MENU_4:
-      calendar.setPrototype(4);
-      prototype_name = "Prototype 4: ";
+      visualisation.setPrototype(4);
+      prototype_name = "Prototype 4: 3D Lexis Pencil";
       reset();
       break;
     default:
@@ -187,6 +187,34 @@ int AppView::start(int argc, char *argv[]) {
   glutMainLoop();
 
   return 0;
+}
+
+void AppView::drawText(float x, float y, const char *string) {
+  const char *c;
+
+  glMatrixMode( GL_PROJECTION ) ;
+  glPushMatrix() ; // save
+  glLoadIdentity();// and clear
+  glMatrixMode( GL_MODELVIEW ) ;
+  glPushMatrix() ;
+  glLoadIdentity() ;
+  
+  gluOrtho2D (0.0f, 800.0f, 0.0f, 600.0f);
+  glDisable( GL_DEPTH_TEST ) ; // also disable the depth test so renders on top
+
+  glColor3f(1.0f,1.0f,1.0f);
+  glRasterPos2f(x, y);
+  for (c=string; *c != '\0'; c++) {
+    glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);
+  }
+  
+  glEnable( GL_DEPTH_TEST ) ; // Turn depth testing back on
+
+  glMatrixMode( GL_PROJECTION ) ;
+  glPopMatrix() ; // revert back to the matrix I had before.
+  glMatrixMode( GL_MODELVIEW ) ;
+  glPopMatrix() ;
+  
 }
 
 void AppView::setWindowSize(int w, int h) {

@@ -7,7 +7,7 @@
 
 #include "appModel.h"
 #include "appController.h"
-#include "calendar.h"
+#include "visualisation.h"
 
 class AppView {
 
@@ -22,6 +22,9 @@ class AppView {
     enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
 
     int start(int argc, char *argv[]);
+
+    // draw text method
+    void drawText(float x, float y, const char *string);    
 
     // setters
     void setInstance();
@@ -46,7 +49,7 @@ class AppView {
     // private objects
     AppController *appController;
     AppModel *appModel;
-    Calendar calendar;
+    Visualisation visualisation;
 
     // private variables
     int width, height;
@@ -59,8 +62,7 @@ class AppView {
     
     // private methods
     void init();  
-    void reset();
-    
+    void reset();  
   
 
 };

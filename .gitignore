@@ -31,3 +31,6 @@
 *.cpp~
 *.h~
 *.gitignore~
+
+# APPLICATION
+prototype
