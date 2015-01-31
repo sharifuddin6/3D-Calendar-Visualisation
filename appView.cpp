@@ -1,5 +1,6 @@
 #include "appView.h"
-
+#include "calendar.h"
+#include <stdio.h>
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   // init variables
@@ -62,7 +63,12 @@ void AppView::display() {
 
   // draw text
   drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
-  drawText(width*(0.5f)-name_size*(10*0.5), height-10, prototype_name);
+  drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
+
+  Calendar calendar;
+  char buffer[16];
+  sprintf(buffer, "[%d %d %d]", calendar.getDay(), calendar.getMonth(), calendar.getYear());
+  drawText(0, height-12, buffer);
 
   glutSwapBuffers();
 }

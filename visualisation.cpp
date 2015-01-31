@@ -1,6 +1,5 @@
 #include "visualisation.h"
 #include <stdio.h>
-#include <time.h>
 #include <cmath>
 
 Visualisation::Visualisation() { 
@@ -9,14 +8,6 @@ Visualisation::Visualisation() {
   tile_dimension = 0.5f;
   days = 7;
   weeks = 25;
-
-  // get datetime
-  time_t     now = time(0);
-  struct tm  tstruct;
-  char       buf[80];
-  tstruct = *localtime(&now);
-  strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-  printf("current datetime: %s\n", buf);
 
 }
 

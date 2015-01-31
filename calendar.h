@@ -8,7 +8,12 @@ class Calendar {
     Calendar();
 
     // methods
-        
+    void outputDate();     
+   
+    int getDay();
+    int getMonth();
+    int getYear();
+
     // setter
     
 

@@ -3,6 +3,8 @@
 
 #include <GL/glut.h>
 
+#include "calendar.h"
+
 class Visualisation {
   
   public:
@@ -23,6 +25,9 @@ class Visualisation {
     float tile_dimension;
     int days;
     int weeks;
+
+    // private objects
+    Calendar calendar;    
 
     // private methods
     void prototype_1();
