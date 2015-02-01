@@ -2,14 +2,15 @@
 #include <stdio.h>
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
-  // init variables
+  // initialise variables
   appController = newAppController; 
   appModel = newAppModel;
   
   frame = 0;
   width = 800; height = 600;
   windowTitle = "3D Calendar Visualisation";
-  prototype_name = "Prototype 1: Flat Perspective view";
+  prototype_name = visualisation.getPrototypeName();
+
   name_size = strlen(prototype_name);
 
   // assign a default value
@@ -17,13 +18,6 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   
   // get current date into memory
   update();
-
-  calendar.totalDaysInMonth(2,2015);
-  calendar.totalDaysInMonth(2,2016);
-  calendar.totalDaysInMonth(3,2015);
-  calendar.totalDaysInMonth(3,2016);
-  calendar.totalDaysInMonth(4,2015);
-//  calendar.isLeapYear(2016);
 
 }
 
@@ -34,18 +28,18 @@ void AppView::init() {
   glEnable(GL_COLOR_MATERIAL);
 
   // initialise fog
-  GLuint filter;                      // Which Filter To Use
+  GLuint filter;                                      // Which Filter To Use
   GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
-  GLuint fogfilter= 0;                    // Which Fog To Use
+  GLuint fogfilter= 0;                                // Which Fog To Use
   GLfloat fogColor[4]= {0.0f, 0.0f, 0.0f, 1.0f};      // Fog Color
   
   glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
-  glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
-  glFogf(GL_FOG_DENSITY, 0.30f);              // How Dense Will The Fog Be
-  glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-  glFogf(GL_FOG_START, -10.0f);             // Fog Start Depth
-  glFogf(GL_FOG_END, -5.0f);               // Fog End Depth
-  glEnable(GL_FOG);                   // Enables GL_FOG
+  glFogfv(GL_FOG_COLOR, fogColor);                // Set Fog Color
+  glFogf(GL_FOG_DENSITY, 0.30f);                  // How Dense Will The Fog Be
+  glHint(GL_FOG_HINT, GL_DONT_CARE);              // Fog Hint Value
+  glFogf(GL_FOG_START, -10.0f);                   // Fog Start Depth
+  glFogf(GL_FOG_END, -5.0f);                      // Fog End Depth
+  glEnable(GL_FOG);                               // Enables GL_FOG
 
 }
 
@@ -54,10 +48,12 @@ void AppView::display() {
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
+  
+  // get viewport dimensions, set perspective  
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   double aspect = (double)viewport[2] / (double)viewport[3];
-  gluPerspective(60, aspect, 1, 100);
+  gluPerspective(45, aspect, 1, 100);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -65,25 +61,25 @@ void AppView::display() {
   // update frame
   frame++;
 
-  // move back a bit
-  glTranslatef(0, 0, 0+pos_z);
-
-  // draw objects
-  visualisation.draw(frame);
-  
-  // vertical axis
-  glBegin(GL_LINES);
-    glColor3f(0,1,0);
-    glVertex3f(0, 1000, -10);
-    glVertex3f(0,-1000, -10);
-  glEnd();
-  // horizontal axis
-  glBegin(GL_LINES);
-    glColor3f(1,0,0);
-    glVertex3f(1000, 0, -10);
-    glVertex3f(-1000,0, -10);
-  glEnd();
-
+  glPushMatrix();
+    // move back a bit, rotate world
+    glTranslatef(0, 0, 0+pos_z);
+    // draw visualisation
+    visualisation.draw(frame);
+    
+    // vertical axis
+    glBegin(GL_LINES);
+      glColor3f(0,1,0);
+      glVertex3f(0, 1000, -10);
+      glVertex3f(0,-1000, -10);
+    glEnd();
+    // horizontal axis
+    glBegin(GL_LINES);
+      glColor3f(1,0,0);
+      glVertex3f(1000, 0, -10);
+      glVertex3f(-1000,0, -10);
+    glEnd();
+  glPopMatrix();
 
   // draw text
   drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
@@ -110,28 +106,25 @@ void AppView::menu(int item) {
   switch (item) {
     case MENU_1:
       visualisation.setPrototype(1);
-      prototype_name = "Prototype 1: Flat Perspective view";
       reset();
       break;
     case MENU_2:
       visualisation.setPrototype(2);
-      prototype_name = "Prototype 2: Time Tunnel view";
       reset();
       break;
     case MENU_3:
       visualisation.setPrototype(3);
-      prototype_name = "Prototype 3: 3D Lexis Pencil";
       reset();
       break;
     case MENU_4:
       visualisation.setPrototype(4);
-      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
       reset();
       break;
     default:
       break;
    }
 
+  prototype_name = visualisation.getPrototypeName();
   glutPostRedisplay();
   return;
 }
@@ -230,7 +223,8 @@ void AppView::drawText(float x, float y, const char *string) {
   glLoadIdentity() ;
   
   gluOrtho2D (0.0f, 800.0f, 0.0f, 600.0f);
-  glDisable( GL_DEPTH_TEST ) ; // also disable the depth test so renders on top
+  glDisable( GL_DEPTH_TEST ) ; // also disable the depth test so renders on top 
+  glDisable(GL_LIGHTING);
 
   glColor3f(1.0f,1.0f,1.0f);
   glRasterPos2f(x, y);
@@ -239,6 +233,7 @@ void AppView::drawText(float x, float y, const char *string) {
   }
   
   glEnable( GL_DEPTH_TEST ) ; // Turn depth testing back on
+  glEnable(GL_LIGHTING);
 
   glMatrixMode( GL_PROJECTION ) ;
   glPopMatrix() ; // revert back to the matrix I had before.
@@ -259,6 +254,7 @@ void AppView::setWindowTitle(char* title) {
 void AppView::reset() {
   name_size = strlen(prototype_name);
   pos_z = 0;
+  update();
 }
 
 void AppView::update() {

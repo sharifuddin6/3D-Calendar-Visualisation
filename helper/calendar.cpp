@@ -39,9 +39,10 @@ bool Calendar::isLeapYear(int year) {
 int Calendar::totalDaysInMonth(int month, int year) {
   int totalDays = 0;
   
-  if(month==4 || month==6 || month==9 || month==11) {
+  if(month==APRIL || month==JUNE || month==SEPTEMBER || month==NOVEMBER) {
     totalDays = 30;
-  } else if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12) {
+  } else if(month==JANUARY || month==MARCH || month==MAY || month==JULY ||
+            month==AUGUST || month==OCTOBER || month==DECEMBER) {
     totalDays = 31;
   } else if(month==2) {
     if(isLeapYear(year)) {
@@ -71,7 +72,7 @@ int Calendar::getDay() {
 int Calendar::getMonth() {
   // returns current month
 	tm* timePtr = localtime(&t);
-  int month = timePtr->tm_mon+1;
+  int month = timePtr->tm_mon;
   return month;
 }
 
@@ -98,25 +99,25 @@ char* Calendar::getDayToString(int weekday) {
   char *buff = new char[10];
   
   switch(weekday) {
-    case 0:
+    case SUNDAY:
       strcpy(buff, "SUNDAY");
       break;
-    case 1:
+    case MONDAY:
       strcpy(buff, "MONDAY");
       break;
-    case 2:
+    case TUESDAY:
       strcpy(buff, "TUESDAY");
       break;
-    case 3:
+    case WEDNESDAY:
       strcpy(buff, "WEDNESDAY");
       break;
-    case 4:
+    case THURSDAY:
       strcpy(buff, "THURSDAY");
       break;
-    case 5:
+    case FRIDAY:
       strcpy(buff, "FRIDAY");
       break;
-    case 6:
+    case SATURDAY:
       strcpy(buff, "SATURDAY");
       break;
     default:
@@ -133,40 +134,40 @@ char* Calendar::getMonthToString(int month) {
   char *buff = new char[10];
   
   switch(month) {
-    case 1:
+    case JANUARY:
       strcpy(buff, "JANUARY");
       break;
-    case 2:
+    case FEBRUARY:
       strcpy(buff, "FEBRUARY");
       break;
-    case 3:
+    case MARCH:
       strcpy(buff, "MARCH");
       break;
-    case 4:
+    case APRIL:
       strcpy(buff, "APRIL");
       break;
-    case 5:
+    case MAY:
       strcpy(buff, "MAY");
       break;
-    case 6:
+    case JUNE:
       strcpy(buff, "JUNE");
       break;
-    case 7:
+    case JULY:
       strcpy(buff, "JULY");
       break;
-    case 8:
+    case AUGUST:
       strcpy(buff, "AUGUST");
       break;
-    case 9:
+    case SEPTEMBER:
       strcpy(buff, "SEPTEMBER");
       break;
-    case 10:
+    case OCTOBER:
       strcpy(buff, "OCTOBER");
       break;
-    case 11:
+    case NOVEMBER:
       strcpy(buff, "NOVEMBER");
       break;
-    case 12:
+    case DECEMBER:
       strcpy(buff, "DECEMBER");
       break;
     default:

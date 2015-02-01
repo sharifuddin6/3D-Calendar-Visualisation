@@ -19,30 +19,52 @@ void Visualisation::prototype_1() {
 
   // DRAW GRID
   glPushMatrix();
-    glTranslatef(center,-1.0f, -10.0f);
+    glTranslatef(center,-1.25, -3.75);
   
-    for(int i=0; i<days; i++) {
-      for(int j=0; j<weeks; j++) {
-        
-        // tiles for days
-        glPushMatrix();
-          glTranslatef(i*tile_dimension+gap,0,j*tile_dimension*1.1);
-          //glRotatef(5.0, 1.0, 0.0, 0.0);
-          glScalef(1.0, 0.05, 1.0);
-          glColor3f(1.0,1.0,1.0);
-          glutSolidCube(tile_dimension*scale);
-        glPopMatrix();        
-      
-      }   
-    }
+//    for(int i=0; i<days; i++) {
+//      for(int j=0; j<weeks; j++) {
+//        
+//        // tiles for days
+//        glPushMatrix();
+//          glTranslatef(i*tile_dimension+gap,0,j*tile_dimension*1.1);
+//          //glRotatef(5.0, 1.0, 0.0, 0.0);
+//          glScalef(1.0, 0.05, 1.0);
+//          glColor3f(1.0,1.0,1.0);
+//          drawTile((j*i)+i);
+//        glPopMatrix();        
+//      
+//      }   
+//    }
+
+// TESTING INDIVIDUAL DAYS
+    // SUNDAY TILE
+    int weekday = 0;
+    int week = 0;
+    glPushMatrix();
+      glTranslatef(weekday*tile_dimension+gap,0,week*tile_dimension);
+      glScalef(1.0, 0.05, 1.0);
+      glColor3f(1.0,1.0,1.0);
+      drawTile(weekday,1);
+    glPopMatrix();
+
+    // FRIDAY TILE
+    weekday = 5;
+    week = 0;
+    glPushMatrix();
+      glTranslatef(weekday*tile_dimension+gap,0,week*tile_dimension);
+      glScalef(1.0, 0.05, 1.0);
+      glColor3f(1.0,1.0,1.0);
+      drawTile(weekday,5);
+    glPopMatrix();
+
   glPopMatrix();
 }
 
 void Visualisation::prototype_2() { 
   // prototype_2: Time tunnel view
   int segments = 7;
-  float radius = 0.5;
-  float height = 0.5;
+  float radius = 0.3;
+  float height = 0.3;
 
   // guide lines
   for (float i = 0.0; i < segments; i += 1.0) {
@@ -91,7 +113,6 @@ void Visualisation::prototype_2() {
     glVertex3f((x1+x2)*0.5, (y1+y2)*0.5, -1.0);
    
   }
-
   glEnd();
 
 }
@@ -148,6 +169,69 @@ void Visualisation::draw(int frame) {
 
 }
 
+void Visualisation::drawTile(int weekday, int day) {
+  float scale = 0.75;
+  float limit = tile_dimension*0.5;
+  //glutSolidCube(tile_dimension*scale);
+
+  glBegin(GL_QUADS);
+    // top face
+    glVertex3f(-limit, 0, -limit);
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(limit, 0, limit);
+    glVertex3f(limit, 0, -limit);
+
+    // side left
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(-limit, 0, -limit);
+    glVertex3f(-limit, -2, -limit);
+    glVertex3f(-limit, -2, limit);
+    
+    // side right
+    glVertex3f(limit, 0, limit);
+    glVertex3f(limit, 0, -limit);
+    glVertex3f(limit, -2, -limit);
+    glVertex3f(limit, -2, limit);
+
+    // front face
+    glColor3f(1.0, 0.5, 0.5);
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(-limit, -2, limit);
+    glVertex3f(limit-0.15, -2, limit);
+    glVertex3f(limit-0.15, 0, limit);
+
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(limit-0.15, 0, limit);
+    glVertex3f(limit-0.15, -2, limit);
+    glVertex3f(limit, -2, limit);
+    glVertex3f(limit, 0, limit);
+
+  glEnd();
+
+}
+
+// getter
+char* Visualisation::getPrototypeName() {
+  switch(mode) {
+    case 1: 
+      prototype_name = "Prototype 1: Flat Perspective view";
+      break;
+    case 2:
+      prototype_name = "Prototype 2: Time Tunnel view";
+      break;
+    case 3:
+      prototype_name = "Prototype 3: 3D Lexis Pencil";
+      break;
+    case 4: 
+      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
+      break;
+    default:
+      break;
+  }  
+  return prototype_name;
+}
+
+// setter
 void Visualisation::setPrototype(int newMode) {
   mode = newMode;
 }

@@ -7,12 +7,31 @@
 
 class Visualisation {
   
+  // structure for single day
+  struct aDay {
+    aDay() {
+
+    }
+
+    ~aDay() { }
+
+    // variables
+    bool today;
+    int index;
+    int weekday;
+    int day, month, year;
+  };
+
   public:
     // constructor
     Visualisation();
 
     // methods
     void draw(int frame);
+    void drawTile(int weekday, int day);
+
+    // getter
+    char* getPrototypeName();
     
     // setter
     void setPrototype(int newMode);
@@ -21,13 +40,14 @@ class Visualisation {
   private:
     // private variables
     int mode;
+    char* prototype_name;
 
     float tile_dimension;
     int days;
     int weeks;
 
     // private objects
-    Calendar calendar;    
+    Calendar calendar;   
 
     // private methods
     void prototype_1();
