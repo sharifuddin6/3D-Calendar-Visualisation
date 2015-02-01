@@ -7,7 +7,8 @@
 
 #include "appModel.h"
 #include "appController.h"
-#include "visualisation.h"
+#include "helper/visualisation.h"
+#include "helper/calendar.h"
 
 class AppView {
 
@@ -50,6 +51,7 @@ class AppView {
     AppController *appController;
     AppModel *appModel;
     Visualisation visualisation;
+    Calendar calendar;
 
     // private variables
     int width, height;
@@ -57,12 +59,16 @@ class AppView {
     int frame;
     float pos_z;
 
+    char buffer1[16];
+    char buffer2[16];
+
     char* prototype_name;
     int name_size;
     
     // private methods
     void init();  
     void reset();  
+    void update();
   
 
 };

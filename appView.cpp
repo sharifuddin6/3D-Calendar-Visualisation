@@ -1,5 +1,4 @@
 #include "appView.h"
-#include "calendar.h"
 #include <stdio.h>
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
@@ -15,6 +14,16 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
 
   // assign a default value
   MENU_TYPE show = MENU_1;
+  
+  // get current date into memory
+  update();
+
+  calendar.totalDaysInMonth(2,2015);
+  calendar.totalDaysInMonth(2,2016);
+  calendar.totalDaysInMonth(3,2015);
+  calendar.totalDaysInMonth(3,2016);
+  calendar.totalDaysInMonth(4,2015);
+//  calendar.isLeapYear(2016);
 
 }
 
@@ -23,6 +32,21 @@ void AppView::init() {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_COLOR_MATERIAL);
+
+  // initialise fog
+  GLuint filter;                      // Which Filter To Use
+  GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
+  GLuint fogfilter= 0;                    // Which Fog To Use
+  GLfloat fogColor[4]= {0.0f, 0.0f, 0.0f, 1.0f};      // Fog Color
+  
+  glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
+  glFogfv(GL_FOG_COLOR, fogColor);            // Set Fog Color
+  glFogf(GL_FOG_DENSITY, 0.30f);              // How Dense Will The Fog Be
+  glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
+  glFogf(GL_FOG_START, -10.0f);             // Fog Start Depth
+  glFogf(GL_FOG_END, -5.0f);               // Fog End Depth
+  glEnable(GL_FOG);                   // Enables GL_FOG
+
 }
 
 void AppView::display() {
@@ -65,10 +89,10 @@ void AppView::display() {
   drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
   drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
 
-  Calendar calendar;
-  char buffer[16];
-  sprintf(buffer, "[%d %d %d]", calendar.getDay(), calendar.getMonth(), calendar.getYear());
-  drawText(0, height-12, buffer);
+  // display current date
+  update();
+  drawText(0, height-12, buffer1);
+  drawText(0, height-24, buffer2);
 
   glutSwapBuffers();
 }
@@ -96,12 +120,12 @@ void AppView::menu(int item) {
       break;
     case MENU_3:
       visualisation.setPrototype(3);
-      prototype_name = "Prototype 3: 3D Fibonacci Spiral";
+      prototype_name = "Prototype 3: 3D Lexis Pencil";
       reset();
       break;
     case MENU_4:
       visualisation.setPrototype(4);
-      prototype_name = "Prototype 4: 3D Lexis Pencil";
+      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
       reset();
       break;
     default:
@@ -235,4 +259,19 @@ void AppView::setWindowTitle(char* title) {
 void AppView::reset() {
   name_size = strlen(prototype_name);
   pos_z = 0;
+}
+
+void AppView::update() {
+  // get todays day in string format
+  int weekday = calendar.getWeekDay();
+  int day = calendar.getDay();
+  int month = calendar.getMonth();
+  int year = calendar.getYear();
+
+  char *weekdayString = calendar.getDayToString(weekday);
+  char *monthString = calendar.getMonthToString(month);
+
+  // store into buffer
+  sprintf(buffer1, "%s, %s", weekdayString, calendar.getTimeToString());
+  sprintf(buffer2, "%d %s %d", day, monthString, year);
 }

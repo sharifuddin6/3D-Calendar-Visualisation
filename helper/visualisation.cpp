@@ -97,7 +97,12 @@ void Visualisation::prototype_2() {
 }
 
 void Visualisation::prototype_3() { 
-  // prototype_3: Fibonacci spiral view
+  // prototype_3: Lexis Pencil
+
+}
+
+void Visualisation::prototype_4() {
+  // prototype_4: Fibonacci spiral view
   float rotations = 5; //How many times the spiral rotates around until it stops.
   float theta, nextTheta;
   float epsilon = 0.1f * 2.0f * M_PI;
@@ -121,10 +126,7 @@ void Visualisation::prototype_3() {
 
   }
   glEnd();
-
 }
-
-void Visualisation::prototype_4() { }
 
 void Visualisation::draw(int frame) {
   switch(mode) {
