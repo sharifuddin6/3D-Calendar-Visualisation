@@ -37,12 +37,14 @@ class AppView {
     virtual void timer(int extra);
     virtual void menu(int item);
     virtual void mouse(int button, int state, int x, int y);
+    virtual void keyboard(unsigned char key, int x, int y);
 
     static void displayWrapper();
     static void reshapeWrapper(int w, int h);
     static void timerWrapper(int extra);
     static void menuWrapper(int item);
     static void mouseWrapper(int button, int state, int x, int y);
+    static void keyboardWrapper(unsigned char key, int x, int y);
 
     
 

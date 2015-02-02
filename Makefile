@@ -1,7 +1,7 @@
 # Makefile
 
 # files to be compiled
-FILES = main.cpp appView.h appView.cpp appModel.h appModel.cpp appController.h appController.cpp helper/calendar.h helper/calendar.cpp helper/visualisation.h helper/visualisation.cpp
+FILES = main.cpp appView.h appView.cpp appModel.h appModel.cpp appController.h appController.cpp helper/calendar.h helper/calendar.cpp helper/visualisation.h helper/visualisation.cpp helper/assetloader.h helper/assetloader.cpp
 
 # output file
 OUTPUT = prototype

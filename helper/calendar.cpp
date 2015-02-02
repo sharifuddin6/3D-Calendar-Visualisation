@@ -89,7 +89,25 @@ char* Calendar::getTimeToString() {
   tm* timePtr = localtime(&t);
   // char buffer for time
   char *buff = new char[16];
-  sprintf(buff, "%d:%d", timePtr->tm_hour, timePtr->tm_min);
+
+  int min = timePtr->tm_min;
+  int hour = timePtr->tm_hour;
+  char* timezone;
+
+  // decide PM/AM
+  if(hour>12) {
+    timezone = "PM";
+  } else {
+    timezone = "AM";
+  }
+
+  // quick fix for single digit minutes to natural form
+  if(min<10) {
+    sprintf(buff, "%d:%d%d%s", hour, 0, min, timezone);
+  } else {
+    sprintf(buff, "%d:%d%s", hour, min, timezone);
+  }
+
   return buff;
 }
 

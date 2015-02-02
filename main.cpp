@@ -4,7 +4,12 @@
 #include "appView.h"
 #include "appController.h"
 
+#include "helper/assetloader.h"
+
 int main(int argc, char **argv) {
+  // init assetloader
+  AssetLoader *assetLoader;
+
   // MVC architecture
   AppModel *appModel;
   AppController *appController = new AppController(appModel);

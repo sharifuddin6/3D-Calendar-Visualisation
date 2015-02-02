@@ -129,6 +129,7 @@ void AppView::menu(int item) {
   return;
 }
 
+// handle mouse input TODO: move to controller class
 void AppView::mouse(int button, int state, int x, int y) {
   // Wheel reports as button 3(scroll up) and button 4(scroll down)
   if ((button == 3) || (button == 4)) // It's a wheel event
@@ -144,8 +145,24 @@ void AppView::mouse(int button, int state, int x, int y) {
     }
     glutSwapBuffers();
 
-  } else {  // normal button event
-    printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
+  } else {  // click event
+    //printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
+  }
+}
+
+// handle keyboard input TODO: move to controller class
+void AppView::keyboard(unsigned char key, int x, int y) {
+  switch(key) {
+    case 'w':
+      break;
+    case 's':
+      break;
+    case 'a':
+      break;
+    case 'd':
+      break;
+    default:
+      break;
   }
 }
 
@@ -170,6 +187,10 @@ void AppView::menuWrapper(int item) {
 
 void AppView::mouseWrapper(int button, int state, int x, int y) {
   instance->mouse(button, state, x, y);
+}
+
+void AppView::keyboardWrapper(unsigned char key, int x, int y) {
+  instance->keyboard(key, x, y);
 }
 
 void AppView::setInstance() {
@@ -203,8 +224,9 @@ int AppView::start(int argc, char *argv[]) {
   // Associate a mouse button with menu
   glutAttachMenu(GLUT_RIGHT_BUTTON); 
 
-  // add mouse listener
-  glutMouseFunc(mouseWrapper); 
+  // add keyboard/mouse listener
+  glutMouseFunc(mouseWrapper);
+  glutKeyboardFunc(keyboardWrapper);
   
   init();
   glutMainLoop();

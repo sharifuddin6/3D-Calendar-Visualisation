@@ -41,7 +41,7 @@ void Visualisation::prototype_1() {
     int weekday = 0;
     int week = 0;
     glPushMatrix();
-      glTranslatef(weekday*tile_dimension+gap,0,week*tile_dimension);
+      glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension);
       glScalef(1.0, 0.05, 1.0);
       glColor3f(1.0,1.0,1.0);
       drawTile(weekday,1);
@@ -51,10 +51,20 @@ void Visualisation::prototype_1() {
     weekday = 5;
     week = 0;
     glPushMatrix();
-      glTranslatef(weekday*tile_dimension+gap,0,week*tile_dimension);
+      glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension);
       glScalef(1.0, 0.05, 1.0);
       glColor3f(1.0,1.0,1.0);
       drawTile(weekday,5);
+    glPopMatrix();
+
+    // SUNDAY TILE NEXT WEEK
+    weekday = 0;
+    week = 1;
+    glPushMatrix();
+      glTranslatef(weekday*tile_dimension+gap,0,-1*(week*tile_dimension+gap));
+      glScalef(1.0, 0.05, 1.0);
+      glColor3f(1.0,1.0,1.0);
+      drawTile(weekday,1);
     glPopMatrix();
 
   glPopMatrix();
