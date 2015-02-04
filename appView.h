@@ -7,26 +7,23 @@
 
 #include "appModel.h"
 #include "appController.h"
+
 #include "helper/visualisation.h"
 #include "helper/calendar.h"
 
 class AppView {
 
   private:
-    static AppView *instance; 
+    static AppView *instanceView;
+    static AppController *instanceController;
 
   public:
     // constructor
     AppView(AppController *newAppController, AppModel *newAppModel);
 
-    // enum menu options
-    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
-
     int start(int argc, char *argv[]);
 
-    // draw text method
-    void drawText(float x, float y, const char *string);    
-
+    
     // setters
     void setInstance();
     void setWindowSize(int w, int h);    
@@ -35,9 +32,6 @@ class AppView {
     virtual void display();
     virtual void reshape(int w, int h);
     virtual void timer(int extra);
-    virtual void menu(int item);
-    virtual void mouse(int button, int state, int x, int y);
-    virtual void keyboard(unsigned char key, int x, int y);
 
     static void displayWrapper();
     static void reshapeWrapper(int w, int h);
@@ -46,8 +40,16 @@ class AppView {
     static void mouseWrapper(int button, int state, int x, int y);
     static void keyboardWrapper(unsigned char key, int x, int y);
 
+    // enum menu options
+    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
+ 
+    // draw methods
+    void drawText(float x, float y, const char *string);    
+    void drawAxis();
+    void drawVisualisation();
+    void drawAllText();
+  
     
-
   private:
     // private objects
     AppController *appController;
@@ -61,16 +63,19 @@ class AppView {
     int frame;
     float pos_z;
 
-    char buffer1[16];
-    char buffer2[16];
+    char buffer1[32];
+    char buffer2[32];
 
     char* prototype_name;
     int name_size;
+    int mode;
     
     // private methods
     void init();  
-    void reset();  
     void update();
+    void updateText();
+    void reset();  
+
   
 
 };

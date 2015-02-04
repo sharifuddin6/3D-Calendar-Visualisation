@@ -2,15 +2,103 @@
 #include <stdio.h>
 #include <cmath>
 
-Visualisation::Visualisation() { 
+Visualisation::Visualisation() {
   mode = 1;
-
   tile_dimension = 0.5f;
   days = 7;
   weeks = 25;
+}
+
+void Visualisation::draw(int frame) {
+  switch(mode) {
+    case 1:
+      prototype_1();
+      break;
+    case 2:
+      prototype_2();
+      break;
+    case 3:
+      prototype_3();
+      break;
+    case 4:
+      prototype_4();
+      break;
+    default:
+      break;  
+  } 
 
 }
 
+void Visualisation::drawTile(int weekday, int day) {
+  float scale = 0.75;
+  float limit = tile_dimension*0.5;
+  //glutSolidCube(tile_dimension*scale);
+
+  glBegin(GL_QUADS);
+    // top face
+    glVertex3f(-limit, 0, -limit);
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(limit, 0, limit);
+    glVertex3f(limit, 0, -limit);
+
+    // side left
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(-limit, 0, -limit);
+    glVertex3f(-limit, -2, -limit);
+    glVertex3f(-limit, -2, limit);
+    
+    // side right
+    glVertex3f(limit, 0, limit);
+    glVertex3f(limit, 0, -limit);
+    glVertex3f(limit, -2, -limit);
+    glVertex3f(limit, -2, limit);
+
+    // front face
+    glColor3f(1.0, 0.5, 0.5);
+    glVertex3f(-limit, 0, limit);
+    glVertex3f(-limit, -2, limit);
+    glVertex3f(limit-0.15, -2, limit);
+    glVertex3f(limit-0.15, 0, limit);
+
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(limit-0.15, 0, limit);
+    glVertex3f(limit-0.15, -2, limit);
+    glVertex3f(limit, -2, limit);
+    glVertex3f(limit, 0, limit);
+
+  glEnd();
+
+}
+
+
+// getters
+char* Visualisation::getPrototypeName() {
+  switch(mode) {
+    case 1: 
+      prototype_name = "Prototype 1: Flat Perspective view";
+      break;
+    case 2:
+      prototype_name = "Prototype 2: Time Tunnel view";
+      break;
+    case 3:
+      prototype_name = "Prototype 3: 3D Lexis Pencil";
+      break;
+    case 4: 
+      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
+      break;
+    default:
+      break;
+  }  
+  return prototype_name;
+}
+
+// setters
+void Visualisation::setPrototype(int newMode) {
+  mode = newMode;
+}
+
+
+// PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
   // prototype_1: Flat perspective view
   float scale = 0.75;
@@ -157,92 +245,5 @@ void Visualisation::prototype_4() {
 
   }
   glEnd();
-}
-
-void Visualisation::draw(int frame) {
-  switch(mode) {
-    case 1:
-      prototype_1();
-      break;
-    case 2:
-      prototype_2();
-      break;
-    case 3:
-      prototype_3();
-      break;
-    case 4:
-      prototype_4();
-      break;
-    default:
-      break;  
-  } 
-
-}
-
-void Visualisation::drawTile(int weekday, int day) {
-  float scale = 0.75;
-  float limit = tile_dimension*0.5;
-  //glutSolidCube(tile_dimension*scale);
-
-  glBegin(GL_QUADS);
-    // top face
-    glVertex3f(-limit, 0, -limit);
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(limit, 0, limit);
-    glVertex3f(limit, 0, -limit);
-
-    // side left
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(-limit, 0, -limit);
-    glVertex3f(-limit, -2, -limit);
-    glVertex3f(-limit, -2, limit);
-    
-    // side right
-    glVertex3f(limit, 0, limit);
-    glVertex3f(limit, 0, -limit);
-    glVertex3f(limit, -2, -limit);
-    glVertex3f(limit, -2, limit);
-
-    // front face
-    glColor3f(1.0, 0.5, 0.5);
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(-limit, -2, limit);
-    glVertex3f(limit-0.15, -2, limit);
-    glVertex3f(limit-0.15, 0, limit);
-
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(limit-0.15, 0, limit);
-    glVertex3f(limit-0.15, -2, limit);
-    glVertex3f(limit, -2, limit);
-    glVertex3f(limit, 0, limit);
-
-  glEnd();
-
-}
-
-// getter
-char* Visualisation::getPrototypeName() {
-  switch(mode) {
-    case 1: 
-      prototype_name = "Prototype 1: Flat Perspective view";
-      break;
-    case 2:
-      prototype_name = "Prototype 2: Time Tunnel view";
-      break;
-    case 3:
-      prototype_name = "Prototype 3: 3D Lexis Pencil";
-      break;
-    case 4: 
-      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
-      break;
-    default:
-      break;
-  }  
-  return prototype_name;
-}
-
-// setter
-void Visualisation::setPrototype(int newMode) {
-  mode = newMode;
 }
 

@@ -28,9 +28,7 @@
 *.app
 
 # Temp Files
-*.cpp~
-*.h~
-*.gitignore~
+*~
 
 # APPLICATION
 prototype

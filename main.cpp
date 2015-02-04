@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   AssetLoader *assetLoader;
 
   // MVC architecture
-  AppModel *appModel;
+  AppModel *appModel = new AppModel();
   AppController *appController = new AppController(appModel);
   AppView *appView = new AppView(appController, appModel);
 

@@ -88,7 +88,7 @@ char* Calendar::getTimeToString() {
   // returns time in char* form
   tm* timePtr = localtime(&t);
   // char buffer for time
-  char *buff = new char[16];
+  char *buffer = new char[32];
 
   int min = timePtr->tm_min;
   int hour = timePtr->tm_hour;
@@ -103,12 +103,12 @@ char* Calendar::getTimeToString() {
 
   // quick fix for single digit minutes to natural form
   if(min<10) {
-    sprintf(buff, "%d:%d%d%s", hour, 0, min, timezone);
+    sprintf(buffer, "%d:%d%d%s", hour, 0, min, timezone);
   } else {
-    sprintf(buff, "%d:%d%s", hour, min, timezone);
+    sprintf(buffer, "%d:%d%s", hour, min, timezone);
   }
 
-  return buff;
+  return buffer;
 }
 
 char* Calendar::getDayToString(int weekday) {

@@ -2,10 +2,12 @@
 #include <stdio.h>
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
-  // initialise variables
+  // initialise class objects
   appController = newAppController; 
   appModel = newAppModel;
   
+  // initialise variables
+  mode = appModel->getVisualisationMode();
   frame = 0;
   width = 800; height = 600;
   windowTitle = "3D Calendar Visualisation";
@@ -16,8 +18,8 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   // assign a default value
   MENU_TYPE show = MENU_1;
   
-  // get current date into memory
-  update();
+  // update current date and text
+  updateText();
 
 }
 
@@ -30,15 +32,15 @@ void AppView::init() {
   // initialise fog
   GLuint filter;                                      // Which Filter To Use
   GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
-  GLuint fogfilter= 0;                                // Which Fog To Use
+  GLuint fogfilter= 1;                                // Which Fog To Use
   GLfloat fogColor[4]= {0.0f, 0.0f, 0.0f, 1.0f};      // Fog Color
   
   glFogi(GL_FOG_MODE, fogMode[fogfilter]);        // Fog Mode
   glFogfv(GL_FOG_COLOR, fogColor);                // Set Fog Color
-  glFogf(GL_FOG_DENSITY, 0.30f);                  // How Dense Will The Fog Be
+  glFogf(GL_FOG_DENSITY, 0.25f);                  // How Dense Will The Fog Be
   glHint(GL_FOG_HINT, GL_DONT_CARE);              // Fog Hint Value
-  glFogf(GL_FOG_START, -10.0f);                   // Fog Start Depth
-  glFogf(GL_FOG_END, -5.0f);                      // Fog End Depth
+  glFogf(GL_FOG_START, -20.0f);                   // Fog Start Depth
+  glFogf(GL_FOG_END, -25.0f);                      // Fog End Depth
   glEnable(GL_FOG);                               // Enables GL_FOG
 
 }
@@ -59,36 +61,17 @@ void AppView::display() {
   glLoadIdentity();
 
   // update frame
-  frame++;
+  update();  
 
+  // draw text  
+  drawAllText();   
+
+  // draw scene
   glPushMatrix();
-    // move back a bit, rotate world
     glTranslatef(0, 0, 0+pos_z);
-    // draw visualisation
-    visualisation.draw(frame);
-    
-    // vertical axis
-    glBegin(GL_LINES);
-      glColor3f(0,1,0);
-      glVertex3f(0, 1000, -10);
-      glVertex3f(0,-1000, -10);
-    glEnd();
-    // horizontal axis
-    glBegin(GL_LINES);
-      glColor3f(1,0,0);
-      glVertex3f(1000, 0, -10);
-      glVertex3f(-1000,0, -10);
-    glEnd();
+    drawAxis();
+    drawVisualisation();    
   glPopMatrix();
-
-  // draw text
-  drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
-  drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
-
-  // display current date
-  update();
-  drawText(0, height-12, buffer1);
-  drawText(0, height-24, buffer2);
 
   glutSwapBuffers();
 }
@@ -102,100 +85,42 @@ void AppView::timer(int extra) {
   glutTimerFunc(16, timerWrapper, 0);
 }
 
-void AppView::menu(int item) {
-  switch (item) {
-    case MENU_1:
-      visualisation.setPrototype(1);
-      reset();
-      break;
-    case MENU_2:
-      visualisation.setPrototype(2);
-      reset();
-      break;
-    case MENU_3:
-      visualisation.setPrototype(3);
-      reset();
-      break;
-    case MENU_4:
-      visualisation.setPrototype(4);
-      reset();
-      break;
-    default:
-      break;
-   }
-
-  prototype_name = visualisation.getPrototypeName();
-  glutPostRedisplay();
-  return;
-}
-
-// handle mouse input TODO: move to controller class
-void AppView::mouse(int button, int state, int x, int y) {
-  // Wheel reports as button 3(scroll up) and button 4(scroll down)
-  if ((button == 3) || (button == 4)) // It's a wheel event
-  {
-    // Each wheel event reports like a button click, GLUT_DOWN then GLUT_UP
-    if (state == GLUT_UP) return; // Disregard redundant GLUT_UP events
-     
-    // scroll wheel actions
-    if(button == 3) { // scroll up
-      pos_z += 0.25f;
-    } else {          // scroll down
-      pos_z -= 0.25f;
-    }
-    glutSwapBuffers();
-
-  } else {  // click event
-    //printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
-  }
-}
-
-// handle keyboard input TODO: move to controller class
-void AppView::keyboard(unsigned char key, int x, int y) {
-  switch(key) {
-    case 'w':
-      break;
-    case 's':
-      break;
-    case 'a':
-      break;
-    case 'd':
-      break;
-    default:
-      break;
-  }
-}
 
 // void method access via wrapper
-AppView *AppView::instance = NULL;
+AppView *AppView::instanceView = NULL;
+AppController *AppView::instanceController = NULL;
+
+void AppView::setInstance() {
+  instanceView = this;
+  instanceController = appController;
+}
 
 void AppView::displayWrapper() {
-  instance->display();
+  instanceView->display();
 }
 
 void AppView::reshapeWrapper(int w, int h) {
-  instance->reshape(w,h);
+  instanceView->reshape(w,h);
 }
 
 void AppView::timerWrapper(int extra) {
-  instance->timer(extra);
+  instanceView->timer(extra);
 }
 
 void AppView::menuWrapper(int item) {
-  instance->menu(item);
+  instanceController->menu(item);
 }
 
 void AppView::mouseWrapper(int button, int state, int x, int y) {
-  instance->mouse(button, state, x, y);
+  instanceController->mouse(button, state, x, y);
 }
 
 void AppView::keyboardWrapper(unsigned char key, int x, int y) {
-  instance->keyboard(key, x, y);
+  instanceController->keyboard(key, x, y);
+
 }
 
-void AppView::setInstance() {
-  instance = this;
-}
+
 
 // public methods
 int AppView::start(int argc, char *argv[]) {
@@ -234,6 +159,16 @@ int AppView::start(int argc, char *argv[]) {
   return 0;
 }
 
+void AppView::setWindowSize(int w, int h) {
+  width = w;
+  height = h;
+}
+
+void AppView::setWindowTitle(char* title) {
+  windowTitle = title;
+}
+
+// DRAW METHODS
 void AppView::drawText(float x, float y, const char *string) {
   const char *c;
 
@@ -264,22 +199,52 @@ void AppView::drawText(float x, float y, const char *string) {
   
 }
 
-void AppView::setWindowSize(int w, int h) {
-  width = w;
-  height = h;
+void AppView::drawAxis() {
+  // axis for sense of orientation
+  glBegin(GL_LINES); // vertical axis
+    glColor3f(0,1,0);
+    glVertex3f(0, 1000, -10);
+    glVertex3f(0,-1000, -10);
+  glEnd();
+  
+  glBegin(GL_LINES); // horizontal axis
+    glColor3f(1,0,0);
+    glVertex3f(1000, 0, -10);
+    glVertex3f(-1000,0, -10);
+  glEnd();
 }
 
-void AppView::setWindowTitle(char* title) {
-  windowTitle = title;
+void AppView::drawVisualisation() {
+  // draws current visualisation mode
+  int new_mode = appModel->getVisualisationMode();
+  // if mode changed update scene and text
+  if(mode != new_mode) {
+    mode = new_mode;
+    visualisation.setPrototype(mode);    
+    reset();
+  } else {
+    visualisation.setPrototype(mode);    
+  }
+  visualisation.draw(frame); // draw visualisation
+
 }
 
-void AppView::reset() {
-  name_size = strlen(prototype_name);
-  pos_z = 0;
-  update();
+void AppView::drawAllText() {
+  drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
+  drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
+
+  // display current date
+  drawText(0, height-12, buffer1);
+  drawText(0, height-24, buffer2);
 }
 
+// PRIVATE METHODS
 void AppView::update() {
+  frame++;
+  pos_z = appModel->getPosition_z();
+}
+
+void AppView::updateText() {
   // get todays day in string format
   int weekday = calendar.getWeekDay();
   int day = calendar.getDay();
@@ -288,8 +253,17 @@ void AppView::update() {
 
   char *weekdayString = calendar.getDayToString(weekday);
   char *monthString = calendar.getMonthToString(month);
+  char *timeString = calendar.getTimeToString();
 
   // store into buffer
-  sprintf(buffer1, "%s, %s", weekdayString, calendar.getTimeToString());
+  sprintf(buffer1, "%s, %s", weekdayString, timeString);
   sprintf(buffer2, "%d %s %d", day, monthString, year);
 }
+
+void AppView::reset() {
+  prototype_name = visualisation.getPrototypeName();
+  name_size = strlen(prototype_name);
+  pos_z = 0;
+  updateText();
+}
+
