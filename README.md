@@ -1,25 +1,7 @@
 # 3D Calendar Visualisation
 
-A 3D visualisation toolkit for calendar data powered by C++/OpenGL/GLUT. The aim of this project is to explore other ways to present calendar information which might give a more vivid impression of time and events.
+A 3D visualisation toolkit for calendar data powered by C++/OpenGL/GLUT. <p> Calendars and timetables are usually presented in the form of a two-dimensional grid. Although this representation is easy to display, it bears little relation to the actual structure of time and is not well-suited to indicating the relative importance and relationship between different events. The aim of this project is to explore other ways to present calendar information which might give a more vivid impression of time and events.
 
-===============================================
-
-Planned schedule:
-
-| WEEK NO.  |     STARTS     |                              DESCRIPTION                              |
-|-----------|:--------------:|-----------------------------------------------------------------------|
-| WEEK 1    |     26 JAN     | BACKGROUND READING, POSSIBLE CALENDAR DESIGNS/STRUCTURES/REQUIREMENTS |
-| WEEK 2    |      2 FEB     | BUILD A CALENDAR PROGRAM, C++/OPENGL/GLUT/MVC                         |
-| WEEK 3    |      9 FEB     | RESEARCH INTO VISUALISATION OF DATA (CALENDAR)                        |
-| WEEK 4    |     16 FEB     | EXPLORE, EXPERIMENT, PROTOTYPE POSSIBLE VISUALISATION TECHNIQUES      |
-| WEEK 5    |     23 FEB     | BUILD WORKING PROTOTYPE, ON TOP OF CALENDAR PROGRAM                   |
-| WEEK 6    |      2 MAR     | CONTINUED ->                                                          |
-| WEEK 7    |      9 MAR     | DEMO VISUALISATION TOOLKIT, EVALUATE, BUILD ON FEEDBACK               |
-| WEEK 8    |     16 MAR     | BUILD ON FEEDBACK, WRITE-UP REPORT, EXPLORED IDEAS/CONCEPTS           |
-| WEEK 9    |     23 MAR     | CONTINUED ->                                                          |
-| WEEK 10   |     30 MAR     | CODE DOCUMENTATION/TESTING                                            |
-| WEEK 11   |      6 APR     | EVALUATION                                                            |
-| WEEK 12   |     13 APR     | PROOF READING AND FINALL SUBMISSION                                   |
 
 ===============================================
 
@@ -29,3 +11,25 @@ Features to be explored:
 - [ ] display data in calendar 3D form
 - [ ] display visualisation prototypes
 - [ ] 
+
+
+===============================================
+
+Planned schedule:
+
+|   WEEK    |     STARTS     |                              DESCRIPTION                              |
+|:---------:|:--------------:|-----------------------------------------------------------------------|
+|     1     |     26 JAN     | Background reading, possible calendar designs/structures/requirements |
+|     2     |      2 FEB     | Build a calendar program, C++/OpenGL/GLUT/MVC                         |
+|     3     |      9 FEB     | Research into visualisation of data (CALENDAR)                        |
+|     4     |     16 FEB     | Explore, experiment, prototype possible visualisation techniques      |
+|     5     |     23 FEB     | Build a working prototype on top of calendar program                  |
+|     6     |      2 MAR     | CONTINUED ->                                                          |
+|     7     |      9 MAR     | Demo visualisation toolkit, evaluate, build on feedback               |
+|     8     |     16 MAR     | Build on feedback, write-up report, explored ideas/concepts           |
+|     9     |     23 MAR     | CONTINUED ->                                                          |
+|    10     |     30 MAR     | Code documentation and testing                                        |
+|    11     |      6 APR     | Evaluation                                                            |
+|    12     |     13 APR     | Proof reading and final submission of report                          |
+
+
