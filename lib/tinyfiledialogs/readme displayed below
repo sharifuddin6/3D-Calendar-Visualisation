@@ -1,0 +1,64 @@
+tiny file dialogs - tinyfd - version 1.7.2 [Febuary 6, 2015] zlib licence.
+Cross-platform dialogs in C/C++ WINDOWS OSX GNOME KDE SOLARIS CONSOLE
+Tested with C & C++ compilers
+on Visual Studio 2013 OSX Linux Freebsd Illumos Solaris
+using Gnome Kde Enlightenment Mate Cinnamon Unity
+Lxde Lxqt Xfce WindowMaker IceWm Cde Jds.
+
+char const * tinyfd_saveFileDialog (
+    char const * const aTitle , // ""
+    char const * const aDefaultPathAndFile , // ""
+    int const aNumOfFileFilters , // 0 
+    char const * const * const aFileFilters ) ; // NULL or {"*.txt"}
+
+char const * tinyfd_openFileDialog (
+    char const * const aTitle , // ""
+    char const * const aDefaultPathAndFile , // ""
+    int const aNumOfFileFilters , // 0
+    char const * const * const aFileFilters , // NULL or {"*.jpg","*.png"}
+    int aAllowMultipleSelects ) ; // 0
+        // in case of multiple files, the separator is |
+
+char const * tinyfd_selectFolderDialog (
+    char const * const aTitle , // ""
+    char const * const aDefaultPath ) ; // ""
+
+int tinyfd_messageBox (
+    char const * const aTitle , // ""
+    char const * const aMessage , // "" may contain \n and \t
+    char const * const aDialogType , // "ok" "okcancel" "yesno"
+    char const * const aIconType , // "info" "warning" "error" "question"
+    int const aDefaultButton ) ; // 0 for cancel/no , 1 for ok/yes
+        // returns 0 for cancel/no , 1 for ok/yes
+
+char const * tinyfd_inputBox(
+    char const * const aTitle , // ""
+    char const * const aMessage , // "" may NOT contain \n nor \t
+    char const * const aDefaultInput ) ; // "" , if NULL it's a passwordBox
+        // on cancel it returns aDefaultInput
+
+char const * tinyfd_colorChooser(
+    char const * const aTitle , // ""
+    char const * const aDefaultHexRGB , // NULL or "#FF0000”
+    unsigned char aDefaultRGB[3] , // { 0 , 255 , 255 }
+    unsigned char aoResultRGB[3] ) ; // { 0 , 0 , 0 }
+        // returns the hexcolor as a string "#FF0000"
+        // aoResultRGB also contains the result
+        // aDefaultRGB is used only if aDefaultHexRGB is NULL
+        // aDefaultRGB and aoResultRGB can be the same array
+
+- On windows: link against Comdlg32.lib User32.lib and Shell32.lib
+- On unix: it tries command line calls, so no such need.
+- Use windows separator on windows and unix separator on unix.
+- char const * fileFilters[3] = { "*.obj" , "*.stl" , "*.dxf" } ;
+- String memory is preallocated statically for all the returned values.
+- On unix you need zenity or kdialog or python2/tkinter or dialog installed.
+  Don't worry, it's already included on most (if not all) desktops.
+- If you pass only a path instead of path + filename,
+  make sure it ends with a separator.
+- tinyfd_forceConsole=1; forces all dialogs into console mode (unix only).
+- the package dialog must be installed to run in console mode.
+- the package dialog is already installed on most unix systems.
+- on osx the package dialog can be installed via macports.org
+
+

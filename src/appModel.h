@@ -7,6 +7,9 @@ class AppModel {
     // constructor
     AppModel();
 
+    // methods
+    void readFile(const char *newFilePath);
+
     // getters
     float getPosition_z();
     int getVisualisationMode();
@@ -16,9 +19,13 @@ class AppModel {
     void setVisualisationMode(int new_mode);
 
   private:
-    float position_z;         // position z is the camera position
-    int mode;   // visualisation mode is the chosen mode
+    // variables
+    const char *filePath;   // filepath of calendar data
+    float position_z;       // position z is the camera position
+    int mode;               // visualisation mode is the chosen mode
 
+    // methods
+    bool has_suffix(const char *str, const char *suffix);
 
 };
 

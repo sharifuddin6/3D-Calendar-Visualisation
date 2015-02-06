@@ -5,8 +5,10 @@
 #include "appController.h"
 
 #include "helper/assetloader.h"
+#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
 
 int main(int argc, char **argv) {
+
   // init assetloader
   AssetLoader *assetLoader;
 
@@ -14,6 +16,15 @@ int main(int argc, char **argv) {
   AppModel *appModel = new AppModel();
   AppController *appController = new AppController(appModel);
   AppView *appView = new AppView(appController, appModel);
+
+  // open file dialog and read calendar file
+  const char *title = "Open Calendar file [iCal/CSV]";
+  const char *defaultPath = "data";
+  const char *filePath;
+  int const numOfFilters = 2; 
+  char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"};
+  filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
+  appModel->readFile(filePath);
 
   // initialise window
   appView->setWindowSize(800,600);
