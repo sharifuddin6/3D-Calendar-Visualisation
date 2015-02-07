@@ -44,7 +44,7 @@ class AppView {
     enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
  
     // draw methods
-    void drawText(float x, float y, const char *string);    
+    void drawText(float x, float y, const char *string);
     void drawAxis();
     void drawVisualisation();
     void drawAllText();

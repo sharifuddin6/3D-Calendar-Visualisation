@@ -10,6 +10,9 @@ class AppModel {
     // methods
     void readFile(const char *newFilePath);
 
+    void parseCSV();
+    void parseICS();
+
     // getters
     float getPosition_z();
     int getVisualisationMode();

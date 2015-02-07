@@ -17,12 +17,12 @@ int main(int argc, char **argv) {
   AppController *appController = new AppController(appModel);
   AppView *appView = new AppView(appController, appModel);
 
-  // open file dialog and read calendar file
+  // open file dialog and read selected calendar data file
   const char *title = "Open Calendar file [iCal/CSV]";
   const char *defaultPath = "data";
   const char *filePath;
   int const numOfFilters = 2; 
-  char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"};
+  char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"}; // accepted file formats
   filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
   appModel->readFile(filePath);
 

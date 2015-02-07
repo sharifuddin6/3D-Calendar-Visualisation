@@ -7,21 +7,6 @@
 
 class Visualisation {
   
-  // structure for single day
-  struct aDay {
-    aDay() {
-
-    }
-
-    ~aDay() { }
-
-    // variables
-    bool today;
-    int index;
-    int weekday;
-    int day, month, year;
-  };
-
   public:
     // constructor
     Visualisation();

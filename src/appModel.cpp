@@ -1,6 +1,8 @@
 #include "appModel.h"
 #include <string.h>
 #include <stdio.h>
+#include <fstream>
+using namespace std;
 
 // constructor
 AppModel::AppModel() {
@@ -15,15 +17,46 @@ void AppModel::readFile(const char *newFilePath) {
   
   const char *suffix = ".csv";
   bool isCSV = has_suffix(filePath, suffix);
-  //printf("has_suffix:%s\n", value?"true":"false"); // testing whether file has suffix .csv
+  //printf("has_suffix:%s\n", value?"true":"false"); // testing whether file has suffix .csv else ics
 
   if(isCSV) {
-    // HANDLE PARSE CSV FORMAT
+    parseCSV(); // PARSE CSV FORMAT
   } else {
-    // HANDLE PARSE ICS/iCal FORMAT
+    parseICS(); // PARSE ICS/iCal FORMAT
   }
 
 }
+
+void AppModel::parseCSV() {
+  ifstream infile;
+  infile.open(filePath);
+  char line[256];
+  
+  while (infile) {
+    infile.getline(line, 256);
+    // PROCESS LINE
+    if(infile) printf("%s\n", line);
+  }
+
+  infile.close();
+
+}
+
+void AppModel::parseICS() { 
+  ifstream infile;
+  infile.open(filePath);
+  char line[256];
+  
+  while (infile) {
+    infile.getline(line, 256);
+    // PROCESS LINE
+    if(infile) printf("%s\n", line);
+  }
+
+  infile.close();
+}
+
+
 
 // getter
 float AppModel::getPosition_z() {

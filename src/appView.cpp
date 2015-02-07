@@ -63,15 +63,15 @@ void AppView::display() {
   // update frame
   update();  
 
-  // draw text  
-  drawAllText();   
-
   // draw scene
   glPushMatrix();
     glTranslatef(0, 0, 0+pos_z);
     drawAxis();
     drawVisualisation();    
   glPopMatrix();
+
+  // draw text  
+  drawAllText(); 
 
   glutSwapBuffers();
 }

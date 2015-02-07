@@ -15,8 +15,6 @@ Features to be explored:
 - [x] allow options for various visualisation methods
 - [ ] display data in calendar 3D form
 - [ ] display visualisation prototypes
-- [ ] 
-
 
 ===============================================
 
@@ -29,10 +27,10 @@ Planned schedule:
 |     3     |      9 FEB     | Research into visualisation of data (CALENDAR)                        |
 |     4     |     16 FEB     | Explore, experiment, prototype possible visualisation techniques      |
 |     5     |     23 FEB     | Build a working prototype on top of calendar program                  |
-|     6     |      2 MAR     | CONTINUED ->                                                          |
+|     6     |      2 MAR     | Continued &rarr;                                                      |
 |     7     |      9 MAR     | Demo visualisation toolkit, evaluate, build on feedback               |
 |     8     |     16 MAR     | Build on feedback, write-up report, explored ideas/concepts           |
-|     9     |     23 MAR     | CONTINUED ->                                                          |
+|     9     |     23 MAR     | Continued &rarr;                                                      |
 |    10     |     30 MAR     | Code documentation and testing                                        |
 |    11     |      6 APR     | Evaluation                                                            |
 |    12     |     13 APR     | Proof reading and final submission of report                          |
