@@ -8,4 +8,4 @@ OUTPUT = prototype
 
 # target which compiles executable
 all : $(FILES)
-	g++ $(FILES) -w -lGL -lGLU -lglut -o $(OUTPUT)
+	g++ $(FILES) -w -lGL -lGLU -lglut -lm -lpthread -o $(OUTPUT)

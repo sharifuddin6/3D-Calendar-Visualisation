@@ -25,4 +25,3 @@ class AssetLoader {
 };
 
 #endif // ASSETLOADER_H
-

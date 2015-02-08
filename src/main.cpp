@@ -1,14 +1,12 @@
-#include <GL/glut.h>
-
 #include "appModel.h"
 #include "appView.h"
 #include "appController.h"
-
 #include "helper/assetloader.h"
+
+#include <GL/glut.h>
 
 
 int main(int argc, char **argv) {
-
   // init assetloader
   AssetLoader *assetLoader;
 
@@ -18,9 +16,8 @@ int main(int argc, char **argv) {
   AppView *appView = new AppView(appController, appModel);
 
   // open file dialog and read selected calendar data file
-  const char *filePath = appView->openfileDialogBox();
-  appModel->readFile(filePath);
-
+  appView->openfileDialogBox();
+  
   // initialise window
   appView->setWindowSize(800,600);
   appView->setWindowTitle("[Prototype] 3D Calendar Visualisation");
@@ -28,4 +25,3 @@ int main(int argc, char **argv) {
 
   return 0;
 }
-

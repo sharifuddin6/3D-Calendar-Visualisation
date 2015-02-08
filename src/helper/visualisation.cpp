@@ -1,5 +1,6 @@
 #include "visualisation.h"
 #include <stdio.h>
+#include <string.h>
 #include <cmath>
 
 Visualisation::Visualisation() {
@@ -7,6 +8,9 @@ Visualisation::Visualisation() {
   tile_dimension = 0.5f;
   days = 7;
   weeks = 25;
+
+  prototype_name = "Prototype 1: Flat Perspective view";
+  name_length = strlen(prototype_name);
 }
 
 void Visualisation::draw(int frame) {
@@ -76,20 +80,28 @@ char* Visualisation::getPrototypeName() {
   switch(mode) {
     case 1: 
       prototype_name = "Prototype 1: Flat Perspective view";
+      name_length = strlen(prototype_name);
       break;
     case 2:
       prototype_name = "Prototype 2: Time Tunnel view";
+      name_length = strlen(prototype_name);
       break;
     case 3:
       prototype_name = "Prototype 3: 3D Lexis Pencil";
+      name_length = strlen(prototype_name);
       break;
     case 4: 
       prototype_name = "Prototype 4: 3D Fibonacci Spiral";
+      name_length = strlen(prototype_name);
       break;
     default:
       break;
   }  
   return prototype_name;
+}
+
+int Visualisation::getPrototypeNameLen() {
+  return name_length;
 }
 
 // setters

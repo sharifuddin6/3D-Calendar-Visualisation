@@ -1,15 +1,13 @@
 #ifndef APPVIEW_H
 #define APPVIEW_H
 
-#include <GL/glut.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "appModel.h"
 #include "appController.h"
 
+#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
 #include "helper/visualisation.h"
 #include "helper/calendar.h"
+
 
 class AppView {
 
@@ -19,7 +17,7 @@ class AppView {
 
     // methods
     int start(int argc, char *argv[]);  // initialise and starts glut for graphics window
-    const char *openfileDialogBox();    // dialog box for open file, returns filepath
+    void openfileDialogBox();    // dialog box for open file, parses data in appmodel
     
     // setters
     void setInstance();
@@ -75,8 +73,8 @@ class AppView {
     void init();
     void update();
     void updateText();
-    void reset();  
-
+    void reset();
+    void junk(); 
   
 
 };

@@ -1,6 +1,10 @@
 #include "appView.h"
+
+#include <GL/glut.h>
+#include <pthread.h>
 #include <stdio.h>
-#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
+using namespace std;
+
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   // initialise class objects
@@ -14,7 +18,7 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   windowTitle = "3D Calendar Visualisation";
   prototype_name = visualisation.getPrototypeName();
 
-  name_size = strlen(prototype_name);
+  name_size = visualisation.getPrototypeNameLen();
 
   // assign a default value
   MENU_TYPE show = MENU_1;
@@ -265,18 +269,39 @@ void AppView::updateText() {
 
 void AppView::reset() {
   prototype_name = visualisation.getPrototypeName();
-  name_size = strlen(prototype_name);
+  name_size = visualisation.getPrototypeNameLen();
   pos_z = 0;
   updateText();
 }
 
+void AppView::junk() {
+  int i;
+  i=pthread_getconcurrency();
+}
+
 // dialog box for open file, returns filepath
-const char *AppView::openfileDialogBox() {
+void AppView::openfileDialogBox() {
   // parameters for tiny file dialogs [by Guillaume Vareille]
   const char *title = "Open Calendar file [iCal/CSV]";
   const char *defaultPath = "data";
+  const char *filePath; 
   int const numOfFilters = 2; 
   char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"}; // accepted file formats
-  return tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
+  filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
+  printf("filepath:%s\n", filePath);
+
+  // determine file type; either csv or ics
+  const char *suffix = ".csv";
+  bool isCSV = appModel->has_suffix(filePath, suffix);
+
+  // use correct parser
+  if(isCSV) {
+    printf("Parsing CSV file...\n");
+    appModel->parseCSV(filePath); // PARSE CSV FORMAT
+  } else {
+    printf("Parsing ICS file...\n");
+    appModel->parseICS(filePath); // PARSE ICS/iCal FORMAT
+  }
+
 }
 

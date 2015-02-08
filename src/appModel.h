@@ -1,6 +1,10 @@
 #ifndef APPMODEL_H
 #define APPMODEL_H
 
+#include "helper/event.h"
+#include <string>
+
+
 class AppModel {
 
   public:
@@ -8,10 +12,9 @@ class AppModel {
     AppModel();
 
     // methods
-    void readFile(const char *newFilePath);
-
-    void parseCSV();
-    void parseICS();
+    void parseCSV(const char* filePath);
+    void parseICS(const char* filePath);
+    bool has_suffix(const char *str, const char *suffix); // used to determine file type
 
     // getters
     float getPosition_z();
@@ -23,12 +26,12 @@ class AppModel {
 
   private:
     // variables
-    const char *filePath;   // filepath of calendar data
     float position_z;       // position z is the camera position
     int mode;               // visualisation mode is the chosen mode
 
     // methods
-    bool has_suffix(const char *str, const char *suffix);
+    void trim(std::string &str);   // used to trim extra spaces
+    
 
 };
 

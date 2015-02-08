@@ -17,6 +17,7 @@ class Visualisation {
 
     // getter
     char* getPrototypeName();
+    int getPrototypeNameLen();
     
     // setter
     void setPrototype(int newMode);
@@ -26,6 +27,7 @@ class Visualisation {
     // private variables
     int mode;
     char* prototype_name;
+    int name_length;
 
     float tile_dimension;
     int days;
