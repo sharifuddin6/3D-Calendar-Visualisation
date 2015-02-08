@@ -1,5 +1,6 @@
 #include "appView.h"
 #include <stdio.h>
+#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
 
 AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   // initialise class objects
@@ -23,6 +24,7 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
 
 }
 
+// public methods
 void AppView::init() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
@@ -45,6 +47,7 @@ void AppView::init() {
 
 }
 
+// glut functions
 void AppView::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -85,46 +88,9 @@ void AppView::timer(int extra) {
   glutTimerFunc(16, timerWrapper, 0);
 }
 
-
-// void method access via wrapper
-AppView *AppView::instanceView = NULL;
-AppController *AppView::instanceController = NULL;
-
-void AppView::setInstance() {
-  instanceView = this;
-  instanceController = appController;
-}
-
-void AppView::displayWrapper() {
-  instanceView->display();
-}
-
-void AppView::reshapeWrapper(int w, int h) {
-  instanceView->reshape(w,h);
-}
-
-void AppView::timerWrapper(int extra) {
-  instanceView->timer(extra);
-}
-
-void AppView::menuWrapper(int item) {
-  instanceController->menu(item);
-}
-
-void AppView::mouseWrapper(int button, int state, int x, int y) {
-  instanceController->mouse(button, state, x, y);
-}
-
-void AppView::keyboardWrapper(unsigned char key, int x, int y) {
-  instanceController->keyboard(key, x, y);
-
-}
-
-
-
-// public methods
+// main glut operations for graphics window
 int AppView::start(int argc, char *argv[]) {
-  
+  // initialise static object
   setInstance();
 
   // init glut
@@ -168,7 +134,44 @@ void AppView::setWindowTitle(char* title) {
   windowTitle = title;
 }
 
-// DRAW METHODS
+
+
+
+// void method access via wrapper
+AppView *AppView::instanceView = NULL;
+AppController *AppView::instanceController = NULL;
+
+void AppView::setInstance() {
+  instanceView = this;
+  instanceController = appController;
+}
+
+void AppView::displayWrapper() {
+  instanceView->display();
+}
+
+void AppView::reshapeWrapper(int w, int h) {
+  instanceView->reshape(w,h);
+}
+
+void AppView::timerWrapper(int extra) {
+  instanceView->timer(extra);
+}
+
+void AppView::menuWrapper(int item) {
+  instanceController->menu(item);
+}
+
+void AppView::mouseWrapper(int button, int state, int x, int y) {
+  instanceController->mouse(button, state, x, y);
+}
+
+void AppView::keyboardWrapper(unsigned char key, int x, int y) {
+  instanceController->keyboard(key, x, y);
+}
+
+
+// draw methods: text, axis, visualisation
 void AppView::drawText(float x, float y, const char *string) {
   const char *c;
 
@@ -238,7 +241,7 @@ void AppView::drawAllText() {
   drawText(0, height-24, buffer2);
 }
 
-// PRIVATE METHODS
+// private methods: init, update, reset
 void AppView::update() {
   frame++;
   pos_z = appModel->getPosition_z();
@@ -265,5 +268,15 @@ void AppView::reset() {
   name_size = strlen(prototype_name);
   pos_z = 0;
   updateText();
+}
+
+// dialog box for open file, returns filepath
+const char *AppView::openfileDialogBox() {
+  // parameters for tiny file dialogs [by Guillaume Vareille]
+  const char *title = "Open Calendar file [iCal/CSV]";
+  const char *defaultPath = "data";
+  int const numOfFilters = 2; 
+  char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"}; // accepted file formats
+  return tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
 }
 

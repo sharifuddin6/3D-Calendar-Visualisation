@@ -13,22 +13,20 @@
 
 class AppView {
 
-  private:
-    static AppView *instanceView;
-    static AppController *instanceController;
-
   public:
     // constructor
     AppView(AppController *newAppController, AppModel *newAppModel);
 
-    int start(int argc, char *argv[]);
-
+    // methods
+    int start(int argc, char *argv[]);  // initialise and starts glut for graphics window
+    const char *openfileDialogBox();    // dialog box for open file, returns filepath
     
     // setters
     void setInstance();
     void setWindowSize(int w, int h);    
     void setWindowTitle(char* title);
 
+    // glut functions
     virtual void display();
     virtual void reshape(int w, int h);
     virtual void timer(int extra);
@@ -52,6 +50,9 @@ class AppView {
     
   private:
     // private objects
+    static AppView *instanceView;
+    static AppController *instanceController;
+
     AppController *appController;
     AppModel *appModel;
     Visualisation visualisation;
@@ -71,7 +72,7 @@ class AppView {
     int mode;
     
     // private methods
-    void init();  
+    void init();
     void update();
     void updateText();
     void reset();  

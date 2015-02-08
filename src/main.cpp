@@ -5,7 +5,7 @@
 #include "appController.h"
 
 #include "helper/assetloader.h"
-#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
+
 
 int main(int argc, char **argv) {
 
@@ -18,12 +18,7 @@ int main(int argc, char **argv) {
   AppView *appView = new AppView(appController, appModel);
 
   // open file dialog and read selected calendar data file
-  const char *title = "Open Calendar file [iCal/CSV]";
-  const char *defaultPath = "data";
-  const char *filePath;
-  int const numOfFilters = 2; 
-  char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"}; // accepted file formats
-  filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
+  const char *filePath = appView->openfileDialogBox();
   appModel->readFile(filePath);
 
   // initialise window

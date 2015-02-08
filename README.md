@@ -1,6 +1,6 @@
 # 3D Calendar Visualisation
 
-A 3D visualisation toolkit for calendar data powered by C++/OpenGL/GLUT. <p> Calendars and timetables are usually presented in the form of a two-dimensional grid. Although this representation is easy to display, it bears little relation to the actual structure of time and is not well-suited to indicating the relative importance and relationship between different events. The aim of this project is to explore other ways to present calendar information which might give a more vivid impression of time and events.
+A 3D visualisation toolkit for calendar data, powered by C++/OpenGL/GLUT. <p> Calendars and timetables are usually presented in the form of a two-dimensional grid. Although this representation is easy to display, it bears little relation to the actual structure of time and is not well-suited to indicating the relative importance and relationship between different events. The aim of this project is to explore other ways to present calendar information which might give a more vivid impression of time and events.
 
 Used tools:
 * tiny file dialogs [by Guillaume Vareille]: Cross-platform dialogs in C C++ WINDOWS OSX GNOME KDE SOLARIS CONSOLE <p>http://sourceforge.net/projects/tinyfiledialogs/
