@@ -8,8 +8,8 @@ Visualisation::Visualisation() {
   tile_dimension = 0.5f;
   days = 7;
   weeks = 25;
-
-  prototype_name = "Prototype 1: Flat Perspective view";
+  prototype_name = new char[64];
+  strcpy(prototype_name, "Prototype 1: Flat Perspective view");
   name_length = strlen(prototype_name);
 }
 
@@ -34,7 +34,7 @@ void Visualisation::draw(int frame) {
 }
 
 void Visualisation::drawTile(int weekday, int day) {
-  float scale = 0.75;
+  //float scale = 0.75;
   float limit = tile_dimension*0.5;
   //glutSolidCube(tile_dimension*scale);
 
@@ -79,19 +79,19 @@ void Visualisation::drawTile(int weekday, int day) {
 char* Visualisation::getPrototypeName() {
   switch(mode) {
     case 1: 
-      prototype_name = "Prototype 1: Flat Perspective view";
+      strcpy(prototype_name, "Prototype 1: Flat Perspective view");
       name_length = strlen(prototype_name);
       break;
     case 2:
-      prototype_name = "Prototype 2: Time Tunnel view";
+      strcpy(prototype_name, "Prototype 2: Time Tunnel view");
       name_length = strlen(prototype_name);
       break;
     case 3:
-      prototype_name = "Prototype 3: 3D Lexis Pencil";
+      strcpy(prototype_name, "Prototype 3: 3D Lexis Pencil");
       name_length = strlen(prototype_name);
       break;
-    case 4: 
-      prototype_name = "Prototype 4: 3D Fibonacci Spiral";
+    case 4:
+      strcpy(prototype_name, "Prototype 4: 3D Fibonacci Spiral");
       name_length = strlen(prototype_name);
       break;
     default:
@@ -174,7 +174,7 @@ void Visualisation::prototype_2() {
   // prototype_2: Time tunnel view
   int segments = 7;
   float radius = 0.3;
-  float height = 0.3;
+  //float height = 0.3;
 
   // guide lines
   for (float i = 0.0; i < segments; i += 1.0) {

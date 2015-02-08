@@ -62,7 +62,7 @@ void AppModel::trim(string &str) {
 
   //remove spaces which follow another space
   size = 0;
-  for (int i=0; i<str.size(); ++i) {
+  for (unsigned int i=0; i<str.size(); ++i) {
     if ( (str[i] != ' ') || (str[i] == ' ' && str[i+1] != ' ' )) {
       str [size] = str [i];
       ++size;

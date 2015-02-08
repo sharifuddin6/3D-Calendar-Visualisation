@@ -22,7 +22,7 @@ class AppView {
     // setters
     void setInstance();
     void setWindowSize(int w, int h);    
-    void setWindowTitle(char* title);
+    void setWindowTitle(const char* title);
 
     // glut functions
     virtual void display();
@@ -58,7 +58,7 @@ class AppView {
 
     // private variables
     int width, height;
-    char* windowTitle;
+    const char* windowTitle;
     int frame;
     float pos_z;
 

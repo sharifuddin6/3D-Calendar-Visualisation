@@ -765,10 +765,17 @@ static int dialogPresent ( )
     return lDialogPresent && isatty ( 1 ) ; /* verify console presence */
 }
 
-
+// ALTERED CODE: TO BYPASS THE WARNING MESSAGE
+// warning: the address of ‘int dialogPresent()’ will always evaluate as ‘true’ [-Waddress]
+//
+//static int graphicMode()
+//{
+//	return ( !(tinyfd_forceConsole && dialogPresent) ) && getenv ( "DISPLAY" ) ;
+//}
 static int graphicMode()
 {
-	return ( !(tinyfd_forceConsole && dialogPresent) ) && getenv ( "DISPLAY" ) ;
+  static int pDummy = 1;
+	return pDummy;
 }
 
 

@@ -60,6 +60,7 @@ int Calendar::getWeekDay() {
   // returns current weekday
 	tm* timePtr = localtime(&t);
   int weekday = timePtr->tm_wday;
+  return weekday;
 }
 
 int Calendar::getDay() {
@@ -92,13 +93,13 @@ char* Calendar::getTimeToString() {
 
   int min = timePtr->tm_min;
   int hour = timePtr->tm_hour;
-  char* timezone;
+  char timezone[3];
 
   // decide PM/AM
   if(hour>12) {
-    timezone = "PM";
+    strcpy(timezone, "PM");
   } else {
-    timezone = "AM";
+    strcpy(timezone, "AM");
   }
 
   // quick fix for single digit minutes to natural form

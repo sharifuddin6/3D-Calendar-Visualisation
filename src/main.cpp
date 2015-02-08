@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv) {
   // init assetloader
-  AssetLoader *assetLoader;
+  //AssetLoader *assetLoader;
 
   // MVC architecture
   AppModel *appModel = new AppModel();
@@ -19,8 +19,9 @@ int main(int argc, char **argv) {
   appView->openfileDialogBox();
   
   // initialise window
+  const char *title = "[Prototype] 3D Calendar Visualisation";
   appView->setWindowSize(800,600);
-  appView->setWindowTitle("[Prototype] 3D Calendar Visualisation");
+  appView->setWindowTitle(title);
   appView->start(argc, argv);
 
   return 0;

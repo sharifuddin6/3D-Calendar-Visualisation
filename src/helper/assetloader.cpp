@@ -18,7 +18,7 @@ GLuint AssetLoader::loadTexturePNG(GLuint *textureID, const char *filename) {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glBindTexture(GL_TEXTURE_2D, *textureID);
 
-  int width, height;
+//  int width, height;
 //  QImage tmpImage = QImage(filename, "PNG");
 //  QImage image = QGLWidget::convertToGLFormat(tmpImage);
 

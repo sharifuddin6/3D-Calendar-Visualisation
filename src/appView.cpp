@@ -19,9 +19,6 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   prototype_name = visualisation.getPrototypeName();
 
   name_size = visualisation.getPrototypeNameLen();
-
-  // assign a default value
-  MENU_TYPE show = MENU_1;
   
   // update current date and text
   updateText();
@@ -36,7 +33,6 @@ void AppView::init() {
   glEnable(GL_COLOR_MATERIAL);
 
   // initialise fog
-  GLuint filter;                                      // Which Filter To Use
   GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
   GLuint fogfilter= 1;                                // Which Fog To Use
   GLfloat fogColor[4]= {0.0f, 0.0f, 0.0f, 1.0f};      // Fog Color
@@ -134,7 +130,7 @@ void AppView::setWindowSize(int w, int h) {
   height = h;
 }
 
-void AppView::setWindowTitle(char* title) {
+void AppView::setWindowTitle(const char* title) {
   windowTitle = title;
 }
 
@@ -275,8 +271,7 @@ void AppView::reset() {
 }
 
 void AppView::junk() {
-  int i;
-  i=pthread_getconcurrency();
+  pthread_getconcurrency();
 }
 
 // dialog box for open file, returns filepath
@@ -290,18 +285,21 @@ void AppView::openfileDialogBox() {
   filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
   printf("filepath:%s\n", filePath);
 
-  // determine file type; either csv or ics
-  const char *suffix = ".csv";
-  bool isCSV = appModel->has_suffix(filePath, suffix);
+  if(filePath != NULL) {
+    // determine file type; either csv or ics
+    const char *suffix = ".csv";
+    bool isCSV = appModel->has_suffix(filePath, suffix);
 
-  // use correct parser
-  if(isCSV) {
-    printf("Parsing CSV file...\n");
-    appModel->parseCSV(filePath); // PARSE CSV FORMAT
+    // use correct parser
+    if(isCSV) {
+      printf("Parsing CSV file...\n");
+      appModel->parseCSV(filePath); // PARSE CSV FORMAT
+    } else {
+      printf("Parsing ICS file...\n");
+      appModel->parseICS(filePath); // PARSE ICS/iCal FORMAT
+    }
   } else {
-    printf("Parsing ICS file...\n");
-    appModel->parseICS(filePath); // PARSE ICS/iCal FORMAT
+    printf("NO DATA TO DISPLAY.\n");
   }
-
 }
 

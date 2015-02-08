@@ -4,7 +4,8 @@ A 3D visualisation toolkit for calendar data, powered by C++/OpenGL/GLUT. <p> Ca
 
 Used tools:
 * tiny file dialogs [by Guillaume Vareille]: Cross-platform dialogs in C C++ WINDOWS OSX GNOME KDE SOLARIS CONSOLE <p>http://sourceforge.net/projects/tinyfiledialogs/
-  
+* Drawing Text [by Bill Jacobs]: 3D text rendering using 3D model data format <p>http://www.videotutorialsrock.com/opengl_tutorial/draw_text/text.php
+ 
 
 ===============================================
 
