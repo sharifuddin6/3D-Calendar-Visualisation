@@ -119,9 +119,6 @@ char* Calendar::getDayToString(int weekday) {
   char *buff = new char[10];
   
   switch(weekday) {
-    case SUNDAY:
-      strcpy(buff, "SUNDAY");
-      break;
     case MONDAY:
       strcpy(buff, "MONDAY");
       break;
@@ -139,6 +136,9 @@ char* Calendar::getDayToString(int weekday) {
       break;
     case SATURDAY:
       strcpy(buff, "SATURDAY");
+      break;
+    case SUNDAY:
+      strcpy(buff, "SUNDAY");
       break;
     default:
       strcpy(buff, "UNKNOWN");

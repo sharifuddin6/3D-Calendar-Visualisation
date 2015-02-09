@@ -2,9 +2,21 @@
 #define VISUALISATION_H
 
 #include "calendar.h"
+#include <vector>
+using namespace std;
+
 
 class Visualisation {
   
+  struct aDay {
+    aDay() { }
+  
+    int day;
+    int month;
+    int weekday;
+    int week;
+  };
+
   public:
     // constructor
     Visualisation();
@@ -34,19 +46,21 @@ class Visualisation {
     float scale;
     float gap;
 
-    int days;
-    int weeks;
+    vector<aDay> days;
 
     // private objects
     Calendar calendar;   
 
     // private methods
+    void init();
+    
     void prototype_1();
     void prototype_2();
     void prototype_3();
     void prototype_4();
 
-    void drawTile_prototype_1(int weekday, int week);
+    void prototype_1_drawTile(int week, int weekday, int day);
+    
 
 };
 
