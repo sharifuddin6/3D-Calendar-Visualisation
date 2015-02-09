@@ -17,17 +17,24 @@ class AppModel {
     bool has_suffix(const char *str, const char *suffix); // used to determine file type
 
     // getters
+    float getPosition_x();
+    float getPosition_y();
     float getPosition_z();
     int getVisualisationMode();
+    bool getFog();
 
     // setters
+    void setPosition_x(float new_x);
+    void setPosition_y(float new_y);
     void setPosition_z(float new_z);
     void setVisualisationMode(int new_mode);
+    void setFog(bool value);
 
   private:
     // variables
-    float position_z;       // position z is the camera position
+    float position_x, position_y, position_z;       // the camera position
     int mode;               // visualisation mode is the chosen mode
+    bool fog_enabled;
 
     // methods
     void trim(std::string &str);   // used to trim extra spaces

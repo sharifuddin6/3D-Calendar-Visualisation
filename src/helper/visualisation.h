@@ -1,8 +1,6 @@
 #ifndef VISUALISATION_H
 #define VISUALISATION_H
 
-#include <GL/glut.h>
-
 #include "calendar.h"
 
 class Visualisation {
@@ -14,6 +12,9 @@ class Visualisation {
     // methods
     void draw(int frame);
     void drawTile(int weekday, int day);
+
+    void drawText(const char* text);
+    float computeScale(const char *text);
 
     // getter
     char* getPrototypeName();
@@ -30,6 +31,9 @@ class Visualisation {
     int name_length;
 
     float tile_dimension;
+    float scale;
+    float gap;
+
     int days;
     int weeks;
 
@@ -41,6 +45,8 @@ class Visualisation {
     void prototype_2();
     void prototype_3();
     void prototype_4();
+
+    void drawTile_prototype_1(int weekday, int week);
 
 };
 

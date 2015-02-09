@@ -12,7 +12,7 @@ class Calendar {
     // enum days, months
     enum WEEKDAY_TYPE { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY };
 
-    enum MONTH_TYPE { JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
+    enum MONTH_TYPE { NOT_USED, JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
                       JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER };
 
     // methods
@@ -21,7 +21,7 @@ class Calendar {
     bool isLeapYear(int year);
     int totalDaysInMonth(int month, int year);
 
-    // getter   
+    // getter  
     int getWeekDay();
     int getDay();
     int getMonth();
@@ -30,16 +30,28 @@ class Calendar {
     char* getTimeToString();
     char* getDayToString(int weekday);
     char* getMonthToString(int month);
+    char* getDate(int);
 
     // setter
-    
+ 
+    // parse date
+    int parseDay(const char *date);
+    int parseMonth(const char *date);
+    int parseYear(const char *date);   
 
   private:
     // private variables
-    time_t t;    
+    time_t t;
+
+    int tmp_day;
+    int tmp_month;
+    int tmp_year;
+    int tmp_limit;
+    int tmp_count;
 
     // private methods
-    
+    void scanForward();
+    void scanBackward();
 };
 
 #endif

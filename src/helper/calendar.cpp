@@ -1,8 +1,9 @@
 #include "calendar.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <sstream>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 // constructor
@@ -32,7 +33,7 @@ bool Calendar::isLeapYear(int year) {
   if(year%4==0 && (year%100!=0 || year%400==0)) {
     value = true;
   }
-  printf("%d:%s\n", year, value?"true":"false");
+//  printf("%d:%s\n", year, value?"true":"false");
   return value;
 }
 
@@ -51,7 +52,7 @@ int Calendar::totalDaysInMonth(int month, int year) {
       totalDays = 28;
     }
   }
-  printf("%d,%d : %d\n", month, year, totalDays);
+//  printf("%d,%d : %d\n", month, year, totalDays);
   return totalDays;
 }
 
@@ -73,7 +74,7 @@ int Calendar::getDay() {
 int Calendar::getMonth() {
   // returns current month
 	tm* timePtr = localtime(&t);
-  int month = timePtr->tm_mon;
+  int month = timePtr->tm_mon+1;
   return month;
 }
 
@@ -195,4 +196,104 @@ char* Calendar::getMonthToString(int month) {
   };
 
   return buff;
+}
+
+char* Calendar::getDate(int index) {
+  // returns date from today to given index
+  // char buffer for date
+  char *buff = new char[12];
+
+  tmp_count = index;
+  tmp_day = getDay();
+  tmp_month = getMonth();
+  tmp_year = getYear();
+  tmp_limit = totalDaysInMonth(tmp_month, tmp_year);
+  //printf("%d,%d,%d->%d,%d\n", tmp_day, tmp_month, tmp_year, tmp_count, tmp_limit);
+
+  // calculates date from today
+  if(index == 0) {
+    // Do nothing.
+  } else if(tmp_count>0) {
+    scanForward();
+  } else {
+    scanBackward();
+  }
+
+  snprintf(buff, 12, "%d,%d,%d", tmp_day, tmp_month, tmp_year);
+  return buff;
+}
+
+void Calendar::scanForward() {
+  while(tmp_count>0) {
+    if(tmp_day+1<=tmp_limit) {                                // case where next day is within this month
+      tmp_day+=1;
+    } else {                                                  // case where next day is first of next month
+      tmp_day = 1;
+      if(tmp_month+1<=12) {                                   // case where next month is within this year 
+        tmp_month+=1;
+        tmp_limit = totalDaysInMonth(tmp_month, tmp_year);
+      } else {                                                // case where next month is first month of next year
+        tmp_month = 1;
+        tmp_year+=1;
+        tmp_limit = totalDaysInMonth(tmp_month, tmp_year);
+      }
+    }
+    tmp_count-=1;
+  }
+}
+
+void Calendar::scanBackward() {
+  while(tmp_count<0) {
+    if(tmp_day-1 > 0) {                                       // case where previous day is within this month
+      tmp_day-=1;
+    } else {                                                  // case where previous day is last of previous month
+      if(tmp_month-1>0) {                                     // case where previous month is within this year 
+        tmp_month-=1;
+        tmp_limit = totalDaysInMonth(tmp_month, tmp_year);
+        tmp_day = tmp_limit;
+      } else {                                                // case where previous month is last month of previous year
+        tmp_month = 12;
+        tmp_year-=1;
+        tmp_limit = totalDaysInMonth(tmp_month, tmp_year);
+        tmp_day = tmp_limit;
+      }
+    }
+    tmp_count+=1;
+  }
+}
+
+int Calendar::parseDay(const char* date) {
+  int day=0;
+  vector<string> tmpDate;
+  istringstream ss(date);
+  while (!ss.eof()) {
+    string out;               // here's a nice, empty string
+    getline(ss, out, ',');    // try to read the next field into it
+    //printf("OUT: %s\n", out.c_str());  // output parsed data from line to console
+    tmpDate.push_back(out);
+  }
+
+  string string_day = tmpDate[0];
+  istringstream buffer(string_day);
+  buffer >> day;
+  buffer.clear(); ss.clear(); // clear stream
+  return day;
+}
+
+int Calendar::parseMonth(const char* date) {
+  int month=0;
+  vector<string> tmpDate;
+  istringstream ss(date);
+  while (!ss.eof()) {
+    string out;               // here's a nice, empty string
+    getline(ss, out, ',');    // try to read the next field into it
+    //printf("OUT: %s\n", out.c_str());  // output parsed data from line to console
+    tmpDate.push_back(out);
+  }
+
+  string string_month = tmpDate[1];
+  istringstream buffer(string_month);
+  buffer >> month;
+  buffer.clear(); ss.clear(); // clear stream
+  return month;
 }

@@ -65,10 +65,33 @@ void AppController::keyboard(unsigned char key, int x, int y) {
       appModel->setPosition_z(pos_z);
       break;
     case 'a':
-      printf("A PRESSED\n");
+      pos_x = appModel->getPosition_x() +0.25f;
+      appModel->setPosition_x(pos_x);      
       break;
     case 'd':
-      printf("D PRESSED\n");
+      pos_x = appModel->getPosition_x() -0.25f;
+      appModel->setPosition_x(pos_x);      
+      break;
+    case 'q':
+      pos_y = appModel->getPosition_y() +0.25f;
+      appModel->setPosition_y(pos_y);      
+      break;
+    case 'e':
+      pos_y = appModel->getPosition_y() -0.25f;
+      appModel->setPosition_y(pos_y);      
+      break;
+    case 'f':
+      if(appModel->getFog()) {
+        glDisable(GL_FOG);
+        appModel->setFog(false);
+      } else {
+        glEnable(GL_FOG);
+        appModel->setFog(true);
+      }
+      break;
+    case 27: // Escape key
+      printf("See you later..\n");  
+      exit(0);    
       break;
     default:
       break;

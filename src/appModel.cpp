@@ -3,11 +3,12 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 using namespace std;
 
 // constructor
 AppModel::AppModel() {
+  position_x = 0.0;
+  position_y = 0.0;
   position_z = 0.0;
   mode = 1;
 }
@@ -21,14 +22,14 @@ void AppModel::parseCSV(const char* filePath) {
   
   while (infile) {
     infile.getline(line, 256);
-    if(infile) printf("%s\n", line);
+    //if(infile) printf("%s\n", line); // output lines from file to console
     // parse each line from data
     istringstream ss(line);
     while (!ss.eof()) {
       string out;               // here's a nice, empty string
       getline(ss, out, ',');    // try to read the next field into it
       trim(out);                // trim leaing/trailing/multiple spacing
-      printf("OUT: %s\n", out.c_str());  // print it out, EVEN IF WE ALREADY HIT EOF
+      //printf("OUT: %s\n", out.c_str());  // output parsed data from line to console
     }
   }
   infile.close();
@@ -104,6 +105,14 @@ bool AppModel::has_suffix(const char *str, const char *suffix) {
 
 
 // getter
+float AppModel::getPosition_x() {
+  return position_x;
+}
+
+float AppModel::getPosition_y() {
+  return position_y;
+}
+
 float AppModel::getPosition_z() {
   return position_z;
 }
@@ -112,13 +121,29 @@ int AppModel::getVisualisationMode() {
   return mode;
 }
 
+bool AppModel::getFog() {
+  return fog_enabled;
+}
+
 // setter
+void AppModel::setPosition_x(float new_x) {
+  position_x = new_x;
+}
+
+void AppModel::setPosition_y(float new_y) {
+  position_y = new_y;
+}
+
 void AppModel::setPosition_z(float new_z) {
   position_z = new_z;
 }
 
 void AppModel::setVisualisationMode(int new_mode) {
   mode = new_mode;
+}
+
+void AppModel::setFog(bool value) {
+  fog_enabled = value;
 }
 
 

@@ -27,10 +27,24 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
 
 // public methods
 void AppView::init() {
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+  // enable depth, and culling
+  glEnable (GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  
   glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_NORMALIZE);
+  glShadeModel(GL_SMOOTH);
+
+  // initialise lighting
+  glEnable(GL_LIGHT0);
+  GLfloat ambientColor[] = {0.4f, 0.4f, 0.4f, 1.0f};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+	
+	GLfloat lightColor0[] = {0.6f, 0.6f, 0.6f, 1.0f};
+	GLfloat lightPos0[] = {-0.5f, 0.5f, 1.0f, 0.0f};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+  glEnable(GL_LIGHTING);
 
   // initialise fog
   GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };   // Storage For Three Types Of Fog
@@ -41,9 +55,19 @@ void AppView::init() {
   glFogfv(GL_FOG_COLOR, fogColor);                // Set Fog Color
   glFogf(GL_FOG_DENSITY, 0.25f);                  // How Dense Will The Fog Be
   glHint(GL_FOG_HINT, GL_DONT_CARE);              // Fog Hint Value
-  glFogf(GL_FOG_START, -20.0f);                   // Fog Start Depth
-  glFogf(GL_FOG_END, -25.0f);                      // Fog End Depth
+  glFogf(GL_FOG_START, 1.0f);                   // Fog Start Depth
+  glFogf(GL_FOG_END, -200.0f);                     // Fog End Depth
   glEnable(GL_FOG);                               // Enables GL_FOG
+
+  // smoothing on lines
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA_SATURATE, GL_ONE);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  // initialise render  
+  glClearColor(0.1, 0.1, 0.1, 0.0);
 
 }
 
@@ -58,7 +82,7 @@ void AppView::display() {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   double aspect = (double)viewport[2] / (double)viewport[3];
-  gluPerspective(45, aspect, 1, 100);
+  gluPerspective(45.0, aspect, 1.0, 200.0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -68,7 +92,7 @@ void AppView::display() {
 
   // draw scene
   glPushMatrix();
-    glTranslatef(0, 0, 0+pos_z);
+    glTranslatef(0+pos_x, 0+pos_y, 0+pos_z);
     drawAxis();
     drawVisualisation();    
   glPopMatrix();
@@ -244,6 +268,8 @@ void AppView::drawAllText() {
 // private methods: init, update, reset
 void AppView::update() {
   frame++;
+  pos_x = appModel->getPosition_x();
+  pos_y = appModel->getPosition_y();  
   pos_z = appModel->getPosition_z();
 }
 
@@ -267,6 +293,7 @@ void AppView::reset() {
   prototype_name = visualisation.getPrototypeName();
   name_size = visualisation.getPrototypeNameLen();
   pos_z = 0;
+  appModel->setPosition_z(pos_z);
   updateText();
 }
 
@@ -283,9 +310,9 @@ void AppView::openfileDialogBox() {
   int const numOfFilters = 2; 
   char const *fileFilters[numOfFilters] = {"*.csv", "*.ics"}; // accepted file formats
   filePath = tinyfd_openFileDialog(title, defaultPath, numOfFilters, fileFilters, 0);
-  printf("filepath:%s\n", filePath);
-
+  
   if(filePath != NULL) {
+    printf("filepath:%s\n", filePath);
     // determine file type; either csv or ics
     const char *suffix = ".csv";
     bool isCSV = appModel->has_suffix(filePath, suffix);

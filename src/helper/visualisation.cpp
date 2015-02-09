@@ -1,16 +1,23 @@
 #include "visualisation.h"
+#include "../../lib/drawtext/text3d.h"
+
+#include <GL/glut.h>
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
 
 Visualisation::Visualisation() {
   mode = 1;
+  prototype_name = new char[64];
+  getPrototypeName();
+
   tile_dimension = 0.5f;
   days = 7;
   weeks = 25;
-  prototype_name = new char[64];
-  strcpy(prototype_name, "Prototype 1: Flat Perspective view");
-  name_length = strlen(prototype_name);
+  
+  const char* date = calendar.getDate(25); 
+  int day = calendar.parseDay(date);
+  printf("25 days from today: %d\n", day);
 }
 
 void Visualisation::draw(int frame) {
@@ -34,46 +41,66 @@ void Visualisation::draw(int frame) {
 }
 
 void Visualisation::drawTile(int weekday, int day) {
-  //float scale = 0.75;
-  float limit = tile_dimension*0.5;
-  //glutSolidCube(tile_dimension*scale);
+//  float limit = tile_dimension*0.5;
+  glutSolidCube(tile_dimension);
 
-  glBegin(GL_QUADS);
-    // top face
-    glVertex3f(-limit, 0, -limit);
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(limit, 0, limit);
-    glVertex3f(limit, 0, -limit);
+//  glBegin(GL_QUADS);
+//    // top face
+//    glVertex3f(-limit, 0, -limit);
+//    glVertex3f(-limit, 0, limit);
+//    glVertex3f(limit, 0, limit);
+//    glVertex3f(limit, 0, -limit);
 
-    // side left
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(-limit, 0, -limit);
-    glVertex3f(-limit, -2, -limit);
-    glVertex3f(-limit, -2, limit);
-    
-    // side right
-    glVertex3f(limit, 0, limit);
-    glVertex3f(limit, 0, -limit);
-    glVertex3f(limit, -2, -limit);
-    glVertex3f(limit, -2, limit);
+//    // side left
+//    glVertex3f(-limit, 0, limit);
+//    glVertex3f(-limit, 0, -limit);
+//    glVertex3f(-limit, -2, -limit);
+//    glVertex3f(-limit, -2, limit);
+//    
+//    // side right
+//    glVertex3f(limit, 0, limit);
+//    glVertex3f(limit, 0, -limit);
+//    glVertex3f(limit, -2, -limit);
+//    glVertex3f(limit, -2, limit);
 
-    // front face
-    glColor3f(1.0, 0.5, 0.5);
-    glVertex3f(-limit, 0, limit);
-    glVertex3f(-limit, -2, limit);
-    glVertex3f(limit-0.15, -2, limit);
-    glVertex3f(limit-0.15, 0, limit);
+//    // front face
+//    glColor3f(1.0, 0.5, 0.5);
+//    glVertex3f(-limit, 0, limit);
+//    glVertex3f(-limit, -2, limit);
+//    glVertex3f(limit-0.15, -2, limit);
+//    glVertex3f(limit-0.15, 0, limit);
 
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(limit-0.15, 0, limit);
-    glVertex3f(limit-0.15, -2, limit);
-    glVertex3f(limit, -2, limit);
-    glVertex3f(limit, 0, limit);
+//    glColor3f(1.0, 0.0, 0.0);
+//    glVertex3f(limit-0.15, 0, limit);
+//    glVertex3f(limit-0.15, -2, limit);
+//    glVertex3f(limit, -2, limit);
+//    glVertex3f(limit, 0, limit);
 
-  glEnd();
+//  glEnd();
 
 }
 
+void Visualisation::drawText(const char* text) {
+  float text_scale;
+  text_scale = computeScale(text);
+
+  glPushMatrix();
+  glScalef(text_scale, text_scale, text_scale);
+	//glRotatef(90, 0, 1, 0);
+	//glTranslatef(0, 0, 1.5f / text_scale);
+	t3dDraw3D(text, 0, 0, 0.2f);
+	glPopMatrix();
+
+}
+
+float Visualisation::computeScale(const char* text) {
+	float maxWidth = 0;
+	float width = t3dDrawWidth(text);
+	if (width > maxWidth) {
+		maxWidth = width;
+  }
+	return 2.6f / maxWidth;
+}
 
 // getters
 char* Visualisation::getPrototypeName() {
@@ -113,8 +140,8 @@ void Visualisation::setPrototype(int newMode) {
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
   // prototype_1: Flat perspective view
-  float scale = 0.75;
-  float gap = 1.0-scale;
+  scale = 0.75;
+  gap = 1.0-scale;
   float center = (0.5*tile_dimension) -(tile_dimension)*((float)days*0.5f) -gap;
 
   // DRAW GRID
@@ -137,35 +164,21 @@ void Visualisation::prototype_1() {
 //    }
 
 // TESTING INDIVIDUAL DAYS
+
     // SUNDAY TILE
     int weekday = 0;
     int week = 0;
-    glPushMatrix();
-      glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension);
-      glScalef(1.0, 0.05, 1.0);
-      glColor3f(1.0,1.0,1.0);
-      drawTile(weekday,1);
-    glPopMatrix();
+    drawTile_prototype_1(weekday, week);
 
     // FRIDAY TILE
     weekday = 5;
     week = 0;
-    glPushMatrix();
-      glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension);
-      glScalef(1.0, 0.05, 1.0);
-      glColor3f(1.0,1.0,1.0);
-      drawTile(weekday,5);
-    glPopMatrix();
+    drawTile_prototype_1(weekday, week);
 
     // SUNDAY TILE NEXT WEEK
     weekday = 0;
     week = 1;
-    glPushMatrix();
-      glTranslatef(weekday*tile_dimension+gap,0,-1*(week*tile_dimension+gap));
-      glScalef(1.0, 0.05, 1.0);
-      glColor3f(1.0,1.0,1.0);
-      drawTile(weekday,1);
-    glPopMatrix();
+    drawTile_prototype_1(weekday, week);
 
   glPopMatrix();
 }
@@ -229,6 +242,20 @@ void Visualisation::prototype_2() {
 
 void Visualisation::prototype_3() { 
   // prototype_3: Lexis Pencil
+  // draw 3d text
+  t3dInit();
+
+  glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -8.0f);
+    const char* word_1 = "SHARIF HERE!";
+    drawText(word_1);
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef(0.0f, -0.2f, -8.0f);
+    const char* word_2 = "FRIDAY";
+    drawText(word_2);
+  glPopMatrix();
 
 }
 
@@ -257,5 +284,14 @@ void Visualisation::prototype_4() {
 
   }
   glEnd();
+}
+
+void Visualisation::drawTile_prototype_1(int weekday, int week) {
+  glPushMatrix();
+    glColor3f(1.0,1.0,1.0);    
+    glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension+gap*-week);
+    glScalef(1.0, 0.05, 1.0);
+    drawTile(weekday,1);
+  glPopMatrix();
 }
 

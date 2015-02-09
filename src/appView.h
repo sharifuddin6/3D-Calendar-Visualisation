@@ -60,7 +60,7 @@ class AppView {
     int width, height;
     const char* windowTitle;
     int frame;
-    float pos_z;
+    float pos_x, pos_y, pos_z;
 
     char buffer1[32];
     char buffer2[32];
