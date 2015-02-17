@@ -22,14 +22,31 @@ void AppModel::parseCSV(const char* filePath) {
   
   while (infile) {
     infile.getline(line, 256);
-    //if(infile) printf("%s\n", line); // output lines from file to console
-    // parse each line from data
-    istringstream ss(line);
-    while (!ss.eof()) {
-      string out;               // here's a nice, empty string
-      getline(ss, out, ',');    // try to read the next field into it
-      trim(out);                // trim leaing/trailing/multiple spacing
-      //printf("OUT: %s\n", out.c_str());  // output parsed data from line to console
+    if(infile) {
+      // parse each line
+      const char* text = line;
+      istringstream ss(text);
+      vector<string> attributes;
+
+      // store each attributes for this event
+      while (!ss.eof()) {
+        string out;               // here's a nice, empty string
+        getline( ss, out, ',' );  // try to read the next field into it
+        trim(out);                // trim leaing/trailing/multiple spacing
+        attributes.push_back(out);
+      }
+
+      // create event object and store in array
+      Event event;
+      event.setSubject(attributes.at(0).c_str());
+      event.setStartDate(attributes.at(1).c_str());
+      event.setStartTime(attributes.at(2).c_str());
+      event.setEndDate(attributes.at(3).c_str());
+      event.setEndTime(attributes.at(4).c_str());
+      event.setDescription(attributes.at(5).c_str());
+      event.setLocation(attributes.at(6).c_str());
+      event_array.push_back(event);
+
     }
   }
   infile.close();

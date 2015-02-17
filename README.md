@@ -12,7 +12,7 @@ Used tools:
 Features to be explored:
 - [x] accept input data, possibly ics(iCal) and csv format
 - [x] parse csv data format
-- [ ] parse ics data format
+- [x] parse ics data format
 - [x] allow options for various visualisation methods
 - [ ] display data in calendar 3D form
 - [ ] display visualisation prototypes
