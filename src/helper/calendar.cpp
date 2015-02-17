@@ -142,6 +142,7 @@ char* Calendar::getDayToString(int weekday) {
       break;
     default:
       strcpy(buff, "UNKNOWN");
+      printf("%d\n", weekday);
       break;
   };
 

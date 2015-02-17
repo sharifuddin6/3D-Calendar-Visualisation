@@ -19,6 +19,9 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   prototype_name = visualisation.getPrototypeName();
 
   name_size = visualisation.getPrototypeNameLen();
+
+  // TODO: Calendar class debugging
+  //calendar.outputDate();
   
   // update current date and text
   updateText();
@@ -116,6 +119,7 @@ void AppView::timer(int extra) {
 int AppView::start(int argc, char *argv[]) {
   // initialise static object
   setInstance();
+  pthread_getconcurrency();
 
   // init glut
   glutInit(&argc, argv);
@@ -297,14 +301,11 @@ void AppView::reset() {
   updateText();
 }
 
-void AppView::junk() {
-  pthread_getconcurrency();
-}
 
 // dialog box for open file, returns filepath
 void AppView::openfileDialogBox() {
   // parameters for tiny file dialogs [by Guillaume Vareille]
-  const char *title = "Open Calendar file [iCal/CSV]";
+  const char *title = "Open Calendar data file";
   const char *defaultPath = "data";
   const char *filePath; 
   int const numOfFilters = 2; 

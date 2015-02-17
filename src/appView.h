@@ -74,7 +74,6 @@ class AppView {
     void update();
     void updateText();
     void reset();
-    void junk(); 
   
 
 };
