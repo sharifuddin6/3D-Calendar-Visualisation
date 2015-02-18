@@ -68,7 +68,7 @@ void Event::setStartDateTime(const char* newStartDateTime) {
 void Event::setEndDate(const char* newEndDate) {
   string tmp = string(newEndDate);
   endDT = new char[tmp.length() + 1];
-  strcpy(description, tmp.c_str());
+  strcpy(endDT, tmp.c_str());
   tmp.clear();
 }
 
@@ -99,3 +99,4 @@ void Event::setLocation(const char* newLocation) {
   strcpy(location, tmp.c_str());
   tmp.clear();
 }
+

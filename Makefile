@@ -7,7 +7,7 @@ LIBS = -lGL -lGLU -lglut -lm -lpthread
 FILES = src/main.cpp src/appView.cpp src/appModel.cpp src/appController.cpp src/helper/calendar.cpp src/helper/visualisation.cpp src/helper/assetloader.cpp src/helper/event.cpp lib/tinyfiledialogs/tinyfiledialogs.c lib/drawtext/text3d.cpp 
 
 # output file
-OUTPUT = prototype
+OUTPUT = 3DCalendarVis
 
 # target which compiles executable
 all : $(FILES)
