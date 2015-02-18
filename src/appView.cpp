@@ -19,9 +19,6 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   prototype_name = visualisation.getPrototypeName();
   name_size = visualisation.getPrototypeNameLen();
 
-  // TODO: Calendar class debugging
-  //calendar.outputDate();
-  
   // update current date and text
   updateText();
 
@@ -95,7 +92,7 @@ void AppView::display() {
   // draw scene
   glPushMatrix();
     glTranslatef(0+pos_x, 0+pos_y, 0+pos_z);
-    drawAxis();
+    //drawAxis();
     drawVisualisation();    
   glPopMatrix();
 
@@ -146,6 +143,7 @@ int AppView::start(int argc, char *argv[]) {
   // add keyboard/mouse listener
   glutMouseFunc(mouseWrapper);
   glutKeyboardFunc(keyboardWrapper);
+  glutSpecialFunc(specialInputWrapper);
   
   init();
   glutMainLoop();
@@ -198,6 +196,9 @@ void AppView::keyboardWrapper(unsigned char key, int x, int y) {
   instanceController->keyboard(key, x, y);
 }
 
+void AppView::specialInputWrapper(int key, int x, int y) {
+  instanceController->specialInput(key, x, y);
+}
 
 // draw methods: text, axis, visualisation
 void AppView::drawText(float x, float y, const char *string) {

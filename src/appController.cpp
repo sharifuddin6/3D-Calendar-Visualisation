@@ -83,6 +83,11 @@ void AppController::keyboard(unsigned char key, int x, int y) {
       pos_y = appModel->getPosition_y() -0.25f;
       appModel->setPosition_y(pos_y);      
       break;
+    case 'r':
+      appModel->setPosition_x(0.0);
+      appModel->setPosition_y(0.0);
+      appModel->setPosition_z(0.0);
+      break;   
     case 'f':
       if(appModel->getFog()) {
         glDisable(GL_FOG);
@@ -101,4 +106,22 @@ void AppController::keyboard(unsigned char key, int x, int y) {
   }
 }
 
-
+// handle keyboard special key input
+void AppController::specialInput(int key, int x, int y) {
+  switch(key) {
+    case GLUT_KEY_UP:
+      printf("UP ARROW\n");
+      break;
+    case GLUT_KEY_DOWN:
+      printf("DOWN ARROW\n");
+      break;
+    case GLUT_KEY_LEFT:
+      printf("LEFT ARROW\n");
+      break;
+    case GLUT_KEY_RIGHT:
+      printf("RIGHT ARROW\n");
+      break;
+    default:
+      break;
+  }
+}
