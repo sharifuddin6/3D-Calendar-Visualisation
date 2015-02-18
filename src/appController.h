@@ -13,7 +13,7 @@ class AppController {
     AppController(AppModel *newAppModel);
 
     // enum menu options
-    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
+    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4, MENU_5 };
 
     virtual void menu(int item);
     virtual void mouse(int button, int state, int x, int y);

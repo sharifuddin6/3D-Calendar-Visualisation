@@ -37,7 +37,7 @@ class AppView {
     static void keyboardWrapper(unsigned char key, int x, int y);
 
     // enum menu options
-    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4 };
+    enum MENU_TYPE { MENU_1, MENU_2, MENU_3, MENU_4, MENU_5 };
  
     // draw methods
     void drawText(float x, float y, const char *string);

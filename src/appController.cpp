@@ -21,6 +21,9 @@ void AppController::menu(int item) {
     case MENU_4:
       appModel->setVisualisationMode(4);
       break;
+    case MENU_5:
+      appModel->setVisualisationMode(5);
+      break;
     default:
       break;
    }

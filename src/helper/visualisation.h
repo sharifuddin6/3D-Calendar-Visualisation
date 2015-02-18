@@ -58,8 +58,10 @@ class Visualisation {
     void prototype_2();
     void prototype_3();
     void prototype_4();
+    void prototype_5();
 
-    void prototype_1_drawTile(int week, int weekday, int day);
+    void prototype_1_curve(float index);
+    void prototype_2_drawTile(int week, int weekday, int day);
     
 
 };

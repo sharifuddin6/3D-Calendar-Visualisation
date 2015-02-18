@@ -17,7 +17,6 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
   width = 800; height = 600;
   windowTitle = "3D Calendar Visualisation";
   prototype_name = visualisation.getPrototypeName();
-
   name_size = visualisation.getPrototypeNameLen();
 
   // TODO: Calendar class debugging
@@ -139,6 +138,7 @@ int AppView::start(int argc, char *argv[]) {
   glutAddMenuEntry("Prototype 2", MENU_2);
   glutAddMenuEntry("Prototype 3", MENU_3);
   glutAddMenuEntry("Prototype 4", MENU_4);
+  glutAddMenuEntry("Prototype 5", MENU_5);
 
   // Associate a mouse button with menu
   glutAttachMenu(GLUT_RIGHT_BUTTON); 
@@ -322,9 +322,11 @@ void AppView::openfileDialogBox() {
     if(isCSV) {
       printf("Parsing CSV file...\n");
       appModel->parseCSV(filePath); // PARSE CSV FORMAT
+      printf("Parsing complete...\n");
     } else {
       printf("Parsing ICS file...\n");
-      appModel->parseICS(filePath); // PARSE ICS/iCal FORMAT
+      appModel->parseICS(filePath); // PARSE ICS FORMAT
+      printf("Parsing complete...\n");
     }
   } else {
     printf("NO DATA TO DISPLAY.\n");
