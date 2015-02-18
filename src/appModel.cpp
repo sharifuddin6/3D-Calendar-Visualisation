@@ -10,6 +10,7 @@ AppModel::AppModel() {
   position_x = 0.0;
   position_y = 0.0;
   position_z = 0.0;
+  selected = 0.0;
   mode = 1;
 }
 
@@ -199,6 +200,10 @@ float AppModel::getPosition_z() {
   return position_z;
 }
 
+float AppModel::getSelected() {
+  return selected;
+}
+
 int AppModel::getVisualisationMode() {
   return mode;
 }
@@ -218,6 +223,10 @@ void AppModel::setPosition_y(float new_y) {
 
 void AppModel::setPosition_z(float new_z) {
   position_z = new_z;
+}
+
+void AppModel::setSelected(float new_selected) {
+  selected = new_selected;
 }
 
 void AppModel::setVisualisationMode(int new_mode) {

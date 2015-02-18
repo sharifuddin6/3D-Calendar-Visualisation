@@ -13,7 +13,7 @@ class AppView {
 
   public:
     // constructor
-    AppView(AppController *newAppController, AppModel *newAppModel);
+    AppView(AppController *newAppController, AppModel *newAppModel, Visualisation *newVisualisation);
 
     // methods
     int start(int argc, char *argv[]);  // initialise and starts glut for graphics window
@@ -54,7 +54,7 @@ class AppView {
 
     AppController *appController;
     AppModel *appModel;
-    Visualisation visualisation;
+    Visualisation *visualisation;
     Calendar calendar;
 
     // private variables

@@ -1,6 +1,7 @@
 #ifndef VISUALISATION_H
 #define VISUALISATION_H
 
+#include "../appModel.h"
 #include "calendar.h"
 #include <vector>
 using namespace std;
@@ -19,7 +20,7 @@ class Visualisation {
 
   public:
     // constructor
-    Visualisation();
+    Visualisation(AppModel *newAppModel);
 
     // methods
     void draw(int frame);
@@ -39,6 +40,7 @@ class Visualisation {
   private:
     // private variables
     int mode;
+    float selected;
     char* prototype_name;
     int name_length;
 
@@ -49,6 +51,7 @@ class Visualisation {
     vector<aDay> days;
 
     // private objects
+    AppModel *appModel;    
     Calendar calendar;   
 
     // private methods

@@ -110,16 +110,16 @@ void AppController::keyboard(unsigned char key, int x, int y) {
 void AppController::specialInput(int key, int x, int y) {
   switch(key) {
     case GLUT_KEY_UP:
-      printf("UP ARROW\n");
+      selected = appModel->getSelected() + 0.25f;
+      appModel->setSelected(selected);
       break;
     case GLUT_KEY_DOWN:
-      printf("DOWN ARROW\n");
+      selected = appModel->getSelected() - 0.25f;
+      appModel->setSelected(selected);
       break;
     case GLUT_KEY_LEFT:
-      printf("LEFT ARROW\n");
       break;
     case GLUT_KEY_RIGHT:
-      printf("RIGHT ARROW\n");
       break;
     default:
       break;

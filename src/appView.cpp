@@ -6,18 +6,19 @@
 using namespace std;
 
 
-AppView::AppView(AppController *newAppController, AppModel *newAppModel) {
+AppView::AppView(AppController *newAppController, AppModel *newAppModel, Visualisation *newVisualisation) {
   // initialise class objects
   appController = newAppController; 
   appModel = newAppModel;
+  visualisation = newVisualisation;
   
   // initialise variables
   mode = appModel->getVisualisationMode();
   frame = 0;
   width = 800; height = 600;
   windowTitle = "3D Calendar Visualisation";
-  prototype_name = visualisation.getPrototypeName();
-  name_size = visualisation.getPrototypeNameLen();
+  prototype_name = visualisation->getPrototypeName();
+  name_size = visualisation->getPrototypeNameLen();
 
   // update current date and text
   updateText();
@@ -252,12 +253,12 @@ void AppView::drawVisualisation() {
   // if mode changed update scene and text
   if(mode != new_mode) {
     mode = new_mode;
-    visualisation.setPrototype(mode);    
+    visualisation->setPrototype(mode);    
     reset();
   } else {
-    visualisation.setPrototype(mode);    
+    visualisation->setPrototype(mode);    
   }
-  visualisation.draw(frame); // draw visualisation
+  visualisation->draw(frame); // draw visualisation
 
 }
 
@@ -295,8 +296,8 @@ void AppView::updateText() {
 }
 
 void AppView::reset() {
-  prototype_name = visualisation.getPrototypeName();
-  name_size = visualisation.getPrototypeNameLen();
+  prototype_name = visualisation->getPrototypeName();
+  name_size = visualisation->getPrototypeNameLen();
   pos_z = 0;
   appModel->setPosition_z(pos_z);
   updateText();

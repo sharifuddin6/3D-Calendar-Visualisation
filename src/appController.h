@@ -23,6 +23,7 @@ class AppController {
   private:
     AppModel *appModel;
     float pos_x, pos_y, pos_z;
+    float selected;
 
 };
 

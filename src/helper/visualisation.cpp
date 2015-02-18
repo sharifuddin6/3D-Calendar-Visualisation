@@ -7,7 +7,8 @@
 #include <cmath>
 
 
-Visualisation::Visualisation() {
+Visualisation::Visualisation(AppModel *newAppModel) {
+  appModel = newAppModel;
   mode = 1;
   prototype_name = new char[64];
   getPrototypeName();
@@ -152,6 +153,8 @@ void Visualisation::setPrototype(int newMode) {
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
 
+  selected = appModel->getSelected();
+
   glPushMatrix();
     glTranslatef(0, -1.25, -2.5);
     glRotatef(20.0, 1.0, 0.0,0.0);
@@ -159,7 +162,7 @@ void Visualisation::prototype_1() {
     // tile -2
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(-2);
+      prototype_1_curve(-2.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 4);      
     glPopMatrix();
@@ -167,7 +170,7 @@ void Visualisation::prototype_1() {
     // tile -1
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(-1);
+      prototype_1_curve(-1.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 5);      
     glPopMatrix();
@@ -175,7 +178,7 @@ void Visualisation::prototype_1() {
     // tile 0
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(0);
+      prototype_1_curve(0.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 6);      
     glPopMatrix();
@@ -183,7 +186,7 @@ void Visualisation::prototype_1() {
     // tile 1
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(1);
+      prototype_1_curve(1.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 7);      
     glPopMatrix();
@@ -191,7 +194,7 @@ void Visualisation::prototype_1() {
     // tile 2
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(2);
+      prototype_1_curve(2.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 8);      
     glPopMatrix();
@@ -199,7 +202,7 @@ void Visualisation::prototype_1() {
     // tile 3
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(3);
+      prototype_1_curve(3.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 9);      
     glPopMatrix();
@@ -207,7 +210,7 @@ void Visualisation::prototype_1() {
     // tile 4
     glPushMatrix();
       glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(4);
+      prototype_1_curve(4.0+selected);
       glScalef(2.0, 0.1, 2.0);
       drawTile(1, 10);      
     glPopMatrix();
@@ -352,7 +355,7 @@ void Visualisation::prototype_5() {
 
 void Visualisation::prototype_1_curve(float index) {
   // place on curve 
-  float z = (index+1.0) * -1.5; // adjustment
+  float z = (index+1.0)*(-1.5); // adjustment
   float far = -5.0;
   float range = far - 0.0;
   float tmp;
