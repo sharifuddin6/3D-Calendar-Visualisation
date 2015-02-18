@@ -110,12 +110,10 @@ void AppController::keyboard(unsigned char key, int x, int y) {
 void AppController::specialInput(int key, int x, int y) {
   switch(key) {
     case GLUT_KEY_UP:
-      selected = appModel->getSelected() + 0.25f;
-      appModel->setSelected(selected);
+      appModel->setSelectedBuff(-1.0);
       break;
     case GLUT_KEY_DOWN:
-      selected = appModel->getSelected() - 0.25f;
-      appModel->setSelected(selected);
+      appModel->setSelectedBuff(+1.0);
       break;
     case GLUT_KEY_LEFT:
       break;

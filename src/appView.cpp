@@ -274,6 +274,7 @@ void AppView::drawAllText() {
 // private methods: init, update, reset
 void AppView::update() {
   frame++;
+  if(frame > 60) { frame = 0; }
   pos_x = appModel->getPosition_x();
   pos_y = appModel->getPosition_y();  
   pos_z = appModel->getPosition_z();

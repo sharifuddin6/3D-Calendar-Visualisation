@@ -11,6 +11,7 @@ AppModel::AppModel() {
   position_y = 0.0;
   position_z = 0.0;
   selected = 0.0;
+  selected_buff = 0.0;
   mode = 1;
 }
 
@@ -204,6 +205,11 @@ float AppModel::getSelected() {
   return selected;
 }
 
+float AppModel::getSelectedBuff() {
+  return selected_buff;
+}
+
+
 int AppModel::getVisualisationMode() {
   return mode;
 }
@@ -227,6 +233,14 @@ void AppModel::setPosition_z(float new_z) {
 
 void AppModel::setSelected(float new_selected) {
   selected = new_selected;
+}
+
+void AppModel::setSelectedBuff(float new_selected_buff) {
+  selected_buff += new_selected_buff;
+}
+
+void AppModel::emptySelectedBuff() {
+  selected_buff = 0.0;
 }
 
 void AppModel::setVisualisationMode(int new_mode) {

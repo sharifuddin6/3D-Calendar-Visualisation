@@ -23,6 +23,7 @@ class AppModel {
     float getPosition_y();
     float getPosition_z();
     float getSelected();
+    float getSelectedBuff();
 
     int getVisualisationMode();
     bool getFog();
@@ -32,6 +33,8 @@ class AppModel {
     void setPosition_y(float new_y);
     void setPosition_z(float new_z);
     void setSelected(float new_selected);
+    void setSelectedBuff(float new_selected_buff);
+    void emptySelectedBuff();
 
     void setVisualisationMode(int new_mode);
     void setFog(bool value);
@@ -39,7 +42,10 @@ class AppModel {
   private:
     // variables
     float position_x, position_y, position_z;   // the camera position
+ 
     float selected;
+    float selected_buff;
+
     int mode;                                   // visualisation mode is the chosen mode
     bool fog_enabled;
 

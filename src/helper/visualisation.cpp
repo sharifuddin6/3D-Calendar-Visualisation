@@ -48,6 +48,9 @@ void Visualisation::init() {
 }
 
 void Visualisation::draw(int frame) {
+
+  smooth_selection(frame);
+
   switch(mode) {
     case 1:
       prototype_1();
@@ -391,3 +394,29 @@ void Visualisation::prototype_2_drawTile(int week, int weekday, int day) {
   glPopMatrix();
 }
 
+void Visualisation::smooth_selection(int frame) {
+  // smooth selection animation
+  float tmp = appModel->getSelected();
+  float selected_buff = appModel->getSelectedBuff();
+
+  // removes stutter
+  if(selected_buff<=0.01 && selected_buff >= -0.01) {
+    appModel->emptySelectedBuff();
+  }
+
+  // adds sliding animation
+  if(selected_buff != 0) {
+    if(frame%2==0) {
+      if(selected_buff>0) {
+        tmp+=0.05;
+        appModel->setSelectedBuff(-0.05);
+        appModel->setSelected(tmp);
+      } else if(selected_buff<0) {
+        tmp-=0.05;
+        appModel->setSelectedBuff(0.05);
+        appModel->setSelected(tmp);        
+      }
+    }
+  }
+
+}

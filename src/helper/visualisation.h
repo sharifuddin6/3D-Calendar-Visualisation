@@ -66,7 +66,8 @@ class Visualisation {
     void prototype_1_curve(float index);
     void prototype_2_drawTile(int week, int weekday, int day);
     
-
+    void smooth_selection(int frame);
+    
 };
 
 #endif
