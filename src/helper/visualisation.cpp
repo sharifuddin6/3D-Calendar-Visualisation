@@ -106,12 +106,25 @@ void Visualisation::drawText(const char* text) {
 }
 
 float Visualisation::computeScale(const char* text) {
-	float maxWidth = 0;
+	float maxWidth = 0.0;
+  float maxHeight = 0.0;
+  float maxScale = 0.0;
 	float width = t3dDrawWidth(text);
+  float height = t3dDrawHeight(text);
 	if (width > maxWidth) {
 		maxWidth = width;
   }
-	return 2.6f / maxWidth;
+  if (height > maxHeight) {
+    maxHeight = height;   
+  }
+
+  if (maxHeight > maxWidth) {
+    maxScale = maxHeight;
+  } else {
+    maxScale = maxWidth;
+  }
+
+	return 2.6f / maxScale;
 }
 
 // getters
@@ -232,13 +245,16 @@ void Visualisation::prototype_1() {
 
 void Visualisation::prototype_2() {
   // prototype_2: Flat perspective view
-  scale = 0.75;
+  scale = 0.9;
   gap = 1.0-scale;
-  float center = (0.5*tile_dimension) -(tile_dimension)*(7.0*0.5f) -gap - (tile_dimension);
+  float center = -(tile_dimension+gap)*4.0;
+//  float center = (0.5*tile_dimension) -(tile_dimension)*(7.0*0.5f) -gap*(7.0*0.5f);
+  
 
   // DRAW GRID
   glPushMatrix();
     glTranslatef(center,-1.25, -3.75);
+    glRotatef(10.0, 1.0, 0.0,0.0);
 
     // DRAWS ALL DAYS CREATED IN INIT FUNCTION
     int week, weekday, day;
@@ -369,7 +385,7 @@ void Visualisation::prototype_1_curve(float index) {
     //printf("angled %f:%f\n", z,tmp);  
     spacing = 0.1;
     glTranslatef(0.0, -spacing*z, z);
-    glRotatef(tmp*90.0, 1.0,0.0,0.0);
+    glRotatef(tmp*90.0+10.0, 1.0,0.0,0.0);
   } else if (z <= far) {
     //printf("flat top %f:%f\n", z, 0.0);
     spacing = 0.1;
@@ -388,7 +404,7 @@ void Visualisation::prototype_1_curve(float index) {
 void Visualisation::prototype_2_drawTile(int week, int weekday, int day) {
   glPushMatrix();
     glColor3f(1.0,1.0,1.0);    
-    glTranslatef(weekday*tile_dimension+gap,0,-week*tile_dimension+gap*-week);
+    glTranslatef(weekday*tile_dimension+gap*weekday,0,-week*tile_dimension+gap*-week);
     glScalef(1.0, 0.05, 1.0);
     drawTile(weekday, day);
   glPopMatrix();
