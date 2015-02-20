@@ -45,6 +45,11 @@ void Visualisation::init() {
     if((i+1)%7 == 0) { week++; weekday = 1; }
   }
 
+  // fix offeset from today for visualisation
+  weekday = calendar.getWeekDay();
+  printf("weekday:%d\n", weekday);
+  appModel->setSelectedBuff(-weekday+1.0);
+
 }
 
 void Visualisation::draw(int frame) {
@@ -175,71 +180,48 @@ void Visualisation::prototype_1() {
     glTranslatef(0, -1.25, -2.5);
     glRotatef(20.0, 1.0, 0.0,0.0);
 
-    // tile -2
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(-2.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 4);      
-    glPopMatrix();
+//    // tile -1
+//    glPushMatrix();
+//      glColor3f(1.0,1.0,1.0);
+//      prototype_1_curve(-1.0+selected);
+//      glScalef(2.0, 0.1, 2.0);
+//      drawTile(1, 5);      
+//    glPopMatrix();
 
-    // tile -1
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(-1.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 5);      
-    glPopMatrix();
+//    // tile 0
+//    glPushMatrix();
+//      glColor3f(1.0,1.0,1.0);
+//      prototype_1_curve(0.0+selected);
+//      glScalef(2.0, 0.1, 2.0);
+//      drawTile(1, 6);      
+//    glPopMatrix();
 
-    // tile 0
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(0.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 6);      
-    glPopMatrix();
+//    // tile 1
+//    glPushMatrix();
+//      glColor3f(1.0,1.0,1.0);
+//      prototype_1_curve(1.0+selected);
+//      glScalef(2.0, 0.1, 2.0);
+//      drawTile(1, 7);      
+//    glPopMatrix();
 
-    // tile 1
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(1.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 7);      
-    glPopMatrix();
 
-    // tile 2
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(2.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 8);      
-    glPopMatrix();
+    // DRAWS ALL DAYS CREATED IN INIT FUNCTION
+    int week, weekday, day;
 
-    // tile 3
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(3.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 9);      
-    glPopMatrix();
+    for(unsigned int i=0; i<days.size(); i++) {
+      week = days[i].week;
+      weekday = days[i].weekday;
+      day = days[i].day;
+      glPushMatrix();
+        glColor3f(1.0,1.0,1.0);
+        prototype_1_curve(i+selected);
+        glScalef(2.0, 0.1, 2.0);
+        drawTile(week, day);   
+      glPopMatrix();
+    }
 
-    // tile 4
-    glPushMatrix();
-      glColor3f(1.0,1.0,1.0);
-      prototype_1_curve(4.0+selected);
-      glScalef(2.0, 0.1, 2.0);
-      drawTile(1, 10);      
-    glPopMatrix();
 
   glPopMatrix();
-
-//  prototype_1_curve(0.0);
-//  prototype_1_curve(-1.25);
-//  prototype_1_curve(-2.5);
-//  prototype_1_curve(-3.75);
-//  prototype_1_curve(-5.0);
-
-
 
 }
 
