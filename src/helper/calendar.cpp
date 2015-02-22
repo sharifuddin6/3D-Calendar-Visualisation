@@ -61,7 +61,13 @@ int Calendar::getWeekDay() {
   // returns current weekday
 	tm* timePtr = localtime(&t);
   int weekday = timePtr->tm_wday;
-  return weekday;
+  
+  if(weekday == 0) { // by default sunday's value is 0, 
+    return 7;        // but this application sunday has value 7
+  } else {
+    return weekday;
+  }
+
 }
 
 int Calendar::getDay() {

@@ -45,9 +45,9 @@ void Visualisation::init() {
     if((i+1)%7 == 0) { week++; weekday = 1; }
   }
 
-  // fix offeset from today for visualisation
+  // fix offset from today for visualisation
   weekday = calendar.getWeekDay();
-  printf("weekday:%d\n", weekday);
+  //printf("weekday:%d\n", weekday);
   appModel->setSelectedBuff(-weekday+1.0);
 
 }
