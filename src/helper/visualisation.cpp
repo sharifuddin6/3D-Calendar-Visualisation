@@ -119,6 +119,7 @@ void Visualisation::drawText(const char* text) {
 
 void Visualisation::drawMarker() {
   glPushMatrix();
+    glColor3f(0.8, 0.2, 0.2);
     glTranslatef(0.85, 0.0, 0.0);
     glRotatef(-90.0, 0.0,1.0,0.0);
     glScalef(0.2, 0.2, 0.2);
@@ -227,6 +228,7 @@ void Visualisation::prototype_1() {
     //int week;
     int day;
     int weekday;
+    int today = days[0].weekday;
 
     for(unsigned int i=0; i<days.size(); i++) {
       //week = days[i].week;
@@ -235,7 +237,7 @@ void Visualisation::prototype_1() {
 
       // check selected date
       current_index = appModel->getSelectedDateIndex();
-      if((i+current_index)==0.0) { 
+      if((i+current_index-today)==0.0) { 
         current_index = i;
         //printf("DAY:%d, %d,%d\n", day, i, current_index);
       }
@@ -244,7 +246,7 @@ void Visualisation::prototype_1() {
       glPushMatrix();
         prototype_1_curve(i+selected);
         // draw marker if current date
-        if(current_index==i) { 
+        if(i==current_index) { 
           //printf("DAY:%d, %d,%d\n", day, i, current_index);
           drawMarker();
         }        

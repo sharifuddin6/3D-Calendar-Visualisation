@@ -331,7 +331,7 @@ void AppView::openfileDialogBox() {
       printf("Parsing complete...\n");
     }
   } else {
-    printf("NO DATA TO DISPLAY.\n");
+    printf("No input data supplied...\n");
   }
 }
 

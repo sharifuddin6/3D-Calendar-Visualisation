@@ -2,14 +2,11 @@
 #include "appView.h"
 #include "appController.h"
 #include "helper/visualisation.h"
-#include "helper/assetloader.h"
 
 #include <GL/glut.h>
 
 
 int main(int argc, char **argv) {
-  // init assetloader
-  //AssetLoader *assetLoader;
 
   // MVC architecture
   AppModel *appModel = new AppModel();
