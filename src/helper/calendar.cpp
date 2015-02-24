@@ -122,7 +122,7 @@ char* Calendar::getTimeToString() {
 char* Calendar::getDayToString(int weekday) {
   // returns day in name form given index
   // char buffer for weekday
-  char *buff = new char[10];
+  char *buff = new char[11];
   
   switch(weekday) {
     case MONDAY:

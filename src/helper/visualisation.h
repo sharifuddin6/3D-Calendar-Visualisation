@@ -27,6 +27,7 @@ class Visualisation {
     void drawTile(int weekday, int day);
 
     void drawText(const char* text);
+    void drawMarker();
     float computeScale(const char *text);
 
     // getter

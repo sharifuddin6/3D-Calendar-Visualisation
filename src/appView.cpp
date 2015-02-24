@@ -57,7 +57,6 @@ void AppView::init() {
   glHint(GL_FOG_HINT, GL_DONT_CARE);              // Fog Hint Value
   glFogf(GL_FOG_START, 1.0f);                   // Fog Start Depth
   glFogf(GL_FOG_END, -200.0f);                     // Fog End Depth
-  glEnable(GL_FOG);                               // Enables GL_FOG
 
   // smoothing on lines
   glEnable(GL_LINE_SMOOTH);

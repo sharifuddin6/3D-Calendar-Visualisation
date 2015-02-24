@@ -36,7 +36,6 @@ void Visualisation::init() {
     aday.week = week;
     aday.weekday = weekday;
     aday.day = day;
-
     days.push_back(aday); // push back
     
     offset++;
@@ -83,18 +82,26 @@ void Visualisation::drawTile(int weekday, int day) {
   t3dInit();
 
   char *buff = new char[4];
+  char *buff_day = new char[11];
   snprintf(buff, 4, "%d", day);
+  snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
 
   glColor3f(1.0,1.0,1.0);
   glutSolidCube(tile_dimension);
 
-  glPushMatrix();
+  glPushMatrix(); // day in number form
     glColor3f(0.8,0.2,0.2);
     glScalef(0.1, 0.6, 0.1);
-    glTranslatef(0.0, 0.5, 0.0);    
-    drawText(buff);
+    glTranslatef(0.0, 0.5, 0.0);
+    drawText(buff);    
   glPopMatrix();
 
+  glPushMatrix(); // weekday in string form
+    glColor3f(0.8,0.2,0.2);
+    glScalef(0.15, 0.7, 0.2);
+    glTranslatef(0.0, 0.5, -1.0);
+    drawText(buff_day);
+  glPopMatrix();
   
 }
 
@@ -103,11 +110,20 @@ void Visualisation::drawText(const char* text) {
   text_scale = computeScale(text);
 
   glPushMatrix();
-  glScalef(text_scale, text_scale, text_scale);
-	glRotatef(90.0, -1.0, 0.0, 0.0);
-	t3dDraw3D(text, 0.0, 0.0, 0.2);
+    glScalef(text_scale, text_scale, text_scale);
+	  glRotatef(90.0, -1.0, 0.0, 0.0);
+	  t3dDraw3D(text, 0.0, 0.0, 0.2);
 	glPopMatrix();
 
+}
+
+void Visualisation::drawMarker() {
+  glPushMatrix();
+    glTranslatef(0.85, 0.0, 0.0);
+    glRotatef(-90.0, 0.0,1.0,0.0);
+    glScalef(0.2, 0.2, 0.2);
+    glutSolidCone(0.5, 1.5, 5.0, 5.0);
+  glPopMatrix();  
 }
 
 float Visualisation::computeScale(const char* text) {
@@ -174,10 +190,12 @@ void Visualisation::setPrototype(int newMode) {
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
 
+  // current variables
   selected = appModel->getSelected();
+  unsigned int current_index;
 
   glPushMatrix();
-    glTranslatef(0, -1.25, -2.5);
+    glTranslatef(-1.0, -1.25, -2.5);
     glRotatef(20.0, 1.0, 0.0,0.0);
 
 //    // tile -1
@@ -206,20 +224,35 @@ void Visualisation::prototype_1() {
 
 
     // DRAWS ALL DAYS CREATED IN INIT FUNCTION
-    int week, weekday, day;
+    //int week;
+    int day;
+    int weekday;
 
     for(unsigned int i=0; i<days.size(); i++) {
-      week = days[i].week;
+      //week = days[i].week;
       weekday = days[i].weekday;
       day = days[i].day;
-      glPushMatrix();
-        glColor3f(1.0,1.0,1.0);
-        prototype_1_curve(i+selected);
-        glScalef(2.0, 0.1, 2.0);
-        drawTile(week, day);   
-      glPopMatrix();
-    }
 
+      // check selected date
+      current_index = appModel->getSelectedDateIndex();
+      if((i+current_index)==0.0) { 
+        current_index = i;
+        //printf("DAY:%d, %d,%d\n", day, i, current_index);
+      }
+
+      // draw tile
+      glPushMatrix();
+        prototype_1_curve(i+selected);
+        // draw marker if current date
+        if(current_index==i) { 
+          //printf("DAY:%d, %d,%d\n", day, i, current_index);
+          drawMarker();
+        }        
+        glScalef(2.0, 0.1, 2.0);
+        drawTile(weekday, day);
+      glPopMatrix();
+
+    }
 
   glPopMatrix();
 
@@ -232,7 +265,6 @@ void Visualisation::prototype_2() {
   float center = -(tile_dimension+gap)*4.0;
 //  float center = (0.5*tile_dimension) -(tile_dimension)*(7.0*0.5f) -gap*(7.0*0.5f);
   
-
   // DRAW GRID
   glPushMatrix();
     glTranslatef(center,-1.25, -3.75);

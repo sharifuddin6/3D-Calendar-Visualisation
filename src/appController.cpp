@@ -111,9 +111,11 @@ void AppController::specialInput(int key, int x, int y) {
   switch(key) {
     case GLUT_KEY_UP:
       appModel->setSelectedBuff(-1.0);
+      appModel->setSelectedDateIndex(-1);
       break;
     case GLUT_KEY_DOWN:
       appModel->setSelectedBuff(+1.0);
+      appModel->setSelectedDateIndex(+1);
       break;
     case GLUT_KEY_LEFT:
       break;

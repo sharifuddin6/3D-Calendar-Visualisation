@@ -12,6 +12,7 @@ AppModel::AppModel() {
   position_z = 0.0;
   selected = 0.0;
   selected_buff = 0.0;
+  selected_date_index = 0;
   mode = 1;
 }
 
@@ -209,6 +210,9 @@ float AppModel::getSelectedBuff() {
   return selected_buff;
 }
 
+int AppModel::getSelectedDateIndex() {
+  return selected_date_index;
+}
 
 int AppModel::getVisualisationMode() {
   return mode;
@@ -241,6 +245,10 @@ void AppModel::setSelectedBuff(float new_selected_buff) {
 
 void AppModel::emptySelectedBuff() {
   selected_buff = 0.0;
+}
+
+void AppModel::setSelectedDateIndex(int new_selected_date) {
+  selected_date_index += new_selected_date;
 }
 
 void AppModel::setVisualisationMode(int new_mode) {
