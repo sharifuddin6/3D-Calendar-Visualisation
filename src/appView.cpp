@@ -99,7 +99,9 @@ void AppView::display() {
   // draw text  
   drawAllText(); 
 
-  glutSwapBuffers();
+  if(appModel->getSwapBuffer()) {
+    glutSwapBuffers();
+  }
 }
 
 void AppView::reshape(int w, int h) {
@@ -154,6 +156,7 @@ int AppView::start(int argc, char *argv[]) {
 void AppView::setWindowSize(int w, int h) {
   width = w;
   height = h;
+  appModel->setWindowSize(w,h);
 }
 
 void AppView::setWindowTitle(const char* title) {

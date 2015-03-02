@@ -1,6 +1,7 @@
 #ifndef VISUALISATION_H
 #define VISUALISATION_H
 
+#include <GL/glut.h>
 #include "../appModel.h"
 #include "calendar.h"
 #include <vector>
@@ -8,7 +9,7 @@ using namespace std;
 
 
 class Visualisation {
-  
+  // stucture for a day object
   struct aDay {
     aDay() { }
   
@@ -18,6 +19,27 @@ class Visualisation {
     int week;
   };
 
+  // structure for unique colour id per object
+  struct object_id {
+    object_id() { }
+
+    // set unique colour depending on index for picker
+    void set_index(int index) {
+      r = 64;
+      g = index+1;
+      b = index+1;
+    }
+
+    void set_colour() {
+      glColor3f((double)r/256.0f, (double)g/256.0f, (double)b/256.0f);
+    }
+
+    // colour id
+    int r;
+    int g;
+    int b;
+  };
+
   public:
     // constructor
     Visualisation(AppModel *newAppModel);
@@ -25,11 +47,9 @@ class Visualisation {
     // methods
     void draw(int frame);
     void drawTile(int weekday, int day);
-
     void drawText(const char* text);
     void drawMarker();
-    float computeScale(const char *text);
-
+    
     // getter
     char* getPrototypeName();
     int getPrototypeNameLen();
@@ -50,6 +70,7 @@ class Visualisation {
     float gap;
 
     vector<aDay> days;
+    vector<object_id> object_id_array;
 
     // private objects
     AppModel *appModel;    
@@ -67,7 +88,11 @@ class Visualisation {
     void prototype_1_curve(float index);
     void prototype_2_drawTile(int week, int weekday, int day);
     
+    float computeScale(const char *text);
     void smooth_selection(int frame);
+    void pickerCheck();
+    bool pickerMode;
+    bool pickerModeDebug;
     
 };
 

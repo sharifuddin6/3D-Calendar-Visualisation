@@ -14,6 +14,12 @@ AppModel::AppModel() {
   selected_buff = 0.0;
   selected_date_index = 0;
   mode = 1;
+
+  fog_enabled = false;
+  pickingModeDebug_enabled = false;
+  pickingMode_enabled = false;
+  swapBuffer = true;
+
 }
 
 // methods
@@ -190,6 +196,14 @@ bool AppModel::has_prefix(const char *word, const char *prefix) {
 
 
 // getter
+int AppModel::getWindowWidth() {
+  return width;
+}
+
+int AppModel::getWindowHeight() {
+  return height;
+}
+
 float AppModel::getPosition_x() {
   return position_x;
 }
@@ -222,7 +236,32 @@ bool AppModel::getFog() {
   return fog_enabled;
 }
 
+bool AppModel::getPickingMode() {
+  return pickingMode_enabled;
+}
+
+bool AppModel::getPickingModeDebug() {
+  return pickingModeDebug_enabled;
+}
+
+int AppModel::getPicked_x() {
+  return clicked_x;
+}
+
+int AppModel::getPicked_y() {
+  return clicked_y;
+}
+
+bool AppModel::getSwapBuffer() {
+  return swapBuffer;
+}
+
 // setter
+void AppModel::setWindowSize(int new_width, int new_height) {
+  width = new_width;
+  height = new_height;
+}
+
 void AppModel::setPosition_x(float new_x) {
   position_x = new_x;
 }
@@ -259,4 +298,19 @@ void AppModel::setFog(bool value) {
   fog_enabled = value;
 }
 
+void AppModel::setPickingMode(bool value) { 
+  pickingMode_enabled = value;
+}
 
+void AppModel::setPickingModeDebug(bool value) {
+  pickingModeDebug_enabled = value;
+}
+
+void AppModel::setPickingLocation(int x, int y) {
+  clicked_x = x;
+  clicked_y = y;
+}
+
+void AppModel::setSwapBuffer(bool value) {
+  swapBuffer = value;
+}

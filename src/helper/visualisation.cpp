@@ -1,7 +1,6 @@
 #include "visualisation.h"
 #include "../../include/drawtext/text3d.h"
 
-#include <GL/glut.h>
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
@@ -23,13 +22,13 @@ void Visualisation::init() {
 
   int week = 0;
   int weekday = calendar.getWeekDay();
-//  int today = calendar.getDay();
     
   int offset = 1-weekday; // where monday starts from 1, since 0 is not the initial state
   weekday = 1;
   char date_buff[32];
   
   for(int i=0; i<upper_limit; i++) {
+    // create struct day object
     sprintf(date_buff, "%s", calendar.getDate(offset));
     int day = calendar.parseDay(date_buff);
     aDay aday;
@@ -38,10 +37,21 @@ void Visualisation::init() {
     aday.day = day;
     days.push_back(aday); // push back
     
+    // create struct colour id object
+    object_id unique_id;
+    object_id_array.push_back(unique_id);
+
     offset++;
     weekday+=1;
     
     if((i+1)%7 == 0) { week++; weekday = 1; }
+  }
+
+  // set unique colour for each object in object_id_array
+  for(unsigned int i=0; i<object_id_array.size(); i++) {
+    object_id_array.at(i).set_index(i);
+    //printf("Index: %d, [%d,%d,%d]\n", i, 
+    //      object_id_array.at(i).r, object_id_array.at(i).g, object_id_array.at(i).b);
   }
 
   // fix offset from today for visualisation
@@ -86,18 +96,18 @@ void Visualisation::drawTile(int weekday, int day) {
   snprintf(buff, 4, "%d", day);
   snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
 
-  glColor3f(1.0,1.0,1.0);
+  if(!pickerMode && !pickerModeDebug) { glColor3f(1.0,1.0,1.0); }
   glutSolidCube(tile_dimension);
 
   glPushMatrix(); // day in number form
-    glColor3f(0.8,0.2,0.2);
+    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.1, 0.6, 0.1);
     glTranslatef(0.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
 
   glPushMatrix(); // weekday in string form
-    glColor3f(0.8,0.2,0.2);
+    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
     glTranslatef(0.0, 0.5, -1.0);
     drawText(buff_day);
@@ -190,16 +200,29 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
-
   // current variables
+  pickerMode = appModel->getPickingMode();
+  pickerModeDebug = appModel->getPickingModeDebug();
   selected = appModel->getSelected();
   unsigned int current_index;
 
+  // picking mode - disable lighting effects
+  if(pickerMode || pickerModeDebug) {	
+    // disable effects
+    glDisable(GL_DITHER);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+  } else {
+    // enable effects
+    glEnable(GL_DITHER);
+    glEnable(GL_LIGHTING);
+  }
+
+  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
   glPushMatrix();
     glTranslatef(0.0, -1.25, -2.5);
     glRotatef(20.0, 1.0, 0.0,0.0);
 
-    // DRAWS ALL DAYS CREATED IN INIT FUNCTION
     //int week;
     int day;
     int weekday;
@@ -221,12 +244,25 @@ void Visualisation::prototype_1() {
       glPushMatrix();
         prototype_1_curve(i+selected);
         glScalef(2.0, 0.1, 2.0);
+        
+        if(pickerMode || pickerModeDebug) { // picking mode draws objects related to a day in its unique colour
+          object_id_array.at(i).set_colour();
+        } else {  // normal mode draws objects in its usual colour
+          glColor3f(1.0,1.0,1.0);
+        } 
         drawTile(weekday, day);
       glPopMatrix();
-
     }
-
   glPopMatrix();
+
+  // check picker if enabled and then redraw
+  if(pickerMode) {
+    pickerCheck();
+    appModel->setSwapBuffer(false);
+    prototype_1();
+  } else {
+    appModel->setSwapBuffer(true);
+  }
 
 }
 
@@ -420,5 +456,38 @@ void Visualisation::smooth_selection(int frame) {
       }
     }
   }
+}
 
+void Visualisation::pickerCheck() {
+  // read the pixel at click position on the screen.
+  int picked_x = appModel->getPicked_x();
+  int picked_y = appModel->getPicked_y();
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+ 
+  unsigned char data[4];
+  glReadPixels(picked_x,picked_y,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glFlush();
+  //printf("[%d,%d] = [%d,%d,%d]\n", picked_x, picked_y, data[0], data[1], data[2]);
+
+  // determine object by colour id
+  bool match;
+  int id_index = -1;
+  for(unsigned int i=0; i<object_id_array.size(); i++) {
+    match = true;
+    if(object_id_array.at(i).r != data[0] ) { match = false; }
+    if(object_id_array.at(i).g != data[1] ) { match = false; }
+    if(object_id_array.at(i).b != data[2] ) { match = false; }
+
+    // test for match
+    if(match) { id_index = i; }
+  }
+
+  if(id_index>=0) {
+    printf("Object ID: %d [%d,%d,%d]\n", id_index, 
+          object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
+  } else {
+    printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
+  }
+  
+  appModel->setPickingMode(false);
 }

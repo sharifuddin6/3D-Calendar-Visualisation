@@ -19,6 +19,8 @@ class AppModel {
     bool has_prefix(const char *word, const char *prefix);
 
     // getters
+    int getWindowWidth();
+    int getWindowHeight();
     float getPosition_x();
     float getPosition_y();
     float getPosition_z();
@@ -28,8 +30,15 @@ class AppModel {
 
     int getVisualisationMode();
     bool getFog();
+    bool getPickingMode();
+    bool getPickingModeDebug();
+    int getPicked_x();
+    int getPicked_y();
+
+    bool getSwapBuffer();
 
     // setters
+    void setWindowSize(int new_width, int new_height);
     void setPosition_x(float new_x);
     void setPosition_y(float new_y);
     void setPosition_z(float new_z);
@@ -40,9 +49,15 @@ class AppModel {
 
     void setVisualisationMode(int new_mode);
     void setFog(bool value);
+    void setPickingMode(bool value);
+    void setPickingModeDebug(bool value);
+    void setPickingLocation(int x, int y);
+
+    void setSwapBuffer(bool value);
 
   private:
     // variables
+    int width, height;
     float position_x, position_y, position_z;   // the camera position
  
     float selected;
@@ -51,6 +66,10 @@ class AppModel {
 
     int mode;                                   // visualisation mode is the chosen mode
     bool fog_enabled;
+    bool pickingMode_enabled;
+    bool pickingModeDebug_enabled;
+    int clicked_x, clicked_y;
+    bool swapBuffer;
 
     vector<Event> event_array;  // array holds all events from parsed data file
 

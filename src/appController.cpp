@@ -53,6 +53,11 @@ void AppController::mouse(int button, int state, int x, int y) {
 
   } else {  // click event
     //printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
+    if(state==GLUT_UP) {
+      appModel->setPickingMode(true);
+      int winHeight = appModel->getWindowHeight();
+      appModel->setPickingLocation(x,winHeight-y);
+    }
   }
 }
 
@@ -96,6 +101,13 @@ void AppController::keyboard(unsigned char key, int x, int y) {
         glEnable(GL_FOG);
         appModel->setFog(true);
       }
+    case 'p':
+      if(appModel->getPickingModeDebug()) {
+        appModel->setPickingModeDebug(false);
+      } else {
+        appModel->setPickingModeDebug(true);
+      }
+
       break;
     case 27: // Escape key
       printf("See you later..\n");  
