@@ -137,27 +137,7 @@ void Visualisation::drawMarker() {
   glPopMatrix();  
 }
 
-float Visualisation::computeScale(const char* text) {
-	float maxWidth = 0.0;
-  float maxHeight = 0.0;
-  float maxScale = 0.0;
-	float width = t3dDrawWidth(text);
-  float height = t3dDrawHeight(text);
-	if (width > maxWidth) {
-		maxWidth = width;
-  }
-  if (height > maxHeight) {
-    maxHeight = height;   
-  }
 
-  if (maxHeight > maxWidth) {
-    maxScale = maxHeight;
-  } else {
-    maxScale = maxWidth;
-  }
-
-	return 2.6f / maxScale;
-}
 
 // getters
 char* Visualisation::getPrototypeName() {
@@ -259,7 +239,6 @@ void Visualisation::prototype_1() {
   if(pickerMode) {
     pickerCheck();
     appModel->setSwapBuffer(false);
-    prototype_1();
   } else {
     appModel->setSwapBuffer(true);
   }
@@ -432,6 +411,28 @@ void Visualisation::prototype_2_drawTile(int week, int weekday, int day) {
   glPopMatrix();
 }
 
+float Visualisation::computeScale(const char* text) {
+	float maxWidth = 0.0;
+  float maxHeight = 0.0;
+  float maxScale = 0.0;
+	float width = t3dDrawWidth(text);
+  float height = t3dDrawHeight(text);
+	if (width > maxWidth) {
+		maxWidth = width;
+  }
+  if (height > maxHeight) {
+    maxHeight = height;   
+  }
+
+  if (maxHeight > maxWidth) {
+    maxScale = maxHeight;
+  } else {
+    maxScale = maxWidth;
+  }
+
+	return 2.6f / maxScale;
+}
+
 void Visualisation::smooth_selection(int frame) {
   // smooth selection animation
   float tmp = appModel->getSelected();
@@ -444,16 +445,14 @@ void Visualisation::smooth_selection(int frame) {
 
   // adds sliding animation
   if(selected_buff != 0) {
-    if(frame%2==0) {
-      if(selected_buff>0) {
-        tmp+=0.05;
-        appModel->setSelectedBuff(-0.05);
-        appModel->setSelected(tmp);
-      } else if(selected_buff<0) {
-        tmp-=0.05;
-        appModel->setSelectedBuff(0.05);
-        appModel->setSelected(tmp);        
-      }
+    if(selected_buff>0) {
+      tmp+=0.05;
+      appModel->setSelectedBuff(-0.05);
+      appModel->setSelected(tmp);
+    } else if(selected_buff<0) {
+      tmp-=0.05;
+      appModel->setSelectedBuff(0.05);
+      appModel->setSelected(tmp);        
     }
   }
 }
@@ -467,6 +466,7 @@ void Visualisation::pickerCheck() {
   unsigned char data[4];
   glReadPixels(picked_x,picked_y,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
   glFlush();
+  glFinish();
   //printf("[%d,%d] = [%d,%d,%d]\n", picked_x, picked_y, data[0], data[1], data[2]);
 
   // determine object by colour id
