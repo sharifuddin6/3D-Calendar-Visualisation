@@ -46,7 +46,7 @@ class Visualisation {
 
     // methods
     void draw(int frame);
-    void drawTile(int weekday, int day);
+    void drawDate(int weekday, int day);
     void drawText(const char* text);
     void drawMarker();
     

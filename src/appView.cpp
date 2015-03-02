@@ -62,6 +62,7 @@ void AppView::init() {
   glEnable(GL_LINE_SMOOTH);
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
   glEnable (GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glBlendFunc (GL_SRC_ALPHA_SATURATE, GL_ONE);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -106,6 +107,7 @@ void AppView::display() {
 
 void AppView::reshape(int w, int h) {
   glViewport(0, 0, w, h);
+  appModel->setWindowSize(w,h);
 }
 
 void AppView::timer(int extra) {

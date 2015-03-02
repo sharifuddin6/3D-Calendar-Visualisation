@@ -87,7 +87,7 @@ void Visualisation::draw(int frame) {
 
 }
 
-void Visualisation::drawTile(int weekday, int day) {
+void Visualisation::drawDate(int weekday, int day) {
   // init 3dtext
   t3dInit();
 
@@ -95,9 +95,6 @@ void Visualisation::drawTile(int weekday, int day) {
   char *buff_day = new char[11];
   snprintf(buff, 4, "%d", day);
   snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
-
-  if(!pickerMode && !pickerModeDebug) { glColor3f(1.0,1.0,1.0); }
-  glutSolidCube(tile_dimension);
 
   glPushMatrix(); // day in number form
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
@@ -200,8 +197,8 @@ void Visualisation::prototype_1() {
 
   // DRAWS ALL DAYS CREATED IN INIT FUNCTION
   glPushMatrix();
-    glTranslatef(0.0, -1.25, -2.5);
-    glRotatef(20.0, 1.0, 0.0,0.0);
+    glTranslatef(0.0, -1.45, -2.5);
+    glRotatef(10.0, 1.0, 0.0,0.0);
 
     //int week;
     int day;
@@ -225,12 +222,45 @@ void Visualisation::prototype_1() {
         prototype_1_curve(i+selected);
         glScalef(2.0, 0.1, 2.0);
         
-        if(pickerMode || pickerModeDebug) { // picking mode draws objects related to a day in its unique colour
+        // picking mode draws objects related to a day in its unique colour
+        if(pickerMode || pickerModeDebug) { 
           object_id_array.at(i).set_colour();
         } else {  // normal mode draws objects in its usual colour
           glColor3f(1.0,1.0,1.0);
-        } 
-        drawTile(weekday, day);
+        }
+
+        // draw objects with outline
+        if(!pickerMode && !pickerModeDebug) { glColor3f(1.0,1.0,1.0); }
+
+        // 1ST DRAW: draw solid object 
+        glPushAttrib (GL_POLYGON_BIT);
+	      glEnable (GL_CULL_FACE);
+	      // Draw front-facing polygons as filled
+        glPolygonMode (GL_FRONT, GL_FILL);
+	      glCullFace (GL_BACK);
+	      // Draw solid object
+        glutSolidCube(tile_dimension);
+        
+        // Draw back-facing polygons as lines
+	      glPushAttrib (GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT);
+	      // Disable lighting for outlining
+	      glDisable (GL_LIGHTING);
+	      glPolygonMode (GL_BACK, GL_LINE);
+	      glCullFace (GL_FRONT);
+	      glDepthFunc (GL_LEQUAL);
+	      
+	      // 2ND DRAW: draw wire object
+        glLineWidth (3.0f);	      
+        glColor3f (0.0f, 0.0f, 0.0f);
+	      glutSolidCube(tile_dimension);
+	      // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
+	      glPopAttrib ();
+	      // GL_POLYGON_BIT
+	      glPopAttrib ();
+
+        // draw objects without outline
+        drawDate(weekday, day);
+
       glPopMatrix();
     }
   glPopMatrix();
@@ -407,7 +437,7 @@ void Visualisation::prototype_2_drawTile(int week, int weekday, int day) {
     glColor3f(1.0,1.0,1.0);    
     glTranslatef(weekday*tile_dimension+gap*weekday,0,-week*tile_dimension+gap*-week);
     glScalef(1.0, 0.05, 1.0);
-    drawTile(weekday, day);
+    drawDate(weekday, day);
   glPopMatrix();
 }
 
