@@ -1,5 +1,5 @@
 #include "visualisation.h"
-#include "../../lib/drawtext/text3d.h"
+#include "../../include/drawtext/text3d.h"
 
 #include <GL/glut.h>
 #include <stdio.h>
@@ -196,33 +196,8 @@ void Visualisation::prototype_1() {
   unsigned int current_index;
 
   glPushMatrix();
-    glTranslatef(-1.0, -1.25, -2.5);
+    glTranslatef(0.0, -1.25, -2.5);
     glRotatef(20.0, 1.0, 0.0,0.0);
-
-//    // tile -1
-//    glPushMatrix();
-//      glColor3f(1.0,1.0,1.0);
-//      prototype_1_curve(-1.0+selected);
-//      glScalef(2.0, 0.1, 2.0);
-//      drawTile(1, 5);      
-//    glPopMatrix();
-
-//    // tile 0
-//    glPushMatrix();
-//      glColor3f(1.0,1.0,1.0);
-//      prototype_1_curve(0.0+selected);
-//      glScalef(2.0, 0.1, 2.0);
-//      drawTile(1, 6);      
-//    glPopMatrix();
-
-//    // tile 1
-//    glPushMatrix();
-//      glColor3f(1.0,1.0,1.0);
-//      prototype_1_curve(1.0+selected);
-//      glScalef(2.0, 0.1, 2.0);
-//      drawTile(1, 7);      
-//    glPopMatrix();
-
 
     // DRAWS ALL DAYS CREATED IN INIT FUNCTION
     //int week;
@@ -245,11 +220,6 @@ void Visualisation::prototype_1() {
       // draw tile
       glPushMatrix();
         prototype_1_curve(i+selected);
-        // draw marker if current date
-        if(i==current_index) { 
-          //printf("DAY:%d, %d,%d\n", day, i, current_index);
-          drawMarker();
-        }        
         glScalef(2.0, 0.1, 2.0);
         drawTile(weekday, day);
       glPopMatrix();

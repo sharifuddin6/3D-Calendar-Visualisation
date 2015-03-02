@@ -52,7 +52,7 @@ void AppController::mouse(int button, int state, int x, int y) {
     glutSwapBuffers();
 
   } else {  // click event
-    printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
+    //printf("Button %s At %d %d\n", (state == GLUT_DOWN) ? "Down" : "Up", x, y);
   }
 }
 

@@ -4,7 +4,7 @@
 #include "appModel.h"
 #include "appController.h"
 
-#include "../lib/tinyfiledialogs/tinyfiledialogs.h"
+#include "../include/tinyfiledialogs/tinyfiledialogs.h"
 #include "helper/visualisation.h"
 #include "helper/calendar.h"
 
