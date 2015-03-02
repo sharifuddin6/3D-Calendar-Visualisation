@@ -288,6 +288,7 @@ void AppModel::emptySelectedBuff() {
 
 void AppModel::setSelectedDateIndex(int new_selected_date) {
   selected_date_index += new_selected_date;
+  setSelectedBuff((double) new_selected_date);
 }
 
 void AppModel::setVisualisationMode(int new_mode) {

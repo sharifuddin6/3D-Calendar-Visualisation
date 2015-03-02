@@ -485,6 +485,10 @@ void Visualisation::pickerCheck() {
   if(id_index>=0) {
     printf("Object ID: %d [%d,%d,%d]\n", id_index, 
           object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
+    int current_index = appModel->getSelectedDateIndex()*-1;
+    int next_move = id_index - current_index;
+    appModel->setSelectedDateIndex(-next_move);
+
   } else {
     printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
   }
