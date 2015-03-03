@@ -193,6 +193,9 @@ void Visualisation::prototype_1() {
     // enable effects
     glEnable(GL_DITHER);
     glEnable(GL_LIGHTING);
+    if(appModel->getFog()) {
+      glEnable(GL_FOG);
+    }
   }
 
   // DRAWS ALL DAYS CREATED IN INIT FUNCTION
@@ -250,13 +253,12 @@ void Visualisation::prototype_1() {
 	      glDepthFunc (GL_LEQUAL);
 	      
 	      // 2ND DRAW: draw wire object
-        glLineWidth (3.0f);	      
-        glColor3f (0.0f, 0.0f, 0.0f);
+        glLineWidth (3.0f);
+        if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
 	      glutSolidCube(tile_dimension);
-	      // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
-	      glPopAttrib ();
-	      // GL_POLYGON_BIT
-	      glPopAttrib ();
+	      
+	      glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
+	      glPopAttrib (); // GL_POLYGON_BIT
 
         // draw objects without outline
         drawDate(weekday, day);
@@ -517,7 +519,7 @@ void Visualisation::pickerCheck() {
           object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
     int current_index = appModel->getSelectedDateIndex()*-1;
     int next_move = id_index - current_index;
-    appModel->setSelectedDateIndex(-next_move);
+    appModel->setSelectedDateIndex(-next_move+1);
 
   } else {
     printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
