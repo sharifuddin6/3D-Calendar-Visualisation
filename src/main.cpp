@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
 
   // open file dialog and read selected calendar data file
   appView->openfileDialogBox();
+  visualisation->init();
   
   // initialise window
   const char *title = "3D Calendar Visualisation";

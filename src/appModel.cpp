@@ -315,3 +315,24 @@ void AppModel::setPickingLocation(int x, int y) {
 void AppModel::setSwapBuffer(bool value) {
   swapBuffer = value;
 }
+
+int AppModel::compareDateEvent(int day, int month, int year) {
+  int d, m, y;
+  int index = -1;
+
+  for(unsigned int i=0; i<event_array.size(); i++) {
+    char* date = event_array.at(i).getStartDate();
+    date[2] = ','; date[5] = ',';
+    d = calendar.parseDay(date);
+    m = calendar.parseMonth(date);
+    y = calendar.parseYear(date)+2000;
+
+    // matched case
+    if(day==d && month==m && year==y) {
+      //printf("[%d,%d,%d] == [%d,%d,%d]\n", day,month,year, d,m,y);
+      index = i;
+    }
+  }
+
+  return index;
+}

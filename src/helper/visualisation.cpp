@@ -12,7 +12,6 @@ Visualisation::Visualisation(AppModel *newAppModel) {
   prototype_name = new char[64];
   getPrototypeName();
   tile_dimension = 0.5f;
-  init();
 }
 
 void Visualisation::init() {
@@ -31,19 +30,27 @@ void Visualisation::init() {
     // create struct day object
     sprintf(date_buff, "%s", calendar.getDate(offset));
     int day = calendar.parseDay(date_buff);
+    int month = calendar.parseMonth(date_buff);
+    int year = calendar.parseYear(date_buff);
     aDay aday;
     aday.week = week;
     aday.weekday = weekday;
+
     aday.day = day;
+    aday.month = month;
+    aday.year = year;
+
+    // test date for event from event_array in model class    
+    aday.event_id = appModel->compareDateEvent(day, month, year);
     days.push_back(aday); // push back
     
     // create struct colour id object
     object_id unique_id;
     object_id_array.push_back(unique_id);
 
+    // iterator
     offset++;
     weekday+=1;
-    
     if((i+1)%7 == 0) { week++; weekday = 1; }
   }
 
@@ -57,7 +64,6 @@ void Visualisation::init() {
   // fix offset from today for visualisation
   weekday = calendar.getWeekDay();
   //printf("weekday:%d\n", weekday);
-
   appModel->setSelectedDateIndex(-weekday+1.0);
 
 }
@@ -114,6 +120,7 @@ void Visualisation::drawDate(int weekday, int day) {
 }
 
 void Visualisation::drawText(const char* text) {
+  // parameters for draw t3ddraw text [by Bill Jacobs]
   float text_scale;
   text_scale = computeScale(text);
 
@@ -201,18 +208,20 @@ void Visualisation::prototype_1() {
 
   // DRAWS ALL DAYS CREATED IN INIT FUNCTION
   glPushMatrix();
-    glTranslatef(0.0, -1.45, -2.5);
+    glTranslatef(0.0, -1.45, -2.65);
     glRotatef(10.0, 1.0, 0.0,0.0);
 
     //int week;
     int day;
     int weekday;
+    int event_id;
     int today = days[0].weekday;
 
     for(unsigned int i=0; i<days.size(); i++) {
       //week = days[i].week;
       weekday = days[i].weekday;
       day = days[i].day;
+      event_id = days[i].event_id;
 
       // check selected date
       current_index = appModel->getSelectedDateIndex();
@@ -242,8 +251,10 @@ void Visualisation::prototype_1() {
 	      // Draw front-facing polygons as filled
         glPolygonMode (GL_FRONT, GL_FILL);
 	      glCullFace (GL_BACK);
-	      // Draw solid object
+	  
+    // << DRAW
         glutSolidCube(tile_dimension);
+
         
         // Draw back-facing polygons as lines
 	      glPushAttrib (GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT);
@@ -256,6 +267,8 @@ void Visualisation::prototype_1() {
 	      // 2ND DRAW: draw wire object
         glLineWidth (3.0f);
         if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
+
+    // << RE DRAW
 	      glutSolidCube(tile_dimension);
 	      
 	      glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
@@ -283,7 +296,6 @@ void Visualisation::prototype_2() {
   scale = 0.9;
   gap = 1.0-scale;
   float center = -(tile_dimension+gap)*4.0;
-//  float center = (0.5*tile_dimension) -(tile_dimension)*(7.0*0.5f) -gap*(7.0*0.5f);
   
   // DRAW GRID
   glPushMatrix();
@@ -516,16 +528,16 @@ void Visualisation::pickerCheck() {
   }
 
   if(id_index>=0) {
-    printf("Object ID: %d [%d,%d,%d]\n", id_index, 
-          object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
- 
+//    printf("Object ID: %d [%d,%d,%d]\n", id_index, 
+//          object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
+
     int current_index = -appModel->getSelectedDateIndex();
     int next_move = id_index - current_index;
     //printf("current:%d next:%d, change:%d\n", current_index, id_index, next_move);
     appModel->setSelectedDateIndex(-next_move);
 
   } else {
-    printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
+//    printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
   }
   
   appModel->setPickingMode(false);

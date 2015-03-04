@@ -2,6 +2,7 @@
 #define APPMODEL_H
 
 #include "helper/event.h"
+#include "helper/calendar.h"
 #include <string>
 #include <vector>
 using namespace std;
@@ -17,6 +18,7 @@ class AppModel {
     void parseICS(const char* filePath);
     bool has_suffix(const char *word, const char *suffix); // used to determine file type
     bool has_prefix(const char *word, const char *prefix);
+    int compareDateEvent(int day, int month, int year);                // returns index to event_array if the date matches
 
     // getters
     int getWindowWidth();
@@ -55,11 +57,14 @@ class AppModel {
 
     void setSwapBuffer(bool value);
 
+
   private:
     // variables
     int width, height;
     float position_x, position_y, position_z;   // the camera position
  
+    Calendar calendar;
+
     float selected;
     float selected_buff;
     int selected_date_index;

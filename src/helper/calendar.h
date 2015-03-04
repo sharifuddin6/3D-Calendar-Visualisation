@@ -2,6 +2,8 @@
 #define CALENDAR_H
 
 #include <time.h>
+#include <string>
+using namespace std;
 
 class Calendar {
   
@@ -37,7 +39,9 @@ class Calendar {
     // parse date
     int parseDay(const char *date);
     int parseMonth(const char *date);
-    int parseYear(const char *date);   
+    int parseYear(const char *date); 
+
+    bool is_number(string str);
 
   private:
     // private variables

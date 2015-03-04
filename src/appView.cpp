@@ -335,6 +335,7 @@ void AppView::openfileDialogBox() {
       appModel->parseICS(filePath); // PARSE ICS FORMAT
       printf("Parsing complete...\n");
     }
+
   } else {
     printf("No input data supplied...\n");
   }

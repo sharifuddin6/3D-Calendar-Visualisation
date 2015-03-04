@@ -304,3 +304,28 @@ int Calendar::parseMonth(const char* date) {
   buffer.clear(); ss.clear(); // clear stream
   return month;
 }
+
+int Calendar::parseYear(const char* date) {
+  int year=0;
+  vector<string> tmpDate;
+  istringstream ss(date);
+  while (!ss.eof()) {
+    string out;               // here's a nice, empty string
+    getline(ss, out, ',');    // try to read the next field into it
+    //printf("OUT: %s\n", out.c_str());  // output parsed data from line to console
+    tmpDate.push_back(out);
+  }
+
+  string string_year = tmpDate[2];
+  istringstream buffer(string_year);
+  buffer >> year;
+  buffer.clear(); ss.clear(); // clear stream
+  return year;
+}
+
+bool Calendar::is_number(string str) {
+  // string number check [by Charles Salvia]
+  std::string::const_iterator it = str.begin();
+  while (it != str.end() && std::isdigit(*it)) ++it;
+  return !str.empty() && it == str.end();
+}

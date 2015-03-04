@@ -59,10 +59,24 @@ void Event::setStartTime(const char* newStartTime) {
 }
 
 void Event::setStartDateTime(const char* newStartDateTime) {
-//  string tmp = string(newDescription);
-//  description = new char[tmp.length() + 1];
-//  strcpy(description, tmp.c_str());
-//  tmp.clear();
+  string dateString = string(newStartDateTime);
+  string year = dateString.substr(0,4);
+  string month = dateString.substr(4,2);
+  string day = dateString.substr(6,2);
+
+  string hour = dateString.substr(9,2);
+  string min = dateString.substr(11,2);
+  string sec = dateString.substr(13,2);
+
+  char dateBuff[10];
+  char timeBuff[10];
+  sprintf(dateBuff, "%s/%s/%s", day.c_str(), month.c_str(), year.c_str());
+  sprintf(timeBuff, "%s:%s:%s", hour.c_str(), min.c_str(), sec.c_str());
+  string date(dateBuff);
+  string time(timeBuff);
+
+  setStartDate(date.c_str());
+  setStartTime(time.c_str());
 }
 
 void Event::setEndDate(const char* newEndDate) {
@@ -80,10 +94,24 @@ void Event::setEndTime(const char* newEndTime) {
 }
 
 void Event::setEndDateTime(const char* newEndDateTime) {
-//  string tmp = string(newEndDateTime);
-//  endDT = new char[tmp.length() + 1];
-//  strcpy(endDT, tmp.c_str());
-//  tmp.clear();
+  string dateString = string(newEndDateTime);
+  string year = dateString.substr(0,4);
+  string month = dateString.substr(4,2);
+  string day = dateString.substr(6,2);
+
+  string hour = dateString.substr(9,2);
+  string min = dateString.substr(11,2);
+  string sec = dateString.substr(13,2);
+
+  char dateBuff[10];
+  char timeBuff[10];
+  sprintf(dateBuff, "%s/%s/%s", day.c_str(), month.c_str(), year.c_str());
+  sprintf(timeBuff, "%s:%s:%s", hour.c_str(), min.c_str(), sec.c_str());
+  string date(dateBuff);
+  string time(timeBuff);
+
+  setEndDate(date.c_str());
+  setEndTime(time.c_str());
 }
 
 void Event::setDescription(const char* newDescription) {

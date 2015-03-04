@@ -15,8 +15,10 @@ class Visualisation {
   
     int day;
     int month;
+    int year;
     int weekday;
     int week;
+    int event_id;
   };
 
   // structure for unique colour id per object
@@ -45,6 +47,8 @@ class Visualisation {
     Visualisation(AppModel *newAppModel);
 
     // methods
+    void init();
+
     void draw(int frame);
     void drawDate(int weekday, int day);
     void drawText(const char* text);
@@ -77,8 +81,6 @@ class Visualisation {
     Calendar calendar;   
 
     // private methods
-    void init();
-    
     void prototype_1();
     void prototype_2();
     void prototype_3();
