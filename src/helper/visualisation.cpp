@@ -57,7 +57,8 @@ void Visualisation::init() {
   // fix offset from today for visualisation
   weekday = calendar.getWeekDay();
   //printf("weekday:%d\n", weekday);
-  appModel->setSelectedBuff(-weekday+1.0);
+
+  appModel->setSelectedDateIndex(-weekday+1.0);
 
 }
 
@@ -517,9 +518,11 @@ void Visualisation::pickerCheck() {
   if(id_index>=0) {
     printf("Object ID: %d [%d,%d,%d]\n", id_index, 
           object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
-    int current_index = appModel->getSelectedDateIndex()*-1;
+ 
+    int current_index = -appModel->getSelectedDateIndex();
     int next_move = id_index - current_index;
-    appModel->setSelectedDateIndex(-next_move+1);
+    //printf("current:%d next:%d, change:%d\n", current_index, id_index, next_move);
+    appModel->setSelectedDateIndex(-next_move);
 
   } else {
     printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
