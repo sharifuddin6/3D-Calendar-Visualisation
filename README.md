@@ -13,7 +13,7 @@ Keyboard/Mouse control for application:
 Used tools:
 * tiny file dialogs [by Guillaume Vareille]: Cross-platform dialogs in C C++ WINDOWS OSX GNOME KDE SOLARIS CONSOLE <p>http://sourceforge.net/projects/tinyfiledialogs/
 * Drawing Text [by Bill Jacobs]: 3D text rendering using 3D model data format <p>http://www.videotutorialsrock.com/opengl_tutorial/draw_text/text.php
- 
+* OBJ model parser [by David Henry]: Parser for Wavefront object files <p>http://tfc.duke.free.fr/
 
 ===============================================
 
@@ -22,7 +22,7 @@ Features to be explored:
 - [x] parse csv data format
 - [x] parse ics data format
 - [x] allow options for various visualisation methods
-- [ ] display data in calendar 3D form
+- [x] display data in calendar 3D form
 - [ ] display visualisation prototypes
 
 ===============================================

@@ -15,6 +15,11 @@ Visualisation::Visualisation(AppModel *newAppModel) {
 }
 
 void Visualisation::init() {
+  initLoad();
+  initDate();
+}
+
+void Visualisation::initDate() {
   // this week from monday
   int total_weeks = 10;
   int upper_limit = 7*total_weeks; // 6 weeks in front
@@ -65,6 +70,14 @@ void Visualisation::init() {
   weekday = calendar.getWeekDay();
   //printf("weekday:%d\n", weekday);
   appModel->setSelectedDateIndex(-weekday+1.0);
+}
+
+void Visualisation::initLoad() {
+  // load object
+  objLoader = new ObjectLoader();
+  objLoader->loadObject("data/model/gift_box.obj");
+  objLoader->loadObject("data/model/gift_wrap.obj");
+  objLoader->loadObject("data/model/gift_knot.obj");
 
 }
 
@@ -94,6 +107,13 @@ void Visualisation::draw(int frame) {
 
 }
 
+void Visualisation::drawTile(float tile_dimension) {
+  glPushMatrix();
+    glScalef(2.0, 0.1, 2.0);
+    glutSolidCube(tile_dimension);
+  glPopMatrix();
+}
+
 void Visualisation::drawDate(int weekday, int day) {
   // init 3dtext
   t3dInit();
@@ -113,7 +133,7 @@ void Visualisation::drawDate(int weekday, int day) {
   glPushMatrix(); // weekday in string form
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
-    glTranslatef(0.0, 0.5, -1.0);
+    glTranslatef(0.0, 0.5, -2.0);
     drawText(buff_day);
   glPopMatrix();
   
@@ -125,6 +145,8 @@ void Visualisation::drawText(const char* text) {
   text_scale = computeScale(text);
 
   glPushMatrix();
+    glTranslatef(0.0, -0.4, 0.0);
+    glScalef(2.0, 0.1, 2.0);
     glScalef(text_scale, text_scale, text_scale);
 	  glRotatef(90.0, -1.0, 0.0, 0.0);
 	  t3dDraw3D(text, 0.0, 0.0, 0.2);
@@ -132,17 +154,21 @@ void Visualisation::drawText(const char* text) {
 
 }
 
-void Visualisation::drawMarker() {
+// draw loaded objects
+void Visualisation::draw_giftbox() {
   glPushMatrix();
-    glColor3f(0.8, 0.2, 0.2);
-    glTranslatef(0.85, 0.0, 0.0);
-    glRotatef(-90.0, 0.0,1.0,0.0);
-    glScalef(0.2, 0.2, 0.2);
-    glutSolidCone(0.5, 1.5, 5.0, 5.0);
-  glPopMatrix();  
+    glTranslatef(-1.25,0.0,0.0);
+    glScalef(0.6,0.6,0.6);
+    if(!pickerMode && !pickerModeDebug) { glColor3f(6.0,6.0,2.0); }
+    objLoader->renderObject(0);
+
+    if(!pickerMode && !pickerModeDebug) { glColor3f(2.0,0.1,0.1); }
+    objLoader->renderObject(1);
+
+    if(!pickerMode && !pickerModeDebug) { glColor3f(2.0,0.1,0.1); }
+    objLoader->renderObject(2);
+  glPopMatrix();	
 }
-
-
 
 // getters
 char* Visualisation::getPrototypeName() {
@@ -233,7 +259,6 @@ void Visualisation::prototype_1() {
       // draw tile
       glPushMatrix();
         prototype_1_curve(i+selected);
-        glScalef(2.0, 0.1, 2.0);
         
         // picking mode draws objects related to a day in its unique colour
         if(pickerMode || pickerModeDebug) { 
@@ -245,16 +270,16 @@ void Visualisation::prototype_1() {
         // draw objects with outline
         if(!pickerMode && !pickerModeDebug) { glColor3f(1.0,1.0,1.0); }
 
-        // 1ST DRAW: draw solid object 
+        // draw solid object 
         glPushAttrib (GL_POLYGON_BIT);
 	      glEnable (GL_CULL_FACE);
 	      // Draw front-facing polygons as filled
         glPolygonMode (GL_FRONT, GL_FILL);
 	      glCullFace (GL_BACK);
 	  
-    // << DRAW
-        glutSolidCube(tile_dimension);
-
+    // << 1ST DRAW
+        drawTile(tile_dimension);
+        if(event_id>=0) { draw_giftbox(); }
         
         // Draw back-facing polygons as lines
 	      glPushAttrib (GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT);
@@ -264,12 +289,13 @@ void Visualisation::prototype_1() {
 	      glCullFace (GL_FRONT);
 	      glDepthFunc (GL_LEQUAL);
 	      
-	      // 2ND DRAW: draw wire object
+	      // draw wire object
         glLineWidth (3.0f);
         if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
 
-    // << RE DRAW
-	      glutSolidCube(tile_dimension);
+    // << 2ND DRAW
+	      drawTile(tile_dimension);
+        if(event_id>=0) { draw_giftbox(); }
 	      
 	      glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
 	      glPopAttrib (); // GL_POLYGON_BIT

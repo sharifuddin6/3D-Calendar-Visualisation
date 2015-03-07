@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include "../appModel.h"
+#include "../../include/objmodelloader/objectLoader.h"
 #include "calendar.h"
 #include <vector>
 using namespace std;
@@ -48,11 +49,17 @@ class Visualisation {
 
     // methods
     void init();
+    void initDate();
+    void initLoad();
 
     void draw(int frame);
+    void drawTile(float tile_dimension);
     void drawDate(int weekday, int day);
     void drawText(const char* text);
-    void drawMarker();
+  
+    void draw_giftbox();
+
+
     
     // getter
     char* getPrototypeName();
@@ -77,7 +84,8 @@ class Visualisation {
     vector<object_id> object_id_array;
 
     // private objects
-    AppModel *appModel;    
+    AppModel *appModel;
+    ObjectLoader *objLoader;  
     Calendar calendar;   
 
     // private methods
