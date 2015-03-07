@@ -60,7 +60,7 @@ void Event::setStartTime(const char* newStartTime) {
 
 void Event::setStartDateTime(const char* newStartDateTime) {
   string dateString = string(newStartDateTime);
-  string year = dateString.substr(0,4);
+  string year = dateString.substr(2,2);
   string month = dateString.substr(4,2);
   string day = dateString.substr(6,2);
 
