@@ -216,6 +216,10 @@ float AppModel::getPosition_z() {
   return position_z;
 }
 
+float AppModel::getRotationAngle() {
+  return angle;
+}
+
 float AppModel::getSelected() {
   return selected;
 }
@@ -272,6 +276,10 @@ void AppModel::setPosition_y(float new_y) {
 
 void AppModel::setPosition_z(float new_z) {
   position_z = new_z;
+}
+
+void AppModel::setRotationAngle(float new_angle) {
+  angle = new_angle;
 }
 
 void AppModel::setSelected(float new_selected) {

@@ -156,16 +156,21 @@ void Visualisation::drawText(const char* text) {
 
 // draw loaded objects
 void Visualisation::draw_giftbox() {
+
+  float angle = appModel->getRotationAngle();
+  
   glPushMatrix();
     glTranslatef(-1.25,0.0,0.0);
     glScalef(0.6,0.6,0.6);
-    if(!pickerMode && !pickerModeDebug) { glColor3f(6.0,6.0,2.0); }
+
+    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(8.0,8.0,0.5); }
     objLoader->renderObject(0);
 
-    if(!pickerMode && !pickerModeDebug) { glColor3f(2.0,0.1,0.1); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
     objLoader->renderObject(1);
 
-    if(!pickerMode && !pickerModeDebug) { glColor3f(2.0,0.1,0.1); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
     objLoader->renderObject(2);
   glPopMatrix();	
 }
@@ -276,7 +281,7 @@ void Visualisation::prototype_1() {
 	      // Draw front-facing polygons as filled
         glPolygonMode (GL_FRONT, GL_FILL);
 	      glCullFace (GL_BACK);
-	  
+	      wire_mode = false;
     // << 1ST DRAW
         drawTile(tile_dimension);
         if(event_id>=0) { draw_giftbox(); }
@@ -292,7 +297,7 @@ void Visualisation::prototype_1() {
 	      // draw wire object
         glLineWidth (3.0f);
         if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
-
+        wire_mode = true;
     // << 2ND DRAW
 	      drawTile(tile_dimension);
         if(event_id>=0) { draw_giftbox(); }

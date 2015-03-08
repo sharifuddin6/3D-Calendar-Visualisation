@@ -26,6 +26,7 @@ class AppModel {
     float getPosition_x();
     float getPosition_y();
     float getPosition_z();
+    float getRotationAngle();
     float getSelected();
     float getSelectedBuff();
     int getSelectedDateIndex();
@@ -44,6 +45,7 @@ class AppModel {
     void setPosition_x(float new_x);
     void setPosition_y(float new_y);
     void setPosition_z(float new_z);
+    void setRotationAngle(float new_angle);
     void setSelected(float new_selected);
     void setSelectedBuff(float new_selected_buff);
     void emptySelectedBuff();
@@ -62,7 +64,8 @@ class AppModel {
     // variables
     int width, height;
     float position_x, position_y, position_z;   // the camera position
- 
+    float angle; // rotation 
+
     Calendar calendar;
 
     float selected;

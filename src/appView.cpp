@@ -267,7 +267,7 @@ void AppView::drawVisualisation() {
 }
 
 void AppView::drawAllText() {
-  drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
+  //drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
   drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
 
   // display current date
@@ -280,8 +280,14 @@ void AppView::update() {
   frame++;
   if(frame > 60) { frame = 0; }
   pos_x = appModel->getPosition_x();
-  pos_y = appModel->getPosition_y();  
+  pos_y = appModel->getPosition_y();
   pos_z = appModel->getPosition_z();
+
+  angle += 1.5f;
+	if (angle > 360) {
+		angle -= 360;
+	}
+  appModel->setRotationAngle(angle);
 }
 
 void AppView::updateText() {

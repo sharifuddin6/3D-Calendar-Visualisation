@@ -103,6 +103,7 @@ class Visualisation {
     void pickerCheck();
     bool pickerMode;
     bool pickerModeDebug;
+    bool wire_mode;
     
 };
 
