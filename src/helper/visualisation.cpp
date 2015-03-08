@@ -81,7 +81,7 @@ void Visualisation::initLoad() {
 
 }
 
-void Visualisation::draw(int frame) {
+void Visualisation::render(int frame) {
 
   smooth_selection(frame);
 
@@ -107,7 +107,7 @@ void Visualisation::draw(int frame) {
 
 }
 
-void Visualisation::drawTile(float tile_dimension) {
+void Visualisation::drawTile() {
   glPushMatrix();
     glScalef(2.0, 0.1, 2.0);
     glutSolidCube(tile_dimension);
@@ -117,33 +117,30 @@ void Visualisation::drawTile(float tile_dimension) {
 void Visualisation::drawDate(int weekday, int day) {
   // init 3dtext
   t3dInit();
-
   char *buff = new char[4];
   char *buff_day = new char[11];
   snprintf(buff, 4, "%d", day);
   snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
-
-  glPushMatrix(); // day in number form
+  // day in number form
+  glPushMatrix();
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.1, 0.6, 0.1);
     glTranslatef(0.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
-
-  glPushMatrix(); // weekday in string form
+  // weekday in string form
+  glPushMatrix(); 
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
     glTranslatef(0.0, 0.5, -2.0);
     drawText(buff_day);
   glPopMatrix();
-  
 }
 
 void Visualisation::drawText(const char* text) {
   // parameters for draw t3ddraw text [by Bill Jacobs]
   float text_scale;
   text_scale = computeScale(text);
-
   glPushMatrix();
     glTranslatef(0.0, -0.4, 0.0);
     glScalef(2.0, 0.1, 2.0);
@@ -151,28 +148,79 @@ void Visualisation::drawText(const char* text) {
 	  glRotatef(90.0, -1.0, 0.0, 0.0);
 	  t3dDraw3D(text, 0.0, 0.0, 0.2);
 	glPopMatrix();
-
 }
 
 // draw loaded objects
 void Visualisation::draw_giftbox() {
-
   float angle = appModel->getRotationAngle();
-  
   glPushMatrix();
     glTranslatef(-1.25,0.0,0.0);
     glScalef(0.6,0.6,0.6);
-
     glRotatef(angle, 0.0, -1.0, 0.0);
+    // draw box
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(8.0,8.0,0.5); }
     objLoader->renderObject(0);
-
+    // draw wrapping
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
     objLoader->renderObject(1);
-
+    // draw knot
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
     objLoader->renderObject(2);
   glPopMatrix();	
+}
+
+// draw objects with outline
+void Visualisation::draw_outline(int draw_id) {
+
+  // draw objects with outline
+  // draw solid object 
+  glPushAttrib (GL_POLYGON_BIT);
+  glEnable (GL_CULL_FACE);
+  // Draw front-facing polygons as filled
+  glPolygonMode (GL_FRONT, GL_FILL);
+  glCullFace (GL_BACK);
+  wire_mode = false;
+
+  // first draw
+  switch(draw_id) {
+    case 0:
+      drawTile();
+      break;
+    case 1:
+      draw_giftbox();
+      break;
+    default:
+      break;
+  };
+
+  // Draw back-facing polygons as lines
+  glPushAttrib (GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT);
+  // Disable lighting for outlining
+  glDisable (GL_LIGHTING);
+  glPolygonMode (GL_BACK, GL_LINE);
+  glCullFace (GL_FRONT);
+  glDepthFunc (GL_LEQUAL);
+	      
+  // draw wire object
+  glLineWidth (3.0f);
+  if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
+  wire_mode = true;
+
+  // second draw
+  switch(draw_id) {
+    case 0:
+      drawTile();
+      break;
+    case 1:
+      draw_giftbox();
+      break;
+    default:
+      break;
+  };
+
+  glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
+  glPopAttrib (); // GL_POLYGON_BIT
+
 }
 
 // getters
@@ -183,7 +231,7 @@ char* Visualisation::getPrototypeName() {
       name_length = strlen(prototype_name);
       break;
     case 2: 
-      strcpy(prototype_name, "Prototype 2: Flat Perspective view");
+      strcpy(prototype_name, "Prototype 2: Curved Perspective view (ver 2)");
       name_length = strlen(prototype_name);
       break;
     case 3:
@@ -191,11 +239,11 @@ char* Visualisation::getPrototypeName() {
       name_length = strlen(prototype_name);
       break;
     case 4:
-      strcpy(prototype_name, "Prototype 4: 3D Lexis Pencil");
+      strcpy(prototype_name, "Prototype 4: Flat Perspective view");
       name_length = strlen(prototype_name);
       break;
     case 5:
-      strcpy(prototype_name, "Prototype 5: 3D Fibonacci Spiral");
+      strcpy(prototype_name, "Prototype 5: EMPTY");
       name_length = strlen(prototype_name);
       break;
     default:
@@ -216,6 +264,11 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
+
+
+}
+
+void Visualisation::prototype_2() {
   // current variables
   pickerMode = appModel->getPickingMode();
   pickerModeDebug = appModel->getPickingModeDebug();
@@ -261,9 +314,9 @@ void Visualisation::prototype_1() {
         //printf("DAY:%d, %d,%d\n", day, i, current_index);
       }
 
-      // draw tile
       glPushMatrix();
-        prototype_1_curve(i+selected);
+        // draw items on curve
+        prototype_2_curve(i+selected);
         
         // picking mode draws objects related to a day in its unique colour
         if(pickerMode || pickerModeDebug) { 
@@ -273,37 +326,8 @@ void Visualisation::prototype_1() {
         }
 
         // draw objects with outline
-        if(!pickerMode && !pickerModeDebug) { glColor3f(1.0,1.0,1.0); }
-
-        // draw solid object 
-        glPushAttrib (GL_POLYGON_BIT);
-	      glEnable (GL_CULL_FACE);
-	      // Draw front-facing polygons as filled
-        glPolygonMode (GL_FRONT, GL_FILL);
-	      glCullFace (GL_BACK);
-	      wire_mode = false;
-    // << 1ST DRAW
-        drawTile(tile_dimension);
-        if(event_id>=0) { draw_giftbox(); }
-        
-        // Draw back-facing polygons as lines
-	      glPushAttrib (GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT);
-	      // Disable lighting for outlining
-	      glDisable (GL_LIGHTING);
-	      glPolygonMode (GL_BACK, GL_LINE);
-	      glCullFace (GL_FRONT);
-	      glDepthFunc (GL_LEQUAL);
-	      
-	      // draw wire object
-        glLineWidth (3.0f);
-        if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
-        wire_mode = true;
-    // << 2ND DRAW
-	      drawTile(tile_dimension);
-        if(event_id>=0) { draw_giftbox(); }
-	      
-	      glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
-	      glPopAttrib (); // GL_POLYGON_BIT
+	      draw_outline(0);
+        if(event_id>=0) { draw_outline(1); }
 
         // draw objects without outline
         drawDate(weekday, day);
@@ -319,31 +343,6 @@ void Visualisation::prototype_1() {
   } else {
     appModel->setSwapBuffer(true);
   }
-
-}
-
-void Visualisation::prototype_2() {
-  // prototype_2: Flat perspective view
-  scale = 0.9;
-  gap = 1.0-scale;
-  float center = -(tile_dimension+gap)*4.0;
-  
-  // DRAW GRID
-  glPushMatrix();
-    glTranslatef(center,-1.25, -3.75);
-    glRotatef(10.0, 1.0, 0.0,0.0);
-
-    // DRAWS ALL DAYS CREATED IN INIT FUNCTION
-    int week, weekday, day;
-
-    for(unsigned int i=0; i<days.size(); i++) {
-      week = days[i].week;
-      weekday = days[i].weekday;
-      day = days[i].day;
-      prototype_2_drawTile(week, weekday, day);
-    }
-
-  glPopMatrix();
 }
 
 void Visualisation::prototype_3() { 
@@ -404,52 +403,34 @@ void Visualisation::prototype_3() {
 }
 
 void Visualisation::prototype_4() { 
-  // prototype_4: Lexis Pencil
-  // draw 3d text
-  t3dInit();
-
+  // prototype_4: Flat perspective view
+  scale = 0.9;
+  gap = 1.0-scale;
+  float center = -(tile_dimension+gap)*4.0;
+  
+  // DRAW GRID
   glPushMatrix();
-    glTranslatef(0.0f, 0.0f, -8.0f);
-    const char* word_1 = "SHARIF HERE!";
-    drawText(word_1);
-  glPopMatrix();
+    glTranslatef(center,-1.25, -3.75);
+    glRotatef(10.0, 1.0, 0.0,0.0);
 
-  glPushMatrix();
-    glTranslatef(0.0f, -0.2f, -8.0f);
-    const char* word_2 = "FRIDAY";
-    drawText(word_2);
-  glPopMatrix();
+    // DRAWS ALL DAYS CREATED IN INIT FUNCTION
+    int week, weekday, day;
 
+    for(unsigned int i=0; i<days.size(); i++) {
+      week = days[i].week;
+      weekday = days[i].weekday;
+      day = days[i].day;
+      prototype_4_drawTile(week, weekday, day);
+    }
+
+  glPopMatrix();
 }
 
 void Visualisation::prototype_5() {
-  // prototype_5: Fibonacci spiral view
-  float rotations = 5; //How many times the spiral rotates around until it stops.
-  float theta, nextTheta;
-  float epsilon = 0.1f * 2.0f * M_PI;
-  float x1, y1, z1;
-  float x2, y2, z2;
 
-
-  glBegin(GL_LINES);
-  for(theta = 0.0f; theta < rotations * 2.0f * M_PI; theta += epsilon) {
-    x1 = sin(theta) * theta;
-    y1 = cos(theta) * theta;
-    z1 = theta;
-
-    nextTheta = theta+epsilon;    
-    x2 = sin(nextTheta) * nextTheta;
-    y2 = cos(nextTheta) * nextTheta;
-    z2 = nextTheta;
-
-    glVertex3f(x1,y1,z1-10);
-    glVertex3f(x2,y2,z2-10);
-
-  }
-  glEnd();
 }
 
-void Visualisation::prototype_1_curve(float index) {
+void Visualisation::prototype_2_curve(float index) {
   // place on curve 
   float z = (index+1.0)*(-1.5); // adjustment
   float far = -5.0;
@@ -474,16 +455,18 @@ void Visualisation::prototype_1_curve(float index) {
     glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
     glRotatef(90.0, 1.0, 0.0, 0.0);
   }
-
-
 }
 
-void Visualisation::prototype_2_drawTile(int week, int weekday, int day) {
+void Visualisation::prototype_4_drawTile(int week, int weekday, int day) {
   glPushMatrix();
     glColor3f(1.0,1.0,1.0);    
-    glTranslatef(weekday*tile_dimension+gap*weekday,0,-week*tile_dimension+gap*-week);
-    glScalef(1.0, 0.05, 1.0);
+    glTranslatef(weekday*tile_dimension+gap*weekday,0.0,-week*tile_dimension+gap*-week);
+    glTranslatef(0.0, 0.0, -0.5*week);
+    glScalef(0.6, 0.6, 0.6);
     drawDate(weekday, day);
+    glColor3f(1.0,1.0,1.0);
+    glScalef(0.8, 0.6, 0.8);
+    drawTile();
   glPopMatrix();
 }
 

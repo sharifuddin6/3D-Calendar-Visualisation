@@ -52,15 +52,17 @@ class Visualisation {
     void initDate();
     void initLoad();
 
-    void draw(int frame);
-    void drawTile(float tile_dimension);
+    // draw methods
+    void render(int frame);
+
     void drawDate(int weekday, int day);
     void drawText(const char* text);
-  
-    void draw_giftbox();
 
+    void drawTile();          // draw id : 0
+    void draw_giftbox();      // draw id : 1
 
-    
+    void draw_outline(int draw_id);
+
     // getter
     char* getPrototypeName();
     int getPrototypeNameLen();
@@ -90,14 +92,16 @@ class Visualisation {
 
     // private methods
     void prototype_1();
+
     void prototype_2();
+    void prototype_2_curve(float index);
+
     void prototype_3();
     void prototype_4();
+    void prototype_4_drawTile(int week, int weekday, int day);
+
     void prototype_5();
 
-    void prototype_1_curve(float index);
-    void prototype_2_drawTile(int week, int weekday, int day);
-    
     float computeScale(const char *text);
     void smooth_selection(int frame);
     void pickerCheck();

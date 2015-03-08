@@ -262,7 +262,7 @@ void AppView::drawVisualisation() {
   } else {
     visualisation->setPrototype(mode);    
   }
-  visualisation->draw(frame); // draw visualisation
+  visualisation->render(frame); // render visualisation
 
 }
 
