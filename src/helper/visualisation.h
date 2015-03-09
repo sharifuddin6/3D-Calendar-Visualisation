@@ -92,6 +92,7 @@ class Visualisation {
 
     // private methods
     void prototype_1();
+    void prototype_1_curve(float index);
 
     void prototype_2();
     void prototype_2_curve(float index);

@@ -61,13 +61,13 @@ void AppView::init() {
   // smoothing on lines
   glEnable(GL_LINE_SMOOTH);
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+  // alpha blending
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable (GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glBlendFunc (GL_SRC_ALPHA_SATURATE, GL_ONE);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // initialise render  
-  glClearColor(0.1, 0.1, 0.1, 0.0);
+  glClearColor(0.1, 0.1, 0.1, 1.0);
 
 }
 
@@ -82,7 +82,7 @@ void AppView::display() {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   double aspect = (double)viewport[2] / (double)viewport[3];
-  gluPerspective(45.0, aspect, 1.0, 200.0);
+  gluPerspective(45.0, aspect, 1.0, 20.0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -209,15 +209,15 @@ void AppView::specialInputWrapper(int key, int x, int y) {
 void AppView::drawText(float x, float y, const char *string) {
   const char *c;
 
-  glMatrixMode( GL_PROJECTION ) ;
+  glMatrixMode(GL_PROJECTION) ;
   glPushMatrix() ; // save
   glLoadIdentity();// and clear
-  glMatrixMode( GL_MODELVIEW ) ;
+  glMatrixMode(GL_MODELVIEW) ;
   glPushMatrix() ;
   glLoadIdentity() ;
   
-  gluOrtho2D (0.0f, 800.0f, 0.0f, 600.0f);
-  glDisable( GL_DEPTH_TEST ) ; // also disable the depth test so renders on top 
+  gluOrtho2D(0.0f, 800.0f, 0.0f, 600.0f);
+  glDisable(GL_DEPTH_TEST) ; // also disable the depth test so renders on top 
   glDisable(GL_LIGHTING);
 
   glColor3f(1.0f,1.0f,1.0f);
@@ -226,12 +226,12 @@ void AppView::drawText(float x, float y, const char *string) {
     glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);
   }
   
-  glEnable( GL_DEPTH_TEST ) ; // Turn depth testing back on
+  glEnable(GL_DEPTH_TEST) ; // Turn depth testing back on
   glEnable(GL_LIGHTING);
 
-  glMatrixMode( GL_PROJECTION ) ;
+  glMatrixMode(GL_PROJECTION) ;
   glPopMatrix() ; // revert back to the matrix I had before.
-  glMatrixMode( GL_MODELVIEW ) ;
+  glMatrixMode(GL_MODELVIEW) ;
   glPopMatrix() ;
   
 }

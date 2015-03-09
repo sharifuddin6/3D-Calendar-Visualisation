@@ -11,7 +11,6 @@ Visualisation::Visualisation(AppModel *newAppModel) {
   mode = 1;
   prototype_name = new char[64];
   getPrototypeName();
-  tile_dimension = 0.5f;
 }
 
 void Visualisation::init() {
@@ -132,7 +131,7 @@ void Visualisation::drawDate(int weekday, int day) {
   glPushMatrix(); 
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
-    glTranslatef(0.0, 0.5, -2.0);
+    glTranslatef(-10.0, 0.5, 0.0);
     drawText(buff_day);
   glPopMatrix();
 }
@@ -154,7 +153,6 @@ void Visualisation::drawText(const char* text) {
 void Visualisation::draw_giftbox() {
   float angle = appModel->getRotationAngle();
   glPushMatrix();
-    glTranslatef(-1.25,0.0,0.0);
     glScalef(0.6,0.6,0.6);
     glRotatef(angle, 0.0, -1.0, 0.0);
     // draw box
@@ -264,8 +262,90 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
+  // current variables
+  pickerMode = appModel->getPickingMode();
+  pickerModeDebug = appModel->getPickingModeDebug();
+  selected = appModel->getSelected();
+  unsigned int current_index;
+  tile_dimension = 0.5f;
 
+  // picking mode - disable lighting effects
+  if(pickerMode || pickerModeDebug) {	
+    // disable effects
+    glDisable(GL_DITHER);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+  } else {
+    // enable effects
+    glEnable(GL_DITHER);
+    glEnable(GL_LIGHTING);
+    if(appModel->getFog()) {
+      glEnable(GL_FOG);
+    }
+  }
 
+  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
+  glPushMatrix();
+    glTranslatef(0.0, -1.45, -3.0);
+    glRotatef(10.0, 1.0, 0.0,0.0);
+
+    //int week;
+    int day;
+    int weekday;
+    int event_id;
+    int today = days[0].weekday;
+
+    for(unsigned int i=0; i<days.size(); i++) {
+      //week = days[i].week;
+      weekday = days[i].weekday;
+      day = days[i].day;
+      event_id = days[i].event_id;
+
+      // check selected date
+      current_index = appModel->getSelectedDateIndex();
+      if((i+current_index-today)==0.0) { 
+        current_index = i;
+        //printf("DAY:%d, %d,%d\n", day, i, current_index);
+      }
+
+      glPushMatrix();
+        // draw items on curve
+        prototype_1_curve(i+selected);
+        
+        // picking mode draws objects related to a day in its unique colour
+        if(pickerMode || pickerModeDebug) { 
+          object_id_array.at(i).set_colour();
+        } else {  // normal mode draws objects in its usual colour
+          glColor3f(1.0,1.0,1.0);
+        }
+
+        // draw objects with outline
+        glPushMatrix();
+          glScalef(4.0, 1.0, 0.5);
+          draw_outline(0);
+        glPopMatrix();
+  
+        if(event_id>=0) { 
+          glPushMatrix();  
+          glTranslatef(1.25,0.1,0.0);
+          draw_outline(1);
+          glPopMatrix();
+        }
+
+        // draw objects without outline
+        drawDate(weekday, day);
+
+      glPopMatrix();
+    }
+  glPopMatrix();
+
+  // check picker if enabled and then redraw
+  if(pickerMode) {
+    pickerCheck();
+    appModel->setSwapBuffer(false);
+  } else {
+    appModel->setSwapBuffer(true);
+  }
 }
 
 void Visualisation::prototype_2() {
@@ -274,6 +354,7 @@ void Visualisation::prototype_2() {
   pickerModeDebug = appModel->getPickingModeDebug();
   selected = appModel->getSelected();
   unsigned int current_index;
+  tile_dimension = 0.5f;
 
   // picking mode - disable lighting effects
   if(pickerMode || pickerModeDebug) {	
@@ -428,6 +509,34 @@ void Visualisation::prototype_4() {
 
 void Visualisation::prototype_5() {
 
+}
+
+void Visualisation::prototype_1_curve(float index) {
+  // place on curve 
+  float z = (index+1.0)*(-1.5); // adjustment
+  float far = -5.0;
+  float range = far - 0.0;
+  float tmp;
+  float spacing;
+
+  if(z > far && z < 0) {
+    tmp = (far-z)/range;
+    //printf("angled %f:%f\n", z,tmp);  
+    spacing = 0.1;
+    //glTranslatef(0.0, -spacing*z, z); // (horiz,vertical, depth)
+    glTranslatef(0.0, -spacing*z, z*0.6);
+    glRotatef(tmp*45.0+10.0, 1.0,0.0,0.0);
+  } else if (z <= far) {
+    //printf("flat top %f:%f\n", z, 0.0);
+    spacing = 0.1;
+    glTranslatef(0.0, -spacing*z, z*0.5 - 0.5);
+    glRotatef(10.0, 1.0,0.0,0.0);
+  } else if (z >= 0) {
+    //printf("facing screen %f:%f\n", z, 1.0);
+    spacing = 0.5;
+    glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
+    glRotatef(90.0, 1.0, 0.0, 0.0);
+  }
 }
 
 void Visualisation::prototype_2_curve(float index) {
