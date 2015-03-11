@@ -68,7 +68,7 @@ void Visualisation::initDate() {
   // fix offset from today for visualisation
   weekday = calendar.getWeekDay();
   //printf("weekday:%d\n", weekday);
-  appModel->setSelectedDateIndex(-weekday+1.0);
+  appModel->setCurrentDateIndex(-weekday+1.0);
 }
 
 void Visualisation::initLoad() {
@@ -153,7 +153,7 @@ void Visualisation::drawText(const char* text) {
 void Visualisation::draw_giftbox() {
   float angle = appModel->getRotationAngle();
   glPushMatrix();
-    glScalef(0.6,0.6,0.6);
+    glScalef(0.4,0.4,0.4);
     glRotatef(angle, 0.0, -1.0, 0.0);
     // draw box
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(8.0,8.0,0.5); }
@@ -614,12 +614,12 @@ void Visualisation::smooth_selection(int frame) {
   // adds sliding animation
   if(selected_buff != 0) {
     if(selected_buff>0) {
-      tmp+=0.05;
-      appModel->setSelectedBuff(-0.05);
+      tmp+=0.1;
+      appModel->setSelectedBuff(-0.1);
       appModel->setSelected(tmp);
     } else if(selected_buff<0) {
-      tmp-=0.05;
-      appModel->setSelectedBuff(0.05);
+      tmp-=0.1;
+      appModel->setSelectedBuff(0.1);
       appModel->setSelected(tmp);        
     }
   }

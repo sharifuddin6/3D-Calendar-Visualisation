@@ -92,6 +92,10 @@ void AppController::keyboard(unsigned char key, int x, int y) {
       appModel->setPosition_x(0.0);
       appModel->setPosition_y(0.0);
       appModel->setPosition_z(0.0);
+      change = appModel->getSelectedDateIndex() *-1;
+      current = appModel->getCurrentDateIndex();
+      //printf("difference: %d %d\n", change, current);    
+      appModel->setSelectedDateIndex(change+current);
       break;   
     case 'f':
       if(appModel->getFog()) {

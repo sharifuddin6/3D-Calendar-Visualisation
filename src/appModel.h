@@ -30,6 +30,7 @@ class AppModel {
     float getSelected();
     float getSelectedBuff();
     int getSelectedDateIndex();
+    int getCurrentDateIndex();
 
     int getVisualisationMode();
     bool getFog();
@@ -50,6 +51,7 @@ class AppModel {
     void setSelectedBuff(float new_selected_buff);
     void emptySelectedBuff();
     void setSelectedDateIndex(int new_selected_date);
+    void setCurrentDateIndex(int new_current_date);
 
     void setVisualisationMode(int new_mode);
     void setFog(bool value);
@@ -71,6 +73,7 @@ class AppModel {
     float selected;
     float selected_buff;
     int selected_date_index;
+    int current_date_index;
 
     int mode;                                   // visualisation mode is the chosen mode
     bool fog_enabled;

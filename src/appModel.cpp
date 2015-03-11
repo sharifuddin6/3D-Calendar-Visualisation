@@ -232,6 +232,10 @@ int AppModel::getSelectedDateIndex() {
   return selected_date_index;
 }
 
+int AppModel::getCurrentDateIndex() {
+  return current_date_index;
+}
+
 int AppModel::getVisualisationMode() {
   return mode;
 }
@@ -297,6 +301,11 @@ void AppModel::emptySelectedBuff() {
 void AppModel::setSelectedDateIndex(int new_selected_date) {
   selected_date_index += new_selected_date;
   setSelectedBuff((double) new_selected_date);
+}
+
+void AppModel::setCurrentDateIndex(int new_current_date) {
+  current_date_index = new_current_date;
+  setSelectedDateIndex(new_current_date);
 }
 
 void AppModel::setVisualisationMode(int new_mode) {

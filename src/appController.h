@@ -22,6 +22,7 @@ class AppController {
 
   private:
     AppModel *appModel;
+    int change, current;
     float pos_x, pos_y, pos_z;
     float selected;
 
