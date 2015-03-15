@@ -1,6 +1,6 @@
 #include "appView.h"
 
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <pthread.h>
 #include <stdio.h>
 using namespace std;
@@ -58,13 +58,14 @@ void AppView::init() {
   glFogf(GL_FOG_START, 1.0f);                   // Fog Start Depth
   glFogf(GL_FOG_END, -200.0f);                     // Fog End Depth
 
-  // smoothing on lines
-  glEnable(GL_LINE_SMOOTH);
-  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-
   // alpha blending
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable (GL_BLEND);
+
+  // smoothing on lines
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+  glEnable(GL_MULTISAMPLE);
 
   // initialise render  
   glClearColor(0.1, 0.1, 0.1, 1.0);
@@ -124,7 +125,7 @@ int AppView::start(int argc, char *argv[]) {
   // init glut
   glutInit(&argc, argv);
   glutInitWindowSize(width, height);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
   glutCreateWindow(windowTitle);
 
   glutDisplayFunc(displayWrapper);

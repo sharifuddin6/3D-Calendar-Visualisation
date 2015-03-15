@@ -77,7 +77,9 @@ void Visualisation::initLoad() {
   objLoader->loadObject("data/model/gift_box.obj");
   objLoader->loadObject("data/model/gift_wrap.obj");
   objLoader->loadObject("data/model/gift_knot.obj");
-
+  objLoader->loadObject("data/model/radial_face.obj");
+  objLoader->loadObject("data/model/radial_text.obj");
+  objLoader->loadObject("data/model/radial_tile.obj");
 }
 
 void Visualisation::render(int frame) {
@@ -108,9 +110,26 @@ void Visualisation::render(int frame) {
 
 void Visualisation::drawTile() {
   glPushMatrix();
-    glScalef(2.0, 0.1, 2.0);
+    glScalef(2.0, 0.1, 1.0);
     glutSolidCube(tile_dimension);
   glPopMatrix();
+}
+
+void Visualisation::drawDay(int weekday, int day) {
+  // init 3dtext
+  t3dInit();
+  char *buff = new char[4];
+  char *buff_day = new char[11];
+  snprintf(buff, 4, "%d", day);
+  snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
+  // day in number form
+  glPushMatrix();
+    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
+    glScalef(0.1, 0.6, 0.1);
+    glTranslatef(0.0, 0.5, 0.0);
+    drawText(buff);    
+  glPopMatrix();
+
 }
 
 void Visualisation::drawDate(int weekday, int day) {
@@ -167,6 +186,25 @@ void Visualisation::draw_giftbox() {
   glPopMatrix();	
 }
 
+void Visualisation::draw_radialface() {
+  glPushMatrix();
+//    glScalef(0.5, 0.5, 0.5);
+    glRotatef(90.0, 1.0, 0.0, 0.0);
+    glColor4f(1.0, 1.0, 1.0, 0.2);
+    objLoader->renderObject(3);
+    glColor3f(0.8, 0.2, 0.2);
+    objLoader->renderObject(4);
+  glPopMatrix();
+}
+
+void Visualisation::draw_radialtile() {
+  glPushMatrix();
+    glScalef(1.2, 1.0, 1.0);
+//    glRotatef(-90.0, 1.0, 0.0, 0.0);
+    objLoader->renderObject(5);
+  glPopMatrix();
+}
+
 // draw objects with outline
 void Visualisation::draw_outline(int draw_id) {
 
@@ -186,6 +224,9 @@ void Visualisation::draw_outline(int draw_id) {
       break;
     case 1:
       draw_giftbox();
+      break;
+    case 2:
+      draw_radialtile();
       break;
     default:
       break;
@@ -212,6 +253,9 @@ void Visualisation::draw_outline(int draw_id) {
     case 1:
       draw_giftbox();
       break;
+    case 2:
+      draw_radialtile();
+      break;
     default:
       break;
   };
@@ -225,15 +269,15 @@ void Visualisation::draw_outline(int draw_id) {
 char* Visualisation::getPrototypeName() {
   switch(mode) {
     case 1: 
-      strcpy(prototype_name, "Prototype 1: Curved Perspective view");
+      strcpy(prototype_name, "Prototype 1: Radial Visualisation view");
       name_length = strlen(prototype_name);
       break;
     case 2: 
-      strcpy(prototype_name, "Prototype 2: Curved Perspective view (ver 2)");
+      strcpy(prototype_name, "Prototype 2: Curved Perspective view");
       name_length = strlen(prototype_name);
       break;
     case 3:
-      strcpy(prototype_name, "Prototype 3: Time Tunnel view");
+      strcpy(prototype_name, "Prototype 3: Curved Perspective view (ver 2)");
       name_length = strlen(prototype_name);
       break;
     case 4:
@@ -262,321 +306,105 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
-  // current variables
-  pickerMode = appModel->getPickingMode();
-  pickerModeDebug = appModel->getPickingModeDebug();
-  selected = appModel->getSelected();
-  unsigned int current_index;
-  tile_dimension = 0.5f;
+// RADIAL VISUALISATION VIEW
+  // initialise variables
+  int segments = 7;
+  float size = 0.5f;
+  tile_dimension = 0.7f;
+  float segment_angle = 51.44;
 
-  // picking mode - disable lighting effects
-  if(pickerMode || pickerModeDebug) {	
-    // disable effects
-    glDisable(GL_DITHER);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_FOG);
-  } else {
-    // enable effects
-    glEnable(GL_DITHER);
-    glEnable(GL_LIGHTING);
-    if(appModel->getFog()) {
-      glEnable(GL_FOG);
-    }
-  }
+  int day;
+  int weekday;
+  int today = days[0].weekday;
 
-  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
   glPushMatrix();
-    glTranslatef(0.0, -1.45, -3.0);
-    glRotatef(10.0, 1.0, 0.0,0.0);
+    glTranslatef(0.0, 0.0, -2.0);
+    glRotatef(today*segment_angle, 0.0,0.0,1.0);
+    draw_radialface();
 
-    //int week;
-    int day;
-    int weekday;
-    int event_id;
-    int today = days[0].weekday;
+//    // guide lines
+//    for (float i = 0.0; i < segments; i += 1.0) {
+//      float angle = M_PI * i * 2.0 / segments ;
+//      float nextAngle = M_PI * (i + 1.0) * 2.0 / segments;
 
-    for(unsigned int i=0; i<days.size(); i++) {
+//      /* compute sin & cosine */
+//      float x1 = size * sin(angle), y1 = size * cos(angle);
+//      float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
+
+//      glBegin(GL_LINE_LOOP);
+//        glColor3f(1.0,1.0,1.0);
+//        // near
+//        glVertex3f(x1, y1, 0.0);
+//        glVertex3f(x2, y2, 0.0);
+//        glVertex3f( 0,  0, 0.0);
+//      glEnd();
+//    }
+
+    glPushMatrix();
+    glRotatef(3*segment_angle,0.0,0.0,1.0); // correct date with weekday tile
+
+    for (unsigned int i=0; i<days.size(); i++) {
       //week = days[i].week;
       weekday = days[i].weekday;
       day = days[i].day;
-      event_id = days[i].event_id;
 
-      // check selected date
-      current_index = appModel->getSelectedDateIndex();
-      if((i+current_index-today)==0.0) { 
-        current_index = i;
-        //printf("DAY:%d, %d,%d\n", day, i, current_index);
-      }
+      float angle = -M_PI * (float)i * 2.0 / segments ;
+      float nextAngle = -M_PI * ((float)i + 1.0) * 2.0 / segments;
 
-      glPushMatrix();
-        // draw items on curve
-        prototype_1_curve(i+selected);
+      /* compute sin & cosine */
+      float x1 = size * sin(angle), y1 = size * cos(angle);
+      float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
+
+      glColor3f(1.0,0.0,0.0);
         
-        // picking mode draws objects related to a day in its unique colour
-        if(pickerMode || pickerModeDebug) { 
-          object_id_array.at(i).set_colour();
-        } else {  // normal mode draws objects in its usual colour
-          glColor3f(1.0,1.0,1.0);
-        }
+      // near
+      //glVertex3f(x1, y1, -1.0);
+      //glVertex3f(x2, y2, -1.0);
 
-        // draw objects with outline
-        glPushMatrix();
-          glScalef(4.0, 1.0, 0.5);
-          draw_outline(0);
-        glPopMatrix();
-  
-        if(event_id>=0) { 
-          glPushMatrix();  
-          glTranslatef(1.25,0.1,0.0);
-          draw_outline(1);
-          glPopMatrix();
-        }
+      // mid point
+      glPushMatrix();
+        glTranslatef((x1+x2)*0.5, (y1+y2)*0.5, 0.0);
+        radial_pos(i);
+        glRotatef(15.0, 1.0,0.0,0.0);
+
+        glScalef(0.25, 0.15, 0.2);
+
+        glColor3f(1.0, 1.0, 1.0);
+        draw_outline(2);
 
         // draw objects without outline
-        drawDate(weekday, day);
+        drawDay(weekday, day);
 
       glPopMatrix();
     }
   glPopMatrix();
+  glPopMatrix();
 
-  // check picker if enabled and then redraw
-  if(pickerMode) {
-    pickerCheck();
-    appModel->setSwapBuffer(false);
-  } else {
-    appModel->setSwapBuffer(true);
-  }
 }
 
 void Visualisation::prototype_2() {
-  // current variables
-  pickerMode = appModel->getPickingMode();
-  pickerModeDebug = appModel->getPickingModeDebug();
-  selected = appModel->getSelected();
-  unsigned int current_index;
-  tile_dimension = 0.5f;
-
-  // picking mode - disable lighting effects
-  if(pickerMode || pickerModeDebug) {	
-    // disable effects
-    glDisable(GL_DITHER);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_FOG);
-  } else {
-    // enable effects
-    glEnable(GL_DITHER);
-    glEnable(GL_LIGHTING);
-    if(appModel->getFog()) {
-      glEnable(GL_FOG);
-    }
-  }
-
-  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
-  glPushMatrix();
-    glTranslatef(0.0, -1.45, -2.65);
-    glRotatef(10.0, 1.0, 0.0,0.0);
-
-    //int week;
-    int day;
-    int weekday;
-    int event_id;
-    int today = days[0].weekday;
-
-    for(unsigned int i=0; i<days.size(); i++) {
-      //week = days[i].week;
-      weekday = days[i].weekday;
-      day = days[i].day;
-      event_id = days[i].event_id;
-
-      // check selected date
-      current_index = appModel->getSelectedDateIndex();
-      if((i+current_index-today)==0.0) { 
-        current_index = i;
-        //printf("DAY:%d, %d,%d\n", day, i, current_index);
-      }
-
-      glPushMatrix();
-        // draw items on curve
-        prototype_2_curve(i+selected);
-        
-        // picking mode draws objects related to a day in its unique colour
-        if(pickerMode || pickerModeDebug) { 
-          object_id_array.at(i).set_colour();
-        } else {  // normal mode draws objects in its usual colour
-          glColor3f(1.0,1.0,1.0);
-        }
-
-        // draw objects with outline
-	      draw_outline(0);
-        if(event_id>=0) { draw_outline(1); }
-
-        // draw objects without outline
-        drawDate(weekday, day);
-
-      glPopMatrix();
-    }
-  glPopMatrix();
-
-  // check picker if enabled and then redraw
-  if(pickerMode) {
-    pickerCheck();
-    appModel->setSwapBuffer(false);
-  } else {
-    appModel->setSwapBuffer(true);
-  }
+  // REMOVED
 }
 
 void Visualisation::prototype_3() { 
-  // prototype_3: Time tunnel view
-  int segments = 7;
-  float radius = 0.3;
-  //float height = 0.3;
-
-  // guide lines
-  for (float i = 0.0; i < segments; i += 1.0) {
-    float angle = M_PI * i * 2.0 / segments ;
-    float nextAngle = M_PI * (i + 1.0) * 2.0 / segments;
-
-    /* compute sin & cosine */
-    float x1 = radius * sin(angle), y1 = radius * cos(angle);
-    float x2 = radius * sin(nextAngle), y2 = radius * cos(nextAngle);
-
-    glBegin(GL_LINE_LOOP);
-
-      glColor3f(1.0,1.0,1.0);
-      
-      // near
-      glVertex3f(x1, y1, -1.0);
-      glVertex3f(x2, y2, -1.0);
-      glVertex3f(0, 0, -1.0);
-
-      // far
-      glVertex3f(x1, y1, -25.0);
-      glVertex3f(x2, y2, -25.0);
-      glVertex3f(0, 0, -25.0);
-
-    glEnd();
-   }
-
-  // points
-  glPointSize(10.0f);
-  glBegin(GL_POINTS);
-  for (float i = 0.0; i < segments+1; i += 1.0) {
-    float angle = M_PI * i * 2.0 / segments ;
-    float nextAngle = M_PI * (i + 1.0) * 2.0 / segments;
-
-    /* compute sin & cosine */
-    float x1 = radius * sin(angle), y1 = radius * cos(angle);
-    float x2 = radius * sin(nextAngle), y2 = radius * cos(nextAngle);
-
-    glColor3f(1.0,0.0,0.0);
-      
-    // near
-    //glVertex3f(x1, y1, -1.0);
-    //glVertex3f(x2, y2, -1.0);
-
-    // mid point
-    glVertex3f((x1+x2)*0.5, (y1+y2)*0.5, -1.0);
-   
-  }
-  glEnd();
-
+  // REMOVED
 }
 
 void Visualisation::prototype_4() { 
-  // prototype_4: Flat perspective view
-  scale = 0.9;
-  gap = 1.0-scale;
-  float center = -(tile_dimension+gap)*4.0;
-  
-  // DRAW GRID
-  glPushMatrix();
-    glTranslatef(center,-1.25, -3.75);
-    glRotatef(10.0, 1.0, 0.0,0.0);
-
-    // DRAWS ALL DAYS CREATED IN INIT FUNCTION
-    int week, weekday, day;
-
-    for(unsigned int i=0; i<days.size(); i++) {
-      week = days[i].week;
-      weekday = days[i].weekday;
-      day = days[i].day;
-      prototype_4_drawTile(week, weekday, day);
-    }
-
-  glPopMatrix();
+  // REMOVED
 }
 
 void Visualisation::prototype_5() {
-
+  // EMPTY
 }
 
-void Visualisation::prototype_1_curve(float index) {
-  // place on curve 
-  float z = (index+1.0)*(-1.5); // adjustment
-  float far = -5.0;
-  float range = far - 0.0;
-  float tmp;
-  float spacing;
+void Visualisation::radial_pos(int index) {
+  float z = (index/7)*-0.55;        // spacing between each week
+  z += ((float)(index%7)/7) *-0.5; // forms spiral, connected days
 
-  if(z > far && z < 0) {
-    tmp = (far-z)/range;
-    //printf("angled %f:%f\n", z,tmp);  
-    spacing = 0.1;
-    //glTranslatef(0.0, -spacing*z, z); // (horiz,vertical, depth)
-    glTranslatef(0.0, -spacing*z, z*0.6);
-    glRotatef(tmp*45.0+10.0, 1.0,0.0,0.0);
-  } else if (z <= far) {
-    //printf("flat top %f:%f\n", z, 0.0);
-    spacing = 0.1;
-    glTranslatef(0.0, -spacing*z, z*0.5 - 0.5);
-    glRotatef(10.0, 1.0,0.0,0.0);
-  } else if (z >= 0) {
-    //printf("facing screen %f:%f\n", z, 1.0);
-    spacing = 0.5;
-    glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
-  }
-}
-
-void Visualisation::prototype_2_curve(float index) {
-  // place on curve 
-  float z = (index+1.0)*(-1.5); // adjustment
-  float far = -5.0;
-  float range = far - 0.0;
-  float tmp;
-  float spacing;
-
-  if(z > far && z < 0) {
-    tmp = (far-z)/range;
-    //printf("angled %f:%f\n", z,tmp);  
-    spacing = 0.1;
-    glTranslatef(0.0, -spacing*z, z);
-    glRotatef(tmp*90.0+10.0, 1.0,0.0,0.0);
-  } else if (z <= far) {
-    //printf("flat top %f:%f\n", z, 0.0);
-    spacing = 0.1;
-    glTranslatef(0.0, -spacing*z, z);
-    glRotatef(10.0, 1.0,0.0,0.0);
-  } else if (z >= 0) {
-    //printf("facing screen %f:%f\n", z, 1.0);
-    spacing = 0.5;
-    glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
-    glRotatef(90.0, 1.0, 0.0, 0.0);
-  }
-}
-
-void Visualisation::prototype_4_drawTile(int week, int weekday, int day) {
-  glPushMatrix();
-    glColor3f(1.0,1.0,1.0);    
-    glTranslatef(weekday*tile_dimension+gap*weekday,0.0,-week*tile_dimension+gap*-week);
-    glTranslatef(0.0, 0.0, -0.5*week);
-    glScalef(0.6, 0.6, 0.6);
-    drawDate(weekday, day);
-    glColor3f(1.0,1.0,1.0);
-    glScalef(0.8, 0.6, 0.8);
-    drawTile();
-  glPopMatrix();
+  glRotatef(180+25, 0.0,0.0,1.0);       // rotation correction
+  glRotatef(index*51.44, 0.0,0.0,1.0);
+  glTranslatef(0.0,0.0, z);
 }
 
 float Visualisation::computeScale(const char* text) {
@@ -600,6 +428,7 @@ float Visualisation::computeScale(const char* text) {
 
 	return 2.6f / maxScale;
 }
+
 
 void Visualisation::smooth_selection(int frame) {
   // smooth selection animation
