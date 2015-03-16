@@ -197,13 +197,13 @@ void Visualisation::draw_radialtile() {
 }
 
 void Visualisation::draw_radialtile_1() {
-  glDisable(GL_DEPTH_TEST);
+  glDepthMask(GL_FALSE);
   glDisable(GL_CULL_FACE);
   glPushMatrix();
     glScalef(1.2, 1.0, 1.0);
     objLoader->renderObject(6);
   glPopMatrix();
-  glEnable(GL_DEPTH_TEST);
+  glDepthMask(GL_TRUE);
   glEnable(GL_CULL_FACE);
 }
 
@@ -405,34 +405,55 @@ void Visualisation::prototype_1() {
             draw_outline(2, alpha, false);
           }
         } else {
-          glDisable(GL_DEPTH_TEST);
+          glDepthMask(GL_FALSE);
           // if current highlight tile red
           if(i == current_day) {
             draw_outline(2, alpha, true);
           } else {
             draw_outline(2, alpha, false);
           }
-          glEnable(GL_DEPTH_TEST);
+          glDepthMask(GL_TRUE);
         }
 
         // TODO: draw event object in correct position
         if(event_id>=0) { 
           glPushMatrix();
-          // position the event draw_model
-          if(false) { }                                               
-          else { glTranslatef(0.0,-1.5,0.0); }
-          // draw only following event draw_model
-          if(i>=(unsigned)value) { draw_outline(1, alpha, false); }
+            // TODO: position the event draw_model
+            if(false) { }                                               
+            else { glTranslatef(0.0,-1.5,0.0); }
+            // draw only following event draw_model
+            if(i>=(unsigned)value) { draw_outline(1, alpha, false); }
           glPopMatrix();
-          // level of importance by depth indicator
-          if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.6); }
-          if(i>=(unsigned)value) { draw_radialtile_1(); }
         }
         // draw objects without outline
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, alpha+0.05); }
         drawDay(weekday, day);
 
       glPopMatrix();
+    }
+
+    // draw all alpha blended items
+    if(!pickerMode && !pickerModeDebug) {
+      for (unsigned int i=0; i<days.size(); i++) {
+        // compute sin & cosine
+        float angle = -M_PI * (float)i * 2.0 / segments ;
+        float nextAngle = -M_PI * ((float)i + 1.0) * 2.0 / segments;
+        float x1 = size * sin(angle), y1 = size * cos(angle);
+        float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
+        int value = (selected*-1)-1;
+        glPushMatrix();
+          glTranslatef((x1+x2)*0.5, (y1+y2)*0.5, 0.0);
+          radial_pos(i);
+          glRotatef(15.0, 1.0,0.0,0.0);
+          glScalef(0.25, 0.15, 0.2);
+          event_id = days[i].event_id;
+          if(event_id>=0) {
+            // level of importance by depth indicator
+            if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.6); }
+            if(i>=(unsigned)value) { draw_radialtile_1(); }
+          }
+        glPopMatrix();
+      }
     }
   glPopMatrix();
   glPopMatrix();

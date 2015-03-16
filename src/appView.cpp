@@ -55,12 +55,12 @@ void AppView::init() {
   glFogfv(GL_FOG_COLOR, fogColor);                // Set Fog Color
   glFogf(GL_FOG_DENSITY, 0.25f);                  // How Dense Will The Fog Be
   glHint(GL_FOG_HINT, GL_DONT_CARE);              // Fog Hint Value
-  glFogf(GL_FOG_START, 1.0f);                   // Fog Start Depth
-  glFogf(GL_FOG_END, -200.0f);                     // Fog End Depth
+  glFogf(GL_FOG_START, 1.0f);                     // Fog Start Depth
+  glFogf(GL_FOG_END, -200.0f);                    // Fog End Depth
 
   // alpha blending
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable (GL_BLEND);
+  glEnable(GL_BLEND);                                //Enable alpha blending
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set the blend function
 
   // smoothing on lines
   glEnable(GL_LINE_SMOOTH);
