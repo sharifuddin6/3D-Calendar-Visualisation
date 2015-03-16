@@ -124,7 +124,6 @@ void Visualisation::drawDay(int weekday, int day) {
   snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
   // day in number form
   glPushMatrix();
-    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.1, 1.0, 0.1);
     glTranslatef(0.0, 0.5, 0.0);
     drawText(buff);    
@@ -206,7 +205,7 @@ void Visualisation::draw_radialtile() {
 }
 
 // draw objects with outline
-void Visualisation::draw_outline(int draw_id, bool red) {
+void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
   // draw objects with outline
   // draw solid object 
   glPushAttrib (GL_POLYGON_BIT);
@@ -241,8 +240,8 @@ void Visualisation::draw_outline(int draw_id, bool red) {
 	      
   // draw wire object
   glLineWidth (3.0f);
-  if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
-  if(red) { glColor3f(0.8,0.2,0.2); }
+  if(!pickerMode && !pickerModeDebug) { glColor4f(0.0,0.0,0.0,alpha); }
+  if(highlight) { glColor4f(0.8,0.2,0.2,alpha); }
   wire_mode = true;
 
   // second draw
@@ -312,13 +311,14 @@ void Visualisation::prototype_1() {
   float size = 0.5f;
   tile_dimension = 0.7f;
   float segment_angle = 51.44;
+  float alpha;
 
   int day;
   int weekday;
   int today = days[0].weekday;
   unsigned int current_day = today-1;
   int selected = appModel->getSelectedDateIndex()-1;
-  // printf("current:%d, today:%d\n", current_day, today);
+  //printf("current:%d, selected:%d\n", current_day, selected);
 
   glPushMatrix();
     glTranslatef(0.0, 0.0, -2.0);
@@ -352,35 +352,35 @@ void Visualisation::prototype_1() {
       //week = days[i].week;
       weekday = days[i].weekday;
       day = days[i].day;
+      alpha = 1.0f;
 
+      // compute sin & cosine
       float angle = -M_PI * (float)i * 2.0 / segments ;
       float nextAngle = -M_PI * ((float)i + 1.0) * 2.0 / segments;
-
-      /* compute sin & cosine */
       float x1 = size * sin(angle), y1 = size * cos(angle);
       float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
 
-      glColor3f(1.0,0.0,0.0);
-        
-      // near
-      //glVertex3f(x1, y1, -1.0);
-      //glVertex3f(x2, y2, -1.0);
+      // days tile past?
+      int value = (selected*-1)-1;
+      if(i<(unsigned)value) {
+        int diff = value-i;
+        alpha = 0.15f-diff*0.02f;
+      }
 
-      // mid point
+      // draw date tile
       glPushMatrix();
         glTranslatef((x1+x2)*0.5, (y1+y2)*0.5, 0.0);
         radial_pos(i);
         glRotatef(15.0, 1.0,0.0,0.0);
-
         glScalef(0.25, 0.15, 0.2);
-
-        glColor3f(1.0, 1.0, 1.0);
+        glColor4f(1.0, 1.0, 1.0, alpha);
         if(i == current_day) {
-          draw_outline(2, true);
+          draw_outline(2, alpha, true);
         } else {
-          draw_outline(2, false);
+          draw_outline(2, alpha, false);
         }
         // draw objects without outline
+        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, alpha+0.05); }
         drawDay(weekday, day);
 
       glPopMatrix();
@@ -407,7 +407,7 @@ void Visualisation::prototype_5() {
 }
 
 void Visualisation::radial_pos(int index) {
-  float z = (index/7)*-0.55;          // spacing between each week
+  float z = (index/7)*-0.55 +index*0.003;          // spacing between each week
   z += ((float)(index%7)/7) *-0.55;    // forms spiral, connected days
 
   glRotatef(180+25, 0.0,0.0,1.0);     // rotation correction

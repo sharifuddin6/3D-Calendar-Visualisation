@@ -65,7 +65,7 @@ class Visualisation {
 
     void draw_radialface();
 
-    void draw_outline(int draw_id, bool red);
+    void draw_outline(int draw_id, float alpha, bool highlight);
 
     // getter
     char* getPrototypeName();
