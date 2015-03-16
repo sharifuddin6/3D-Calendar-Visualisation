@@ -187,7 +187,6 @@ void Visualisation::draw_giftbox() {
 
 void Visualisation::draw_radialface() {
   glPushMatrix();
-//    glScalef(0.5, 0.5, 0.5);
     glRotatef(90.0, 1.0, 0.0, 0.0);
     glColor4f(1.0, 1.0, 1.0, 0.2);
     objLoader->renderObject(3);
@@ -199,7 +198,6 @@ void Visualisation::draw_radialface() {
 void Visualisation::draw_radialtile() {
   glPushMatrix();
     glScalef(1.2, 1.0, 1.0);
-//    glRotatef(-90.0, 1.0, 0.0, 0.0);
     objLoader->renderObject(5);
   glPopMatrix();
 }
@@ -305,7 +303,7 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
-// RADIAL VISUALISATION VIEW
+// Radial Visualisation mode
   // initialise variables
   int segments = 7;
   float size = 0.5f;
@@ -320,6 +318,22 @@ void Visualisation::prototype_1() {
   int selected = appModel->getSelectedDateIndex()-1;
   //printf("current:%d, selected:%d\n", current_day, selected);
 
+  pickerMode = appModel->getPickingMode();
+  //printf("pickerMode:%s\n", pickerMode?"true":"false");
+
+  // picking mode - disable lighting effects
+  if(pickerMode) {	
+    // disable effects
+    glDisable(GL_DITHER);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+  } else {
+    // enable effects
+    glEnable(GL_DITHER);
+    glEnable(GL_LIGHTING);
+  }
+
+  // draw visualisation
   glPushMatrix();
     glTranslatef(0.0, 0.0, -2.0);
     glRotatef(today*segment_angle, 0.0,0.0,1.0);
@@ -345,7 +359,7 @@ void Visualisation::prototype_1() {
 //    }
 
     glPushMatrix();
-    glTranslatef(0.0,0.0,selected*-0.075);              // translate date tiles
+    glTranslatef(0.0,0.0,selected*-0.075);  // translate date tiles
     glRotatef(3*segment_angle,0.0,0.0,1.0); // correct date with weekday tile
 
     for (unsigned int i=0; i<days.size(); i++) {
@@ -373,7 +387,14 @@ void Visualisation::prototype_1() {
         radial_pos(i);
         glRotatef(15.0, 1.0,0.0,0.0);
         glScalef(0.25, 0.15, 0.2);
-        glColor4f(1.0, 1.0, 1.0, alpha);
+
+        // picking mode draws objects related to a day in its unique colour
+        if(pickerMode) { 
+          object_id_array.at(i).set_colour();
+        } else {  // normal mode draws objects in its usual colour
+          glColor4f(1.0, 1.0, 1.0, alpha);
+        }
+        // if current highlight tile red
         if(i == current_day) {
           draw_outline(2, alpha, true);
         } else {
@@ -388,6 +409,13 @@ void Visualisation::prototype_1() {
   glPopMatrix();
   glPopMatrix();
 
+  // check picker if enabled and then redraw
+  if(pickerMode) {
+    pickerCheck();
+    appModel->setSwapBuffer(false);
+  } else {
+    appModel->setSwapBuffer(true);
+  }
 }
 
 void Visualisation::prototype_2() {
