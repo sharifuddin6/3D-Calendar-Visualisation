@@ -125,7 +125,7 @@ void Visualisation::drawDay(int weekday, int day) {
   // day in number form
   glPushMatrix();
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
-    glScalef(0.1, 0.6, 0.1);
+    glScalef(0.1, 1.0, 0.1);
     glTranslatef(0.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
@@ -206,8 +206,7 @@ void Visualisation::draw_radialtile() {
 }
 
 // draw objects with outline
-void Visualisation::draw_outline(int draw_id) {
-
+void Visualisation::draw_outline(int draw_id, bool red) {
   // draw objects with outline
   // draw solid object 
   glPushAttrib (GL_POLYGON_BIT);
@@ -243,6 +242,7 @@ void Visualisation::draw_outline(int draw_id) {
   // draw wire object
   glLineWidth (3.0f);
   if(!pickerMode && !pickerModeDebug) { glColor3f(0.0,0.0,0.0); }
+  if(red) { glColor3f(0.8,0.2,0.2); }
   wire_mode = true;
 
   // second draw
@@ -316,10 +316,14 @@ void Visualisation::prototype_1() {
   int day;
   int weekday;
   int today = days[0].weekday;
+  unsigned int current_day = today-1;
+  int selected = appModel->getSelectedDateIndex()-1;
+  // printf("current:%d, today:%d\n", current_day, today);
 
   glPushMatrix();
     glTranslatef(0.0, 0.0, -2.0);
     glRotatef(today*segment_angle, 0.0,0.0,1.0);
+    glRotatef(selected*segment_angle, 0.0,0.0,1.0);
     draw_radialface();
 
 //    // guide lines
@@ -341,6 +345,7 @@ void Visualisation::prototype_1() {
 //    }
 
     glPushMatrix();
+    glTranslatef(0.0,0.0,selected*-0.075);              // translate date tiles
     glRotatef(3*segment_angle,0.0,0.0,1.0); // correct date with weekday tile
 
     for (unsigned int i=0; i<days.size(); i++) {
@@ -370,8 +375,11 @@ void Visualisation::prototype_1() {
         glScalef(0.25, 0.15, 0.2);
 
         glColor3f(1.0, 1.0, 1.0);
-        draw_outline(2);
-
+        if(i == current_day) {
+          draw_outline(2, true);
+        } else {
+          draw_outline(2, false);
+        }
         // draw objects without outline
         drawDay(weekday, day);
 
@@ -399,10 +407,10 @@ void Visualisation::prototype_5() {
 }
 
 void Visualisation::radial_pos(int index) {
-  float z = (index/7)*-0.55;        // spacing between each week
-  z += ((float)(index%7)/7) *-0.5; // forms spiral, connected days
+  float z = (index/7)*-0.55;          // spacing between each week
+  z += ((float)(index%7)/7) *-0.55;    // forms spiral, connected days
 
-  glRotatef(180+25, 0.0,0.0,1.0);       // rotation correction
+  glRotatef(180+25, 0.0,0.0,1.0);     // rotation correction
   glRotatef(index*51.44, 0.0,0.0,1.0);
   glTranslatef(0.0,0.0, z);
 }
@@ -449,7 +457,7 @@ void Visualisation::smooth_selection(int frame) {
     } else if(selected_buff<0) {
       tmp-=0.1;
       appModel->setSelectedBuff(0.1);
-      appModel->setSelected(tmp);        
+      appModel->setSelected(tmp);
     }
   }
 }

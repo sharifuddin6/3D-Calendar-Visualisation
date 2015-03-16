@@ -47,9 +47,11 @@ class AppModel {
     void setPosition_y(float new_y);
     void setPosition_z(float new_z);
     void setRotationAngle(float new_angle);
+
     void setSelected(float new_selected);
     void setSelectedBuff(float new_selected_buff);
     void emptySelectedBuff();
+
     void setSelectedDateIndex(int new_selected_date);
     void setCurrentDateIndex(int new_current_date);
 
