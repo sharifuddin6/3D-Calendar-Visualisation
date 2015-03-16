@@ -59,11 +59,11 @@ class Visualisation {
     void drawDay(int weekday, int day);
     void drawText(const char* text);
 
-    void drawTile();          // draw id : 0
-    void draw_giftbox();      // draw id : 1
+    void draw_giftbox(float alpha);      // draw id : 1
     void draw_radialtile();   // draw id : 2
 
     void draw_radialface();
+    void draw_radialtile_1();
 
     void draw_outline(int draw_id, float alpha, bool highlight);
 

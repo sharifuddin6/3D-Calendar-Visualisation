@@ -80,6 +80,7 @@ void Visualisation::initLoad() {
   objLoader->loadObject("data/model/radial_face.obj");
   objLoader->loadObject("data/model/radial_text.obj");
   objLoader->loadObject("data/model/radial_tile.obj");
+  objLoader->loadObject("data/model/radial_tile_1.obj");
 }
 
 void Visualisation::render(int frame) {
@@ -106,13 +107,6 @@ void Visualisation::render(int frame) {
       break;  
   } 
 
-}
-
-void Visualisation::drawTile() {
-  glPushMatrix();
-    glScalef(2.0, 0.1, 1.0);
-    glutSolidCube(tile_dimension);
-  glPopMatrix();
 }
 
 void Visualisation::drawDay(int weekday, int day) {
@@ -168,19 +162,19 @@ void Visualisation::drawText(const char* text) {
 }
 
 // draw loaded objects
-void Visualisation::draw_giftbox() {
+void Visualisation::draw_giftbox(float alpha) {
   float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(0.4,0.4,0.4);
     glRotatef(angle, 0.0, -1.0, 0.0);
     // draw box
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(8.0,8.0,0.5); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
     objLoader->renderObject(0);
     // draw wrapping
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(2.0,0.1,0.1,alpha); }
     objLoader->renderObject(1);
     // draw knot
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor3f(2.0,0.1,0.1); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(2.0,0.1,0.1,alpha); }
     objLoader->renderObject(2);
   glPopMatrix();	
 }
@@ -202,6 +196,18 @@ void Visualisation::draw_radialtile() {
   glPopMatrix();
 }
 
+void Visualisation::draw_radialtile_1() {
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
+  glPushMatrix();
+    glScalef(1.2, 1.0, 1.0);
+    objLoader->renderObject(6);
+  glPopMatrix();
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+}
+
+
 // draw objects with outline
 void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
   // draw objects with outline
@@ -215,11 +221,8 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
 
   // first draw
   switch(draw_id) {
-    case 0:
-      drawTile();
-      break;
     case 1:
-      draw_giftbox();
+      draw_giftbox(alpha);
       break;
     case 2:
       draw_radialtile();
@@ -244,11 +247,8 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
 
   // second draw
   switch(draw_id) {
-    case 0:
-      drawTile();
-      break;
     case 1:
-      draw_giftbox();
+      draw_giftbox(alpha);
       break;
     case 2:
       draw_radialtile();
@@ -314,6 +314,7 @@ void Visualisation::prototype_1() {
   int day;
   int weekday;
   int today = days[0].weekday;
+  int event_id;
   unsigned int current_day = today-1;
   int selected = appModel->getSelectedDateIndex()-1;
   //printf("current:%d, selected:%d\n", current_day, selected);
@@ -366,6 +367,7 @@ void Visualisation::prototype_1() {
       //week = days[i].week;
       weekday = days[i].weekday;
       day = days[i].day;
+      event_id = days[i].event_id;
       alpha = 1.0f;
 
       // compute sin & cosine
@@ -394,11 +396,37 @@ void Visualisation::prototype_1() {
         } else {  // normal mode draws objects in its usual colour
           glColor4f(1.0, 1.0, 1.0, alpha);
         }
-        // if current highlight tile red
-        if(i == current_day) {
-          draw_outline(2, alpha, true);
+        // allow for transparent rendering
+        if(i>=(unsigned)value) {
+          // if current highlight tile red
+          if(i == current_day) {
+            draw_outline(2, alpha, true);
+          } else {
+            draw_outline(2, alpha, false);
+          }
         } else {
-          draw_outline(2, alpha, false);
+          glDisable(GL_DEPTH_TEST);
+          // if current highlight tile red
+          if(i == current_day) {
+            draw_outline(2, alpha, true);
+          } else {
+            draw_outline(2, alpha, false);
+          }
+          glEnable(GL_DEPTH_TEST);
+        }
+
+        // TODO: draw event object in correct position
+        if(event_id>=0) { 
+          glPushMatrix();
+          // position the event draw_model
+          if(false) { }                                               
+          else { glTranslatef(0.0,-1.5,0.0); }
+          // draw only following event draw_model
+          if(i>=(unsigned)value) { draw_outline(1, alpha, false); }
+          glPopMatrix();
+          // level of importance by depth indicator
+          if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.6); }
+          if(i>=(unsigned)value) { draw_radialtile_1(); }
         }
         // draw objects without outline
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, alpha+0.05); }
