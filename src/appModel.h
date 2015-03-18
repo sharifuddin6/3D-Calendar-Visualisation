@@ -18,7 +18,7 @@ class AppModel {
     void parseICS(const char* filePath);
     bool has_suffix(const char *word, const char *suffix); // used to determine file type
     bool has_prefix(const char *word, const char *prefix);
-    int compareDateEvent(int day, int month, int year);                // returns index to event_array if the date matches
+    int compareDateEvent(int day, int month, int year);    // returns index to event_array if the date matches
 
     // getters
     int getWindowWidth();
@@ -31,6 +31,9 @@ class AppModel {
     float getSelectedBuff();
     int getSelectedDateIndex();
     int getCurrentDateIndex();
+
+    int getEventIcon(int index);
+    int getEventImportance(int index);
 
     int getVisualisationMode();
     bool getFog();

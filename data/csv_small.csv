@@ -1,5 +1,8 @@
-Subject,Start Date,Start Time,End Date,End Time,Description,Location
-TEST_1,13/03/15,19:35:00,13/03/15,19:35:00,Testing the example description here,Home
-TEST_1,18/03/15,19:35:00,18/03/15,19:35:00,Testing the example description here,Home
-TEST_1,25/03/15,19:35:00,25/03/15,19:35:00,Testing the example description here,Home
-TEST_1,29/03/15,19:35:00,29/03/15,19:35:00,Testing the example description here,Home
+Subject,Start Date,Start Time,End Date,End Time,Description,Location,Icon,Importance
+TEST_1,21/03/15,19:35:00,13/03/15,19:35:00,Testing the example description here,Home,1,3
+TEST_1,22/03/15,19:35:00,18/03/15,19:35:00,Testing the example description here,Home,1,2
+TEST_1,25/03/15,19:35:00,25/03/15,19:35:00,Testing the example description here,Home,1,3
+TEST_1,29/03/15,19:35:00,29/03/15,19:35:00,Testing the example description here,Home,1,2
+TEST_1,30/03/15,19:35:00,29/03/15,19:35:00,Testing the example description here,Home,1,1
+TEST_1,31/03/15,19:35:00,29/03/15,19:35:00,Testing the example description here,Home,1,1
+TEST_1,5/04/15,19:35:00,29/03/15,19:35:00,Testing the example description here,Home,1,3

@@ -46,6 +46,11 @@ void Visualisation::initDate() {
 
     // test date for event from event_array in model class    
     aday.event_id = appModel->compareDateEvent(day, month, year);
+    if(aday.event_id > 0) {
+      aday.event_icon = appModel->getEventIcon(aday.event_id);
+      aday.event_importance = appModel->getEventImportance(aday.event_id);
+    }
+
     days.push_back(aday); // push back
     
     // create struct colour id object
@@ -80,7 +85,9 @@ void Visualisation::initLoad() {
   objLoader->loadObject("data/model/radial_face.obj");
   objLoader->loadObject("data/model/radial_text.obj");
   objLoader->loadObject("data/model/radial_tile.obj");
-  objLoader->loadObject("data/model/radial_tile_1.obj");
+  objLoader->loadObject("data/model/radial_level_1.obj");
+  objLoader->loadObject("data/model/radial_level_2.obj");
+  objLoader->loadObject("data/model/radial_level_3.obj");
 }
 
 void Visualisation::render(int frame) {
@@ -196,12 +203,46 @@ void Visualisation::draw_radialtile() {
   glPopMatrix();
 }
 
-void Visualisation::draw_radialtile_1() {
+void Visualisation::draw_icon(int value, float alpha, bool highlight) {
+  switch(value) {
+    case 0:
+      break;
+    case 1:
+      draw_outline(1, alpha, highlight); // birthday icon
+      break;
+    default:
+      break;
+  }
+
+}
+
+void Visualisation::draw_importance(int value) {
   glDepthMask(GL_FALSE);
   glDisable(GL_CULL_FACE);
   glPushMatrix();
-    glScalef(1.2, 1.0, 1.0);
-    objLoader->renderObject(6);
+    //glScalef(1.2, 1.0, 1.0);
+    glScalef(1.2, 0.8, 1.0);
+
+    switch(value) {
+      case 0:
+        break;
+      case 1:
+        if(!pickerMode && !pickerModeDebug) { glColor4f(0.2,0.8,0.2, 0.4); }
+        objLoader->renderObject(6);
+        break;
+      case 2:
+        if(!pickerMode && !pickerModeDebug) { glColor4f(0.6,0.6,0.2, 0.4); }
+        objLoader->renderObject(7);
+        break;
+      case 3:
+        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.4); }
+        objLoader->renderObject(8);
+        break;
+      default:
+        break;
+      
+    }
+
   glPopMatrix();
   glDepthMask(GL_TRUE);
   glEnable(GL_CULL_FACE);
@@ -315,7 +356,9 @@ void Visualisation::prototype_1() {
   int weekday;
   int today = days[0].weekday;
   int event_id;
-  unsigned int current_day = today-1;
+  int event_icon;
+  int event_importance;
+  unsigned int current_day = calendar.getWeekDay()-1;
   int selected = appModel->getSelectedDateIndex()-1;
   //printf("current:%d, selected:%d\n", current_day, selected);
 
@@ -368,6 +411,7 @@ void Visualisation::prototype_1() {
       weekday = days[i].weekday;
       day = days[i].day;
       event_id = days[i].event_id;
+      event_icon = days[i].event_icon;
       alpha = 1.0f;
 
       // compute sin & cosine
@@ -422,7 +466,7 @@ void Visualisation::prototype_1() {
             if(false) { }                                               
             else { glTranslatef(0.0,-1.5,0.0); }
             // draw only following event draw_model
-            if(i>=(unsigned)value) { draw_outline(1, alpha, false); }
+            if(i>=(unsigned)value) { draw_icon(event_icon, alpha, false); }
           glPopMatrix();
         }
         // draw objects without outline
@@ -447,10 +491,10 @@ void Visualisation::prototype_1() {
           glRotatef(15.0, 1.0,0.0,0.0);
           glScalef(0.25, 0.15, 0.2);
           event_id = days[i].event_id;
-          if(event_id>=0) {
+          event_importance = days[i].event_importance;
+          if(event_id>=0) { // has event
             // level of importance by depth indicator
-            if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.6); }
-            if(i>=(unsigned)value) { draw_radialtile_1(); }
+            if(i>=(unsigned)value) { draw_importance(event_importance); }
           }
         glPopMatrix();
       }
@@ -484,10 +528,12 @@ void Visualisation::prototype_5() {
 }
 
 void Visualisation::radial_pos(int index) {
-  float z = (index/7)*-0.55 +index*0.003;          // spacing between each week
-  z += ((float)(index%7)/7) *-0.55;    // forms spiral, connected days
+  float gap = 1.0;
+  float correction = index*0.003;
+  float z = (index/7)*-gap;               // spacing between each week
+  z += ((float)(index%7)/7) *-gap;        // forms spiral, connected days
 
-  glRotatef(180+25, 0.0,0.0,1.0);     // rotation correction
+  glRotatef(180+25, 0.0,0.0,1.0);         // rotation correction
   glRotatef(index*51.44, 0.0,0.0,1.0);
   glTranslatef(0.0,0.0, z);
 }

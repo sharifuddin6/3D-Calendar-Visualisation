@@ -16,6 +16,9 @@ class Event {
     char* getDescription();
     char* getLocation();
 
+    int getIcon();
+    int getImportance();
+
     // setters
     void setSubject(const char* newSubject);
     void setStartDate(const char* newStartDate);
@@ -27,6 +30,9 @@ class Event {
     void setDescription(const char* newDescription);
     void setLocation(const char* newLocation);
 
+    void setIcon(int newIcon);
+    void setImportance(int newImportance);
+
   private:
     char* startDT;
     char* endDT;
@@ -36,6 +42,9 @@ class Event {
     char* subject;
     char* description;
     char* location;
+
+    int icon;
+    int importance;
 
 };
 

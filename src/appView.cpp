@@ -269,7 +269,7 @@ void AppView::drawVisualisation() {
 
 void AppView::drawAllText() {
   //drawText(0, 0, "CALENDAR VISUALISATION PROTOTYPE");
-  drawText(width*(0.5f)-name_size*(10*0.5), height-12, prototype_name);
+  drawText(width*(0.5f)-name_size*(10*0.25), height-12, prototype_name);
 
   // display current date
   drawText(0, height-12, buffer1);

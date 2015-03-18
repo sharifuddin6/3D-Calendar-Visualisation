@@ -36,6 +36,14 @@ char* Event::getLocation() {
   return location;
 }
 
+int Event::getIcon() {
+  return icon;
+}
+
+int Event::getImportance() {
+  return importance;
+}
+
 // setters
 void Event::setSubject(const char* newSubject) {
   string tmp = string(newSubject);
@@ -128,3 +136,10 @@ void Event::setLocation(const char* newLocation) {
   tmp.clear();
 }
 
+void Event::setIcon(int newIcon) {
+  icon = newIcon;
+}
+
+void Event::setImportance(int newImportance) {
+  importance = newImportance;
+}

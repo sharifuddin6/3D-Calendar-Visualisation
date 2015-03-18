@@ -47,6 +47,8 @@ void AppModel::parseCSV(const char* filePath) {
 
       // create event object and store in array
       Event event;
+      int icon, importance;
+      stringstream strIcon, strImportance;      
       event.setSubject(attributes.at(0).c_str());
       event.setStartDate(attributes.at(1).c_str());
       event.setStartTime(attributes.at(2).c_str());
@@ -54,6 +56,16 @@ void AppModel::parseCSV(const char* filePath) {
       event.setEndTime(attributes.at(4).c_str());
       event.setDescription(attributes.at(5).c_str());
       event.setLocation(attributes.at(6).c_str());
+      // extract and convert integer values
+      const char* icon_val = attributes.at(7).c_str();
+      strIcon << icon_val;
+      strIcon >> icon; 
+      const char* impo_val = attributes.at(8).c_str();
+      strImportance << impo_val;
+      strImportance >> importance;
+
+      event.setIcon(icon);
+      event.setImportance(importance);
       event_array.push_back(event);
 
     }
@@ -88,6 +100,8 @@ void AppModel::parseICS(const char* filePath) {
       if(event_state) {
         // if event state add lines to event_buffer
         int index = event_array.size()-1;
+        int icon, importance;
+        stringstream strIcon, strImportance;      
 
         if(has_prefix(line.c_str(), "DTSTART:")) {
           const char* startDateTime = line.substr(8).c_str();
@@ -104,8 +118,18 @@ void AppModel::parseICS(const char* filePath) {
         } else if(has_prefix(line.c_str(), "LOCATION:")) {
           const char* location = line.substr(9).c_str();
           event_array[index].setLocation(location);
+        } else if(has_prefix(line.c_str(), "ICON:")) {
+          const char* icon_val = line.substr(5).c_str();
+          strIcon << icon_val;
+          strIcon >> icon; 
+          event_array[index].setIcon(icon);
+        } else if(has_prefix(line.c_str(), "IMPORTANCE:")) {
+          const char* impo_val = line.substr(11).c_str();
+          strImportance << impo_val;
+          strImportance >> importance;
+          event_array[index].setImportance(importance);
         }
-
+         
       }
     }
   }
@@ -234,6 +258,14 @@ int AppModel::getSelectedDateIndex() {
 
 int AppModel::getCurrentDateIndex() {
   return current_date_index;
+}
+
+int AppModel::getEventIcon(int index) { 
+  return event_array.at(index).getIcon();
+}
+
+int AppModel::getEventImportance(int index) {
+  return event_array.at(index).getImportance();
 }
 
 int AppModel::getVisualisationMode() {

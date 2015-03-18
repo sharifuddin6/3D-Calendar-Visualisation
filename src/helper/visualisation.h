@@ -12,7 +12,9 @@ using namespace std;
 class Visualisation {
   // stucture for a day object
   struct aDay {
-    aDay() { }
+    aDay() {
+      event_id = -1;    
+    }
   
     int day;
     int month;
@@ -20,6 +22,8 @@ class Visualisation {
     int weekday;
     int week;
     int event_id;
+    int event_icon;
+    int event_importance;
   };
 
   // structure for unique colour id per object
@@ -59,11 +63,12 @@ class Visualisation {
     void drawDay(int weekday, int day);
     void drawText(const char* text);
 
-    void draw_giftbox(float alpha);      // draw id : 1
-    void draw_radialtile();   // draw id : 2
-
+    void draw_giftbox(float alpha); // draw id : 1
+    void draw_radialtile();         // draw id : 2
     void draw_radialface();
-    void draw_radialtile_1();
+
+    void draw_icon(int value, float alpha, bool highlight);
+    void draw_importance(int value);
 
     void draw_outline(int draw_id, float alpha, bool highlight);
 
