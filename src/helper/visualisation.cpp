@@ -271,23 +271,31 @@ void Visualisation::draw_radialtile() {
   glPopMatrix();
 }
 
-void Visualisation::draw_icon(int value, float alpha, bool highlight) {
+void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight) {
+  
+  float importance = scale*0.5;
+
   switch(value) {
     case 0:
       break;
     case 1:
+      glScalef(importance,importance,importance);
       draw_outline(1, alpha, highlight); // birthday icon
       break;
     case 2:
+      glScalef(importance,importance,importance);
       draw_outline(3, alpha, highlight); // general memo icon
       break;
     case 3:
+      glScalef(importance,importance,importance);
       draw_outline(4, alpha, highlight); // work icon
       break;
     case 4:
+      glScalef(importance,importance,importance);
       draw_outline(5, alpha, highlight); // holiday icon
       break;
     case 5:
+      glScalef(importance,importance,importance);
       draw_outline(6, alpha, highlight); // meeting icon
       break;
     default:
@@ -300,7 +308,6 @@ void Visualisation::draw_importance(int value) {
   glDepthMask(GL_FALSE);
   glDisable(GL_CULL_FACE);
   glPushMatrix();
-    //glScalef(1.2, 1.0, 1.0);
     glScalef(1.2, 0.8, 1.0);
 
     switch(value) {
@@ -516,6 +523,7 @@ void Visualisation::prototype_1() {
       day = days[i].day;
       event_id = days[i].event_id;
       event_icon = days[i].event_icon;
+      event_importance = days[i].event_importance;
       alpha = 1.0f;
 
       // compute sin & cosine
@@ -567,18 +575,15 @@ void Visualisation::prototype_1() {
         if(event_id>=0) { 
           glPushMatrix();
             // TODO: position the event draw_model
-            if(false) { }                                               
-            else {
 //              glLineWidth(5.0);
 //              glBegin(GL_LINES);
 //                glColor3f(1.0, 0.0, 0.0);
 //                glVertex3f(0.0, 0.0, 0.0);
 //                glVertex3f(0.0, -1.5, 0.0);
 //              glEnd();
-              glTranslatef(0.0,0.5,0.0);
-            }
-            // draw only following event draw_model
-            if(i>=(unsigned)value) { draw_icon(event_icon, alpha, false); }
+          glTranslatef(0.0,0.5,0.0);
+          // draw only following event draw_model
+          if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, alpha, false); }
           glPopMatrix();
         }
         // draw objects without outline
@@ -641,13 +646,13 @@ void Visualisation::prototype_5() {
 
 void Visualisation::radial_pos(int index) {
   float gap = 1.0;
-//  float correction = index*0.003;
+  float correction = index*0.07;
   float z = (index/7)*-gap;               // spacing between each week
   z += ((float)(index%7)/7) *-gap;        // forms spiral, connected days
 
   glRotatef(180+25, 0.0,0.0,1.0);         // rotation correction
   glRotatef(index*51.44, 0.0,0.0,1.0);
-  glTranslatef(0.0,0.0, z);
+  glTranslatef(0.0,0.0, z+correction);
 }
 
 float Visualisation::computeScale(const char* text) {

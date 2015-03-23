@@ -284,7 +284,8 @@ void AppView::update() {
   pos_y = appModel->getPosition_y();
   pos_z = appModel->getPosition_z();
 
-  angle += 1.5f;
+  // rotation animation
+  angle += 0.6f;
 	if (angle > 360) {
 		angle -= 360;
 	}

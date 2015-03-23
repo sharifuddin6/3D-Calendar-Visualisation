@@ -73,7 +73,7 @@ class Visualisation {
     void draw_radialtile();         // draw id : 2
     void draw_radialface();
 
-    void draw_icon(int value, float alpha, bool highlight);
+    void draw_icon(int value, int scale, float alpha, bool highlight);
     void draw_importance(int value);
 
     void draw_outline(int draw_id, float alpha, bool highlight);
