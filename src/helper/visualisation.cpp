@@ -88,6 +88,18 @@ void Visualisation::initLoad() {
   objLoader->loadObject("data/model/radial_level_1.obj");
   objLoader->loadObject("data/model/radial_level_2.obj");
   objLoader->loadObject("data/model/radial_level_3.obj");
+  objLoader->loadObject("data/model/memo_back.obj");
+  objLoader->loadObject("data/model/memo_paper.obj");
+  objLoader->loadObject("data/model/memo_text.obj");
+  objLoader->loadObject("data/model/work_cover.obj");
+  objLoader->loadObject("data/model/work_paper.obj");
+  objLoader->loadObject("data/model/work_text.obj");
+  objLoader->loadObject("data/model/holiday_stem.obj");
+  objLoader->loadObject("data/model/holiday_shade_1.obj");
+  objLoader->loadObject("data/model/holiday_shade_2.obj");
+  objLoader->loadObject("data/model/meeting_shirt.obj");
+  objLoader->loadObject("data/model/meeting_sleeve.obj");
+  objLoader->loadObject("data/model/meeting_hand.obj");
 }
 
 void Visualisation::render(int frame) {
@@ -175,15 +187,71 @@ void Visualisation::draw_giftbox(float alpha) {
     glScalef(0.4,0.4,0.4);
     glRotatef(angle, 0.0, -1.0, 0.0);
     // draw box
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
     objLoader->renderObject(0);
     // draw wrapping
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(2.0,0.1,0.1,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.1,0.1,alpha); }
     objLoader->renderObject(1);
     // draw knot
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(2.0,0.1,0.1,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.1,0.1,alpha); }
     objLoader->renderObject(2);
   glPopMatrix();	
+}
+
+void Visualisation::draw_memo(float alpha) {
+  float angle = appModel->getRotationAngle();
+  glPushMatrix();
+    glScalef(1.0,1.0,1.0);
+    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(9);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(10);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(11);
+  glPopMatrix();
+}
+
+void Visualisation::draw_work(float alpha) {
+  float angle = appModel->getRotationAngle();
+  glPushMatrix();
+    glScalef(0.6,0.6,0.6);
+    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+    objLoader->renderObject(12);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(13);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(14);
+  glPopMatrix();
+}
+
+void Visualisation::draw_holiday(float alpha) {
+  float angle = appModel->getRotationAngle();
+  glPushMatrix();
+    glScalef(1.0,1.0,1.0);
+    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(15);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+    objLoader->renderObject(16);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    objLoader->renderObject(17);
+  glPopMatrix();
+}
+
+void Visualisation::draw_meeting(float alpha) {
+  float angle = appModel->getRotationAngle();
+  glPushMatrix();
+    glScalef(1.0,1.0,1.0);
+    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
+    objLoader->renderObject(18);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+    objLoader->renderObject(19);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
+    objLoader->renderObject(20);
+  glPopMatrix();
 }
 
 void Visualisation::draw_radialface() {
@@ -209,6 +277,18 @@ void Visualisation::draw_icon(int value, float alpha, bool highlight) {
       break;
     case 1:
       draw_outline(1, alpha, highlight); // birthday icon
+      break;
+    case 2:
+      draw_outline(3, alpha, highlight); // general memo icon
+      break;
+    case 3:
+      draw_outline(4, alpha, highlight); // work icon
+      break;
+    case 4:
+      draw_outline(5, alpha, highlight); // holiday icon
+      break;
+    case 5:
+      draw_outline(6, alpha, highlight); // meeting icon
       break;
     default:
       break;
@@ -268,6 +348,18 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
     case 2:
       draw_radialtile();
       break;
+    case 3:
+      draw_memo(alpha);
+      break;
+    case 4:
+      draw_work(alpha);
+      break;
+    case 5:
+      draw_holiday(alpha);
+      break;
+    case 6:
+      draw_meeting(alpha);
+      break;
     default:
       break;
   };
@@ -293,6 +385,18 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
       break;
     case 2:
       draw_radialtile();
+      break;
+    case 3:
+      draw_memo(alpha);
+      break;
+    case 4:
+      draw_work(alpha);
+      break;
+    case 5:
+      draw_holiday(alpha);
+      break;
+    case 6:
+      draw_meeting(alpha);
       break;
     default:
       break;
@@ -464,7 +568,15 @@ void Visualisation::prototype_1() {
           glPushMatrix();
             // TODO: position the event draw_model
             if(false) { }                                               
-            else { glTranslatef(0.0,-1.5,0.0); }
+            else {
+//              glLineWidth(5.0);
+//              glBegin(GL_LINES);
+//                glColor3f(1.0, 0.0, 0.0);
+//                glVertex3f(0.0, 0.0, 0.0);
+//                glVertex3f(0.0, -1.5, 0.0);
+//              glEnd();
+              glTranslatef(0.0,0.5,0.0);
+            }
             // draw only following event draw_model
             if(i>=(unsigned)value) { draw_icon(event_icon, alpha, false); }
           glPopMatrix();
@@ -529,7 +641,7 @@ void Visualisation::prototype_5() {
 
 void Visualisation::radial_pos(int index) {
   float gap = 1.0;
-  float correction = index*0.003;
+//  float correction = index*0.003;
   float z = (index/7)*-gap;               // spacing between each week
   z += ((float)(index%7)/7) *-gap;        // forms spiral, connected days
 

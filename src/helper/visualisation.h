@@ -64,6 +64,12 @@ class Visualisation {
     void drawText(const char* text);
 
     void draw_giftbox(float alpha); // draw id : 1
+    void draw_memo(float alpha);    // draw id :
+    void draw_work(float alpha);    // draw id :
+    void draw_holiday(float alpha); // draw id :
+    void draw_meeting(float alpha); // draw id :
+
+ 
     void draw_radialtile();         // draw id : 2
     void draw_radialface();
 
