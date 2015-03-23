@@ -271,6 +271,13 @@ void Visualisation::draw_radialtile() {
   glPopMatrix();
 }
 
+void Visualisation::draw_flattile() {
+  glPushMatrix();
+    glScalef(2.0, 0.1, 2.0);
+    glutSolidCube(tile_dimension);
+  glPopMatrix();
+}
+
 void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight) {
   
   float importance = scale*0.5;
@@ -280,7 +287,7 @@ void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight)
       break;
     case 1:
       glScalef(importance,importance,importance);
-      draw_outline(1, alpha, highlight); // birthday icon
+      draw_outline(2, alpha, highlight); // birthday icon
       break;
     case 2:
       glScalef(importance,importance,importance);
@@ -349,11 +356,14 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
 
   // first draw
   switch(draw_id) {
+    case 0:
+      draw_radialtile();
+      break;
     case 1:
-      draw_giftbox(alpha);
+      draw_flattile();
       break;
     case 2:
-      draw_radialtile();
+      draw_giftbox(alpha);
       break;
     case 3:
       draw_memo(alpha);
@@ -387,11 +397,14 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
 
   // second draw
   switch(draw_id) {
+    case 0:
+      draw_radialtile();
+      break;
     case 1:
-      draw_giftbox(alpha);
+      draw_flattile();
       break;
     case 2:
-      draw_radialtile();
+      draw_giftbox(alpha);
       break;
     case 3:
       draw_memo(alpha);
@@ -556,17 +569,17 @@ void Visualisation::prototype_1() {
         if(i>=(unsigned)value) {
           // if current highlight tile red
           if(i == current_day) {
-            draw_outline(2, alpha, true);
+            draw_outline(0, alpha, true);
           } else {
-            draw_outline(2, alpha, false);
+            draw_outline(0, alpha, false);
           }
         } else {
           glDepthMask(GL_FALSE);
           // if current highlight tile red
           if(i == current_day) {
-            draw_outline(2, alpha, true);
+            draw_outline(0, alpha, true);
           } else {
-            draw_outline(2, alpha, false);
+            draw_outline(0, alpha, false);
           }
           glDepthMask(GL_TRUE);
         }
@@ -629,7 +642,107 @@ void Visualisation::prototype_1() {
 }
 
 void Visualisation::prototype_2() {
-  // REMOVED
+// CURVED PERSPECTIVE VIEW
+  // current variables
+  pickerMode = appModel->getPickingMode();
+  pickerModeDebug = appModel->getPickingModeDebug();
+  selected = appModel->getSelected();
+  unsigned int current_index;
+  tile_dimension = 0.5f;
+  float alpha;
+
+  // picking mode - disable lighting effects
+  if(pickerMode || pickerModeDebug) {	
+    // disable effects
+    glDisable(GL_DITHER);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+  } else {
+    // enable effects
+    glEnable(GL_DITHER);
+    glEnable(GL_LIGHTING);
+    if(appModel->getFog()) {
+      glEnable(GL_FOG);
+    }
+  }
+
+  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
+  glPushMatrix();
+    glTranslatef(0.0, -1.45, -3.0);
+    glRotatef(10.0, 1.0, 0.0,0.0);
+
+    //int week;
+    int day;
+    int weekday;
+    int event_id;
+    int today = days[0].weekday;
+    int event_icon;
+    int event_importance;
+
+
+    for(unsigned int i=0; i<days.size(); i++) {
+      //week = days[i].week;
+      weekday = days[i].weekday;
+      day = days[i].day;
+      event_id = days[i].event_id;
+      event_icon = days[i].event_icon;
+      event_importance = days[i].event_importance;
+
+      // days tile past?
+      int value = (selected*-1)-1;
+      if(i<(unsigned)value) {
+        int diff = value-i;
+        alpha = 0.15f-diff*0.02f;
+      }
+
+      // check selected date
+      current_index = appModel->getSelectedDateIndex();
+      if((i+current_index-today)==0.0) { 
+        current_index = i;
+        //printf("DAY:%d, %d,%d\n", day, i, current_index);
+      }
+
+      glPushMatrix();
+        // draw items on curve
+        curve_pos(i+selected);
+        
+        // picking mode draws objects related to a day in its unique colour
+        if(pickerMode || pickerModeDebug) { 
+          object_id_array.at(i).set_colour();
+        } else {  // normal mode draws objects in its usual colour
+          glColor3f(1.0,1.0,1.0);
+        }
+
+        // draw objects with outline
+        glPushMatrix();
+          glScalef(4.0, 1.0, 0.5);
+          draw_outline(1, alpha, false);
+        glPopMatrix();
+  
+        // TODO: draw event object in correct position
+        if(event_id>=0) { 
+          glPushMatrix();
+          glTranslatef(1.0,0.5,0.0);
+           // draw only following event draw_model
+          if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
+          glPopMatrix();
+        }
+
+
+        // draw objects without outline
+        drawDate(weekday, day);
+
+      glPopMatrix();
+    }
+  glPopMatrix();
+
+  // check picker if enabled and then redraw
+  if(pickerMode) {
+    pickerCheck();
+    appModel->setSwapBuffer(false);
+  } else {
+    appModel->setSwapBuffer(true);
+  }
 }
 
 void Visualisation::prototype_3() { 
@@ -653,6 +766,34 @@ void Visualisation::radial_pos(int index) {
   glRotatef(180+25, 0.0,0.0,1.0);         // rotation correction
   glRotatef(index*51.44, 0.0,0.0,1.0);
   glTranslatef(0.0,0.0, z+correction);
+}
+
+void Visualisation::curve_pos(float index) {
+  // place on curve 
+  float z = (index+1.0)*(-1.5); // adjustment
+  float far = -5.0;
+  float range = far - 0.0;
+  float tmp;
+  float spacing;
+
+  if(z > far && z < 0) {
+    tmp = (far-z)/range;
+    //printf("angled %f:%f\n", z,tmp);  
+    spacing = 0.1;
+    //glTranslatef(0.0, -spacing*z, z); // (horiz,vertical, depth)
+    glTranslatef(0.0, -spacing*z, z*0.6);
+    glRotatef(tmp*45.0+10.0, 1.0,0.0,0.0);
+  } else if (z <= far) {
+    //printf("flat top %f:%f\n", z, 0.0);
+    spacing = 0.1;
+    glTranslatef(0.0, -spacing*z, z*0.5 - 0.5);
+    glRotatef(10.0, 1.0,0.0,0.0);
+  } else if (z >= 0) {
+    //printf("facing screen %f:%f\n", z, 1.0);
+    spacing = 0.5;
+    glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
+    glRotatef(90.0, 1.0, 0.0, 0.0);
+  }
 }
 
 float Visualisation::computeScale(const char* text) {

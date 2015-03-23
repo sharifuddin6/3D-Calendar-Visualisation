@@ -72,6 +72,7 @@ class Visualisation {
  
     void draw_radialtile();         // draw id : 2
     void draw_radialface();
+    void draw_flattile();
 
     void draw_icon(int value, int scale, float alpha, bool highlight);
     void draw_importance(int value);
@@ -113,10 +114,7 @@ class Visualisation {
     void prototype_5();
 
     void radial_pos(int index);
-
-    void prototype_1_curve(float index);
-    void prototype_2_curve(float index);
-    void prototype_4_drawTile(int week, int weekday, int day);
+    void curve_pos(float index);
 
 
     float computeScale(const char *text);
