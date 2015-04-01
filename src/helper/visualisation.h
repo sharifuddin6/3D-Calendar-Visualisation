@@ -70,7 +70,7 @@ class Visualisation {
     void draw_meeting(float alpha); // draw id :
 
  
-    void draw_radialtile();         // draw id : 2
+    void draw_radialtile();         // draw id : 
     void draw_radialface();
     void draw_flattile();
 

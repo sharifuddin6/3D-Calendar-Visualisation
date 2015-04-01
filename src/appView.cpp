@@ -83,7 +83,7 @@ void AppView::display() {
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
   double aspect = (double)viewport[2] / (double)viewport[3];
-  gluPerspective(45.0, aspect, 1.0, 20.0);
+  gluPerspective(45.0, aspect, 1.0, 100.0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

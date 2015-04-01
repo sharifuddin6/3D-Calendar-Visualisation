@@ -20,13 +20,13 @@ void Visualisation::init() {
 
 void Visualisation::initDate() {
   // this week from monday
-  int total_weeks = 10;
+  int total_weeks = 20;
   int upper_limit = 7*total_weeks; // 6 weeks in front
 
   int week = 0;
   int weekday = calendar.getWeekDay();
     
-  int offset = 1-weekday; // where monday starts from 1, since 0 is not the initial state
+  int offset = 1-weekday-7; // where monday starts from 1, since 0 is not the initial state
   weekday = 1;
   char date_buff[32];
   
@@ -73,7 +73,7 @@ void Visualisation::initDate() {
   // fix offset from today for visualisation
   weekday = calendar.getWeekDay();
   //printf("weekday:%d\n", weekday);
-  appModel->setCurrentDateIndex(-weekday+1.0);
+  appModel->setCurrentDateIndex(-weekday+1.0-7.0);
 }
 
 void Visualisation::initLoad() {
@@ -182,74 +182,74 @@ void Visualisation::drawText(const char* text) {
 
 // draw loaded objects
 void Visualisation::draw_giftbox(float alpha) {
-  float angle = appModel->getRotationAngle();
+//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(0.4,0.4,0.4);
-    glRotatef(angle, 0.0, -1.0, 0.0);
-    // draw box
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+//    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
     objLoader->renderObject(0);
-    // draw wrapping
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.1,0.1,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.6,0.3,alpha); }
     objLoader->renderObject(1);
-    // draw knot
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.1,0.1,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.3,0.3,alpha); }
     objLoader->renderObject(2);
   glPopMatrix();	
 }
 
 void Visualisation::draw_memo(float alpha) {
-  float angle = appModel->getRotationAngle();
+//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    glRotatef(angle, 0.0, -1.0, 0.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+//    glRotatef(angle, 0.0, -1.0, 0.0);
+    glRotatef(-90,0.0,1.0,0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(9);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(10);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(11);
   glPopMatrix();
 }
 
 void Visualisation::draw_work(float alpha) {
-  float angle = appModel->getRotationAngle();
+//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(0.6,0.6,0.6);
-    glRotatef(angle, 0.0, -1.0, 0.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+//    glRotatef(angle, 0.0, -1.0, 0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.5,0.9,alpha); }
     objLoader->renderObject(12);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(13);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(14);
   glPopMatrix();
 }
 
 void Visualisation::draw_holiday(float alpha) {
-  float angle = appModel->getRotationAngle();
+//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    glRotatef(angle, 0.0, -1.0, 0.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+//    glRotatef(angle, 0.0, -1.0, 0.0);
+    glRotatef(-90,0.0,1.0,0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(15);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
     objLoader->renderObject(16);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
     objLoader->renderObject(17);
   glPopMatrix();
 }
 
 void Visualisation::draw_meeting(float alpha) {
-  float angle = appModel->getRotationAngle();
+//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    glRotatef(angle, 0.0, -1.0, 0.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
+//    glRotatef(angle, 0.0, -1.0, 0.0);
+    glRotatef(-90, 0.0,1.0,0.0);
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(18);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.2,0.2,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
     objLoader->renderObject(19);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(8.0,8.0,0.5,alpha); }
+    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(20);
   glPopMatrix();
 }
@@ -280,7 +280,7 @@ void Visualisation::draw_flattile() {
 
 void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight) {
   
-  float importance = scale*0.5;
+  float importance = scale*1.0;
 
   switch(value) {
     case 0:
@@ -482,7 +482,7 @@ void Visualisation::prototype_1() {
   int event_id;
   int event_icon;
   int event_importance;
-  unsigned int current_day = calendar.getWeekDay()-1;
+  unsigned int current_day = calendar.getWeekDay()-1+7;
   int selected = appModel->getSelectedDateIndex()-1;
   //printf("current:%d, selected:%d\n", current_day, selected);
 
@@ -584,23 +584,18 @@ void Visualisation::prototype_1() {
           glDepthMask(GL_TRUE);
         }
 
-        // TODO: draw event object in correct position
+        // draw event icon
         if(event_id>=0) { 
           glPushMatrix();
-            // TODO: position the event draw_model
-//              glLineWidth(5.0);
-//              glBegin(GL_LINES);
-//                glColor3f(1.0, 0.0, 0.0);
-//                glVertex3f(0.0, 0.0, 0.0);
-//                glVertex3f(0.0, -1.5, 0.0);
-//              glEnd();
-          glTranslatef(0.0,0.5,0.0);
+          glTranslatef(0.0,-0.3+0.5*event_importance,0.0);
+          glScalef(0.5, 0.5, 0.5);
+
           // draw only following event draw_model
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, alpha, false); }
           glPopMatrix();
         }
         // draw objects without outline
-        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, alpha+0.05); }
+        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
         drawDay(weekday, day);
 
       glPopMatrix();
@@ -668,8 +663,9 @@ void Visualisation::prototype_2() {
 
   // DRAWS ALL DAYS CREATED IN INIT FUNCTION
   glPushMatrix();
-    glTranslatef(0.0, -1.45, -3.0);
+    glTranslatef(-1.0, -1.45, -3.0);
     glRotatef(10.0, 1.0, 0.0,0.0);
+    glRotatef(-25.0, 0.0, 1.0,0.0);
 
     //int week;
     int day;
@@ -719,11 +715,10 @@ void Visualisation::prototype_2() {
           draw_outline(1, alpha, false);
         glPopMatrix();
   
-        // TODO: draw event object in correct position
+        // draw event icon
         if(event_id>=0) { 
           glPushMatrix();
-          glTranslatef(1.0,0.5,0.0);
-           // draw only following event draw_model
+          glTranslatef(-2.8,0.15,0.0);
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
           glPopMatrix();
         }
@@ -821,6 +816,7 @@ float Visualisation::computeScale(const char* text) {
 
 void Visualisation::smooth_selection(int frame) {
   // smooth selection animation
+  float speed = 0.2;
   float tmp = appModel->getSelected();
   float selected_buff = appModel->getSelectedBuff();
 
@@ -832,12 +828,12 @@ void Visualisation::smooth_selection(int frame) {
   // adds sliding animation
   if(selected_buff != 0) {
     if(selected_buff>0) {
-      tmp+=0.1;
-      appModel->setSelectedBuff(-0.1);
+      tmp+=speed;
+      appModel->setSelectedBuff(-speed);
       appModel->setSelected(tmp);
     } else if(selected_buff<0) {
-      tmp-=0.1;
-      appModel->setSelectedBuff(0.1);
+      tmp-=speed;
+      appModel->setSelectedBuff(speed);
       appModel->setSelected(tmp);
     }
   }
