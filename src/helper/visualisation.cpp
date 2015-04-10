@@ -79,24 +79,30 @@ void Visualisation::initDate() {
 void Visualisation::initLoad() {
   // load object
   objLoader = new ObjectLoader();
-  objLoader->loadObject("data/model/gift_box.obj");
-  objLoader->loadObject("data/model/gift_wrap.obj");
-  objLoader->loadObject("data/model/gift_knot.obj");
+
   objLoader->loadObject("data/model/radial_face.obj");
   objLoader->loadObject("data/model/radial_text.obj");
   objLoader->loadObject("data/model/radial_tile.obj");
   objLoader->loadObject("data/model/radial_level_1.obj");
   objLoader->loadObject("data/model/radial_level_2.obj");
   objLoader->loadObject("data/model/radial_level_3.obj");
+
+  objLoader->loadObject("data/model/gift_box.obj");
+  objLoader->loadObject("data/model/gift_wrap.obj");
+  objLoader->loadObject("data/model/gift_knot.obj");
+
   objLoader->loadObject("data/model/memo_back.obj");
   objLoader->loadObject("data/model/memo_paper.obj");
   objLoader->loadObject("data/model/memo_text.obj");
+
   objLoader->loadObject("data/model/work_cover.obj");
   objLoader->loadObject("data/model/work_paper.obj");
   objLoader->loadObject("data/model/work_text.obj");
+
   objLoader->loadObject("data/model/holiday_stem.obj");
   objLoader->loadObject("data/model/holiday_shade_1.obj");
   objLoader->loadObject("data/model/holiday_shade_2.obj");
+
   objLoader->loadObject("data/model/meeting_shirt.obj");
   objLoader->loadObject("data/model/meeting_sleeve.obj");
   objLoader->loadObject("data/model/meeting_hand.obj");
@@ -187,11 +193,11 @@ void Visualisation::draw_giftbox(float alpha) {
     glScalef(0.4,0.4,0.4);
 //    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
-    objLoader->renderObject(0);
+    objLoader->renderObject(6);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.6,0.3,alpha); }
-    objLoader->renderObject(1);
+    objLoader->renderObject(7);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.3,0.3,alpha); }
-    objLoader->renderObject(2);
+    objLoader->renderObject(8);
   glPopMatrix();	
 }
 
@@ -200,7 +206,6 @@ void Visualisation::draw_memo(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
 //    glRotatef(angle, 0.0, -1.0, 0.0);
-    glRotatef(-90,0.0,1.0,0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(9);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
@@ -229,7 +234,6 @@ void Visualisation::draw_holiday(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
 //    glRotatef(angle, 0.0, -1.0, 0.0);
-    glRotatef(-90,0.0,1.0,0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(15);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
@@ -244,7 +248,6 @@ void Visualisation::draw_meeting(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
 //    glRotatef(angle, 0.0, -1.0, 0.0);
-    glRotatef(-90, 0.0,1.0,0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(18);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
@@ -258,16 +261,16 @@ void Visualisation::draw_radialface() {
   glPushMatrix();
     glRotatef(90.0, 1.0, 0.0, 0.0);
     glColor4f(1.0, 1.0, 1.0, 0.2);
-    objLoader->renderObject(3);
+    objLoader->renderObject(0);
     glColor3f(0.8, 0.2, 0.2);
-    objLoader->renderObject(4);
+    objLoader->renderObject(1);
   glPopMatrix();
 }
 
 void Visualisation::draw_radialtile() {
   glPushMatrix();
     glScalef(1.2, 1.0, 1.0);
-    objLoader->renderObject(5);
+    objLoader->renderObject(2);
   glPopMatrix();
 }
 
@@ -280,7 +283,7 @@ void Visualisation::draw_flattile() {
 
 void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight) {
   
-  float importance = scale*1.0;
+  float importance = scale*2.0;
 
   switch(value) {
     case 0:
@@ -322,15 +325,15 @@ void Visualisation::draw_importance(int value) {
         break;
       case 1:
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.2,0.8,0.2, 0.4); }
-        objLoader->renderObject(6);
+        objLoader->renderObject(3);
         break;
       case 2:
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.6,0.6,0.2, 0.4); }
-        objLoader->renderObject(7);
+        objLoader->renderObject(4);
         break;
       case 3:
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.4); }
-        objLoader->renderObject(8);
+        objLoader->renderObject(5);
         break;
       default:
         break;
@@ -587,7 +590,7 @@ void Visualisation::prototype_1() {
         // draw event icon
         if(event_id>=0) { 
           glPushMatrix();
-          glTranslatef(0.0,-0.3+0.5*event_importance,0.0);
+          glTranslatef(0.0,-0.1+0.2*event_importance,0.0);
           glScalef(0.5, 0.5, 0.5);
 
           // draw only following event draw_model
@@ -609,7 +612,7 @@ void Visualisation::prototype_1() {
         float nextAngle = -M_PI * ((float)i + 1.0) * 2.0 / segments;
         float x1 = size * sin(angle), y1 = size * cos(angle);
         float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
-        int value = (selected*-1)-1;
+//        int value = (selected*-1)-1;
         glPushMatrix();
           glTranslatef((x1+x2)*0.5, (y1+y2)*0.5, 0.0);
           radial_pos(i);
@@ -617,10 +620,10 @@ void Visualisation::prototype_1() {
           glScalef(0.25, 0.15, 0.2);
           event_id = days[i].event_id;
           event_importance = days[i].event_importance;
-          if(event_id>=0) { // has event
-            // level of importance by depth indicator
-            if(i>=(unsigned)value) { draw_importance(event_importance); }
-          }
+//          if(event_id>=0) { // has event
+//            // level of importance by depth indicator
+//            if(i>=(unsigned)value) { draw_importance(event_importance); }
+//          }
         glPopMatrix();
       }
     }
