@@ -91,6 +91,7 @@ class Visualisation {
     // private variables
     int mode;
     float selected;
+//    int selected_week;
     char* prototype_name;
     int name_length;
 
@@ -115,6 +116,7 @@ class Visualisation {
 
     void radial_pos(int index);
     void curve_pos(float index);
+    void grid_pos(int week, int weekday, int day);
 
 
     float computeScale(const char *text);

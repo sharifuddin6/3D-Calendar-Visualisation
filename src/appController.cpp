@@ -96,6 +96,7 @@ void AppController::keyboard(unsigned char key, int x, int y) {
       current = appModel->getCurrentDateIndex();
       //printf("difference: %d %d\n", change, current);    
       appModel->setSelectedDateIndex(change+current);
+      appModel->setSelectedWeek(1);
       break;   
     case 'f':
       if(appModel->getFog()) {

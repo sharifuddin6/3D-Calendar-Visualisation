@@ -12,6 +12,7 @@ AppModel::AppModel() {
   position_z = 0.0;
   selected = 0.0;
   selected_buff = 0.0;
+  selected_week = 1;
   selected_date_index = 0;
   mode = 1;
 
@@ -252,6 +253,10 @@ float AppModel::getSelectedBuff() {
   return selected_buff;
 }
 
+int AppModel::getSelectedWeek() {
+  return selected_week;
+}
+
 int AppModel::getSelectedDateIndex() {
   return selected_date_index;
 }
@@ -338,6 +343,10 @@ void AppModel::setSelectedDateIndex(int new_selected_date) {
 void AppModel::setCurrentDateIndex(int new_current_date) {
   current_date_index = new_current_date;
   setSelectedDateIndex(new_current_date);
+}
+
+void AppModel::setSelectedWeek(int new_week) {
+  selected_week = new_week;
 }
 
 void AppModel::setVisualisationMode(int new_mode) {

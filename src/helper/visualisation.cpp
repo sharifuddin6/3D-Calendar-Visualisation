@@ -22,7 +22,6 @@ void Visualisation::initDate() {
   // this week from monday
   int total_weeks = 20;
   int upper_limit = 7*total_weeks; // 6 weeks in front
-
   int week = 0;
   int weekday = calendar.getWeekDay();
     
@@ -438,15 +437,15 @@ char* Visualisation::getPrototypeName() {
       name_length = strlen(prototype_name);
       break;
     case 2: 
-      strcpy(prototype_name, "Prototype 2: Curved Perspective view");
+      strcpy(prototype_name, "Prototype 2: Pathway Visualisation view");
       name_length = strlen(prototype_name);
       break;
     case 3:
-      strcpy(prototype_name, "Prototype 3: Curved Perspective view (ver 2)");
+      strcpy(prototype_name, "Prototype 3: Grid-style Visualisation view");
       name_length = strlen(prototype_name);
       break;
     case 4:
-      strcpy(prototype_name, "Prototype 4: Flat Perspective view");
+      strcpy(prototype_name, "Prototype 4: EMPTY");
       name_length = strlen(prototype_name);
       break;
     case 5:
@@ -471,7 +470,7 @@ void Visualisation::setPrototype(int newMode) {
 
 // PROTOTYPE FOR VISUALISATIONS
 void Visualisation::prototype_1() {
-// Radial Visualisation mode
+// Radial Visualisation perspective mode
   // initialise variables
   int segments = 7;
   float size = 0.5f;
@@ -640,12 +639,13 @@ void Visualisation::prototype_1() {
 }
 
 void Visualisation::prototype_2() {
-// CURVED PERSPECTIVE VIEW
+// Pathway Visualisation perspective mode
   // current variables
   pickerMode = appModel->getPickingMode();
   pickerModeDebug = appModel->getPickingModeDebug();
   selected = appModel->getSelected();
   unsigned int current_index;
+  unsigned int current_day = calendar.getWeekDay()-1+7;
   tile_dimension = 0.5f;
   float alpha;
 
@@ -709,13 +709,26 @@ void Visualisation::prototype_2() {
         if(pickerMode || pickerModeDebug) { 
           object_id_array.at(i).set_colour();
         } else {  // normal mode draws objects in its usual colour
+
+          // highlight current day
+          if(i==current_day) {
+          glColor3f(1.0,0.7,0.7);
+          } else {
           glColor3f(1.0,1.0,1.0);
+          }
         }
 
         // draw objects with outline
         glPushMatrix();
           glScalef(4.0, 1.0, 0.5);
-          draw_outline(1, alpha, false);
+
+          // highlight current day
+          if(i==current_day) {
+            draw_outline(1, alpha, true);
+          } else {
+            draw_outline(1, alpha, false);
+          }
+
         glPopMatrix();
   
         // draw event icon
@@ -725,7 +738,6 @@ void Visualisation::prototype_2() {
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
           glPopMatrix();
         }
-
 
         // draw objects without outline
         drawDate(weekday, day);
@@ -744,11 +756,136 @@ void Visualisation::prototype_2() {
 }
 
 void Visualisation::prototype_3() { 
-  // REMOVED
+// Grid-style Visualisation perspective mode
+  scale = 0.9;
+  gap = 1.0-scale;
+  tile_dimension = 0.6f;
+
+  float center = -(tile_dimension+gap)*4.0-tile_dimension;
+  float alpha = 1.0;
+
+  pickerMode = appModel->getPickingMode();
+  pickerModeDebug = appModel->getPickingModeDebug();
+  selected = appModel->getSelected();
+  int selected_date = appModel->getSelectedDateIndex()-1;
+
+  unsigned int current_index;
+  unsigned int current_day = calendar.getWeekDay()-1+7;
+
+  // picking mode - disable lighting effects
+  if(pickerMode || pickerModeDebug) {	
+    // disable effects
+    glDisable(GL_DITHER);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+  } else {
+    // enable effects
+    glEnable(GL_DITHER);
+    glEnable(GL_LIGHTING);
+    if(appModel->getFog()) {
+      glEnable(GL_FOG);
+    }
+  }
+
+  // draw grid
+  glPushMatrix();
+    glTranslatef(center,-1.25, -3.75); 
+    glRotatef(10.0, 1.0, 0.0,0.0);
+    
+    int month, week, weekday, day;
+    int today = days[0].weekday;
+    int event_id;
+    int event_icon;
+    int event_importance;
+
+    for(unsigned int i=0; i<days.size(); i++) {
+      month = days[i].month;    
+      week = days[i].week;
+      weekday = days[i].weekday;
+      day = days[i].day;
+      event_id = days[i].event_id;
+      event_icon = days[i].event_icon;
+      event_importance = days[i].event_importance;
+
+      // check selected date
+      current_index = appModel->getSelectedDateIndex();
+      if((i+current_index-today)==0.0) { 
+        current_index = i-1;
+        //printf("Day:%d, Week:%d\n", days[current_index].day, days[current_index].week);
+      }
+
+      // days tile past?
+      int value = (selected_date*-1)-1;
+      if(i<(unsigned)value) {
+        int diff = value-i;
+        alpha = 0.15f-diff*0.02f;
+      } else {
+        alpha = 1;
+      }
+
+      glPushMatrix();
+      // draw date
+      grid_pos(week, weekday, day);
+      glScalef(0.6, 0.6, 0.6);
+      if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
+      drawDay(weekday, day);
+
+      // draw tile and icons
+      glScalef(0.8, 0.6, 0.8);
+      // picking mode draws objects related to a day in its unique colour
+      if(pickerMode || pickerModeDebug) { 
+        object_id_array.at(i).set_colour();
+      } else {  // normal mode draws objects in its usual colour
+        if(month%2==0) {
+          glColor4f(0.9,0.9,1.0, alpha+0.05);
+        } else {
+          glColor4f(1.0,1.0,0.9, alpha+0.05);
+        }
+      }
+
+      // draw event icon
+      if(event_id>=0) { 
+        glPushMatrix();
+        glTranslatef(0.0,0.15,0.0);
+        glScalef(0.5,0.5,0.5);
+        if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
+        glPopMatrix();
+      }
+
+      // picking mode draws objects related to a day in its unique colour
+      if(pickerMode || pickerModeDebug) { 
+        object_id_array.at(i).set_colour();
+      } else {  // normal mode draws objects in its usual colour
+        if(month%2==0) {
+          glColor4f(0.9,0.9,1.0, alpha+0.05);
+        } else {
+          glColor4f(1.0,1.0,0.9, alpha+0.05);
+        }
+      }
+      
+      // draw day tile
+      // highlight current day
+      if(i==current_day) {
+        draw_outline(1, alpha, true);
+      } else {
+        draw_outline(1, alpha, false);
+      }
+      glPopMatrix();
+    }
+  glPopMatrix();
+
+  // check picker if enabled and then redraw
+  if(pickerMode) {
+    pickerCheck();
+    appModel->setSwapBuffer(false);
+  } else {
+    appModel->setSwapBuffer(true);
+  }
+
 }
 
 void Visualisation::prototype_4() { 
-  // REMOVED
+  // EMPTY
 }
 
 void Visualisation::prototype_5() {
@@ -792,6 +929,23 @@ void Visualisation::curve_pos(float index) {
     glTranslatef(0.0, (-spacing*z)-(z*0.25), 0.0);
     glRotatef(90.0, 1.0, 0.0, 0.0);
   }
+}
+
+void Visualisation::grid_pos(int week, int weekday, int day) {
+  // variables
+  float gap = 0.15;
+  float tile_dimension = 0.5;
+  int selected_week = appModel->getSelectedWeek();
+
+  float translate_center = weekday*tile_dimension+gap*weekday +0.75;
+  float translate_week = -week*tile_dimension+gap*-week;
+  float translate_selected_week = selected_week*tile_dimension+gap*selected_week +selected_week*0.25;
+
+  // transformations
+  glTranslatef(0.0,0.0,  translate_selected_week-0.2);
+  glTranslatef(translate_center,0.0,translate_week);
+  glTranslatef(0.0, 0.0, -0.25*week);
+
 }
 
 float Visualisation::computeScale(const char* text) {
@@ -864,9 +1018,17 @@ void Visualisation::pickerCheck() {
     if(object_id_array.at(i).b != data[2] ) { match = false; }
 
     // test for match
-    if(match) { id_index = i; }
+    if(match) { 
+      id_index = i;
+      // determine selected week
+      //  printf("value: %d\n", days[id_index].week);
+      appModel->setSelectedWeek(days[id_index].week);
+
+    }
   }
 
+
+  // make translation
   if(id_index>=0) {
 //    printf("Object ID: %d [%d,%d,%d]\n", id_index, 
 //          object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);

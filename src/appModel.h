@@ -29,6 +29,7 @@ class AppModel {
     float getRotationAngle();
     float getSelected();
     float getSelectedBuff();
+    int getSelectedWeek();
     int getSelectedDateIndex();
     int getCurrentDateIndex();
 
@@ -54,9 +55,9 @@ class AppModel {
     void setSelected(float new_selected);
     void setSelectedBuff(float new_selected_buff);
     void emptySelectedBuff();
-
     void setSelectedDateIndex(int new_selected_date);
     void setCurrentDateIndex(int new_current_date);
+    void setSelectedWeek(int new_week);
 
     void setVisualisationMode(int new_mode);
     void setFog(bool value);
@@ -79,6 +80,7 @@ class AppModel {
     float selected_buff;
     int selected_date_index;
     int current_date_index;
+    int selected_week;
 
     int mode;                                   // visualisation mode is the chosen mode
     bool fog_enabled;
