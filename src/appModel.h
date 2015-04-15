@@ -30,11 +30,17 @@ class AppModel {
     float getSelected();
     float getSelectedBuff();
     int getSelectedWeek();
-    int getSelectedDateIndex();
-    int getCurrentDateIndex();
+    int getSelectedDateIndex(); // <- use to find selected date index
+    int getCurrentDateIndex();  // <- use to find todays date index
 
     int getEventIcon(int index);
     int getEventImportance(int index);
+    char* getEventSubject(int index);
+    char* getEventStartDate(int index);
+    char* getEventStartTime(int index);
+    char* getEventEndDate(int index);
+    char* getEventEndTime(int index);
+    char* getEventLocation(int index);
 
     int getVisualisationMode();
     bool getFog();

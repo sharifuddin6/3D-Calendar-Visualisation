@@ -1,0 +1,28 @@
+---------------------------------------------
+EVENT TYPE: Birthday
+CODE:       1
+
+EVENT TYPE: Memo
+CODE:       2
+
+EVENT TYPE: Work
+CODE:       3
+
+EVENT TYPE: Holiday
+CODE:       4
+
+EVENT TYPE: Meeting
+CODE:       5
+
+---------------------------------------------
+
+PRIORITY TYPE: LOW
+CODE:          1
+
+PRIORITY TYPE: MID
+CODE:          2
+
+PRIORITY TYPE: HIGH
+CODE:          3
+
+---------------------------------------------

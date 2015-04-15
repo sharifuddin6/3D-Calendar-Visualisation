@@ -48,6 +48,12 @@ void Visualisation::initDate() {
     if(aday.event_id > 0) {
       aday.event_icon = appModel->getEventIcon(aday.event_id);
       aday.event_importance = appModel->getEventImportance(aday.event_id);
+      aday.event_subject = appModel->getEventSubject(aday.event_id);
+      aday.event_startDate = appModel->getEventStartDate(aday.event_id);
+      aday.event_startTime = appModel->getEventStartTime(aday.event_id);
+      aday.event_endDate = appModel->getEventEndDate(aday.event_id);
+      aday.event_endTime = appModel->getEventEndTime(aday.event_id);
+      aday.event_location = appModel->getEventLocation(aday.event_id);
     }
 
     days.push_back(aday); // push back
@@ -461,6 +467,70 @@ char* Visualisation::getPrototypeName() {
 int Visualisation::getPrototypeNameLen() {
   return name_length;
 }
+
+char* Visualisation::getEventSubject() {
+  int selected_id = appModel->getSelectedDateIndex() *-1;
+  printf("SELECTED : %d\n", selected_id);
+//  printf("SUBJECT: %s\n", days[selected_id].event_subject);
+//  printf("ARRAY SIZE: %lu\n", days.size());
+  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+    return days[selected_id].event_subject;
+  } else {
+    return (char*)"EMPTY";
+  }
+}
+
+char* Visualisation::getEventStartDateTime() {
+  int selected_id = appModel->getSelectedDateIndex() *-1;
+  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+    std::string buf(days[selected_id].event_startDate);
+    buf.append(" ");
+    buf.append(days[selected_id].event_startTime);
+    // minor editing of date format
+  //  if(!buf.empty()) {
+  //    size_t f = buf.find(",");
+  //    buf.replace(f, 1, "/");
+  //    f = buf.find(",");
+  //    buf.replace(f, 1, "/");
+  //  }
+    char* datetime = new char[buf.length() +1];
+    strcpy(datetime, buf.c_str());
+    return datetime;
+  } else {
+    return (char*)"EMPTY";
+  }
+}
+
+char* Visualisation::getEventEndDateTime() {
+  int selected_id = appModel->getSelectedDateIndex() *-1;
+  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+    std::string buf(days[selected_id].event_endDate);
+    buf.append(" ");
+    buf.append(days[selected_id].event_endTime);
+    // minor editing of date format
+  //  if(!buf.empty()) {
+  //    size_t f = buf.find(",");
+  //    buf.replace(f, 1, "/");
+  //    f = buf.find(",");
+  //    buf.replace(f, 1, "/");
+  //  }
+    char* datetime = new char[buf.length() +1];
+    strcpy(datetime, buf.c_str());
+    return datetime;
+  } else {
+    return (char*)"EMPTY";
+  }
+}
+
+char* Visualisation::getEventLocation() {
+  int selected_id = appModel->getSelectedDateIndex() *-1;
+  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+    return days[selected_id].event_location;                                                                              // <-- WORKING HERE !
+  } else {
+    return (char*)"EMPTY";
+  }
+}
+
 
 // setters
 void Visualisation::setPrototype(int newMode) {

@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
+
+#include <stdio.h>
+#include <string.h>
+
 using namespace std;
 
 // constructor
@@ -265,6 +269,7 @@ int AppModel::getCurrentDateIndex() {
   return current_date_index;
 }
 
+// return event details
 int AppModel::getEventIcon(int index) { 
   return event_array.at(index).getIcon();
 }
@@ -272,6 +277,31 @@ int AppModel::getEventIcon(int index) {
 int AppModel::getEventImportance(int index) {
   return event_array.at(index).getImportance();
 }
+
+char* AppModel::getEventSubject(int index) {
+  return event_array.at(index).getSubject();
+}
+
+char* AppModel::getEventStartDate(int index) {
+  return event_array.at(index).getStartDate();
+}
+
+char* AppModel::getEventStartTime(int index) {
+  return event_array.at(index).getStartTime();
+}
+
+char* AppModel::getEventEndDate(int index) {
+  return event_array.at(index).getEndDate();
+}
+
+char* AppModel::getEventEndTime(int index) {
+  return event_array.at(index).getEndTime();
+}
+
+char* AppModel::getEventLocation(int index) {
+  return event_array.at(index).getLocation();
+}
+
 
 int AppModel::getVisualisationMode() {
   return mode;

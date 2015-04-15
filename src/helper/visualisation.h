@@ -24,6 +24,14 @@ class Visualisation {
     int event_id;
     int event_icon;
     int event_importance;
+
+    char* event_subject;
+    char* event_startDate;
+    char* event_startTime;
+    char* event_endDate;
+    char* event_endTime;
+    char* event_location;
+
   };
 
   // structure for unique colour id per object
@@ -82,6 +90,11 @@ class Visualisation {
     // getter
     char* getPrototypeName();
     int getPrototypeNameLen();
+
+    char* getEventSubject();
+    char* getEventStartDateTime();
+    char* getEventEndDateTime();
+    char* getEventLocation();
     
     // setter
     void setPrototype(int newMode);

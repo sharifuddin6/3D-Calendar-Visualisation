@@ -64,17 +64,22 @@ class AppView {
     float pos_x, pos_y, pos_z;
     float angle;
 
-    char buffer1[32];
-    char buffer2[32];
+    char date_buffer1[32];
+    char date_buffer2[32];
+    char event_subject[32];
+    char event_startdate[64];
+    char event_enddate[64];
+    char event_location[32];
 
     char* prototype_name;
     int name_size;
-    int mode;
+    int mode, selected;
     
     // private methods
     void init();
     void update();
     void updateText();
+    void updateEventText();
     void reset();
   
 

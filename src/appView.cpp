@@ -22,6 +22,7 @@ AppView::AppView(AppController *newAppController, AppModel *newAppModel, Visuali
 
   // update current date and text
   updateText();
+  updateEventText();                                                    //  <-- TODO:: SEGEMENTATION FAULT
 
 }
 
@@ -263,8 +264,16 @@ void AppView::drawVisualisation() {
   } else {
     visualisation->setPrototype(mode);    
   }
+
   visualisation->render(frame); // render visualisation
 
+  // if selected date changes, update text
+  int new_selected = appModel->getSelectedDateIndex();
+  if(selected != new_selected) {
+    selected = new_selected;
+    // update text
+    updateEventText();
+  }
 }
 
 void AppView::drawAllText() {
@@ -272,8 +281,15 @@ void AppView::drawAllText() {
   drawText(width*(0.5f)-name_size*(10*0.25), height-12, prototype_name);
 
   // display current date
-  drawText(0, height-12, buffer1);
-  drawText(0, height-24, buffer2);
+  drawText(0, height-12, date_buffer1);
+  drawText(0, height-24, date_buffer2);
+
+  // display selected event information
+  drawText(0, height-48, event_subject);
+  drawText(0, height-60, event_startdate);
+  drawText(0, height-72, event_enddate);
+  drawText(0, height-84, event_location);
+ 
 }
 
 // private methods: init, update, reset
@@ -304,8 +320,21 @@ void AppView::updateText() {
   char *timeString = calendar.getTimeToString();
 
   // store into buffer
-  sprintf(buffer1, "%s, %s", weekdayString, timeString);
-  sprintf(buffer2, "%d %s %d", day, monthString, year);
+  sprintf(date_buffer1, "%s, %s", weekdayString, timeString);
+  sprintf(date_buffer2, "%d %s %d", day, monthString, year);
+}
+
+void AppView::updateEventText() {
+  char* subject = visualisation->getEventSubject();
+  char* startdate = visualisation->getEventStartDateTime();
+  char* enddate = visualisation->getEventEndDateTime();
+  char* location = visualisation->getEventLocation();
+
+  // store into buffer
+  sprintf(event_subject, "%s", subject);
+  sprintf(event_startdate, "%s", startdate);
+  sprintf(event_enddate, "%s", enddate);
+  sprintf(event_location, "%s", location);
 }
 
 void AppView::reset() {
