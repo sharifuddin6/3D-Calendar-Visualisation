@@ -9,6 +9,7 @@
 Visualisation::Visualisation(AppModel *newAppModel) {
   appModel = newAppModel;
   mode = 1;
+  hasEvent = false;
   prototype_name = new char[64];
   getPrototypeName();
 }
@@ -166,14 +167,14 @@ void Visualisation::drawDate(int weekday, int day) {
   glPushMatrix();
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.1, 0.6, 0.1);
-    glTranslatef(0.0, 0.5, 0.0);
+    glTranslatef(2.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
   // weekday in string form
   glPushMatrix(); 
     if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
-    glTranslatef(-10.0, 0.5, 0.0);
+    glTranslatef(7.0, 0.5, 0.0);
     drawText(buff_day);
   glPopMatrix();
 }
@@ -469,63 +470,79 @@ int Visualisation::getPrototypeNameLen() {
 }
 
 char* Visualisation::getEventSubject() {
-  int selected_id = appModel->getSelectedDateIndex() *-1;
-  printf("SELECTED : %d\n", selected_id);
-//  printf("SUBJECT: %s\n", days[selected_id].event_subject);
-//  printf("ARRAY SIZE: %lu\n", days.size());
-  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
-    return days[selected_id].event_subject;
+  if(hasEvent) {
+    int selected_id = appModel->getSelectedDateIndex() *-1;
+  //  printf("SELECTED : %d\n", selected_id);
+  //  printf("SUBJECT: %s\n", days[selected_id].event_subject);
+  //  printf("ARRAY SIZE: %lu\n", days.size());
+    if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+      return days[selected_id].event_subject;
+    } else {
+      return (char*)"EMPTY";
+    }
   } else {
     return (char*)"EMPTY";
   }
 }
 
 char* Visualisation::getEventStartDateTime() {
-  int selected_id = appModel->getSelectedDateIndex() *-1;
-  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
-    std::string buf(days[selected_id].event_startDate);
-    buf.append(" ");
-    buf.append(days[selected_id].event_startTime);
-    // minor editing of date format
-  //  if(!buf.empty()) {
-  //    size_t f = buf.find(",");
-  //    buf.replace(f, 1, "/");
-  //    f = buf.find(",");
-  //    buf.replace(f, 1, "/");
-  //  }
-    char* datetime = new char[buf.length() +1];
-    strcpy(datetime, buf.c_str());
-    return datetime;
+  if(hasEvent) {
+    int selected_id = appModel->getSelectedDateIndex() *-1;
+    if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+      std::string buf(days[selected_id].event_startDate);
+      buf.append(" ");
+      buf.append(days[selected_id].event_startTime);
+      // minor editing of date format
+      if(!buf.empty()) {
+        size_t f = buf.find(",");
+        buf.replace(f, 1, "/");
+        f = buf.find(",");
+        buf.replace(f, 1, "/");
+      }
+      char* datetime = new char[buf.length() +1];
+      strcpy(datetime, buf.c_str());
+      return datetime;
+    } else {
+      return (char*)"EMPTY";
+    }
   } else {
     return (char*)"EMPTY";
   }
 }
 
 char* Visualisation::getEventEndDateTime() {
-  int selected_id = appModel->getSelectedDateIndex() *-1;
-  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
-    std::string buf(days[selected_id].event_endDate);
-    buf.append(" ");
-    buf.append(days[selected_id].event_endTime);
-    // minor editing of date format
-  //  if(!buf.empty()) {
-  //    size_t f = buf.find(",");
-  //    buf.replace(f, 1, "/");
-  //    f = buf.find(",");
-  //    buf.replace(f, 1, "/");
-  //  }
-    char* datetime = new char[buf.length() +1];
-    strcpy(datetime, buf.c_str());
-    return datetime;
+  if(hasEvent) {
+    int selected_id = appModel->getSelectedDateIndex() *-1;
+    if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+      std::string buf(days[selected_id].event_endDate);
+      buf.append(" ");
+      buf.append(days[selected_id].event_endTime);
+      // minor editing of date format
+    //  if(!buf.empty()) {
+    //    size_t f = buf.find(",");
+    //    buf.replace(f, 1, "/");
+    //    f = buf.find(",");
+    //    buf.replace(f, 1, "/");
+    //  }
+      char* datetime = new char[buf.length() +1];
+      strcpy(datetime, buf.c_str());
+      return datetime;
+    } else {
+      return (char*)"EMPTY";
+    }
   } else {
     return (char*)"EMPTY";
   }
 }
 
 char* Visualisation::getEventLocation() {
-  int selected_id = appModel->getSelectedDateIndex() *-1;
-  if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
-    return days[selected_id].event_location;                                                                              // <-- WORKING HERE !
+  if(hasEvent) {
+    int selected_id = appModel->getSelectedDateIndex() *-1;
+    if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
+      return days[selected_id].event_location;                                                                              // <-- WORKING HERE !
+    } else {
+      return (char*)"EMPTY";
+    }
   } else {
     return (char*)"EMPTY";
   }
@@ -661,11 +678,11 @@ void Visualisation::prototype_1() {
           glPushMatrix();
           glTranslatef(0.0,-0.1+0.2*event_importance,0.0);
           glScalef(0.5, 0.5, 0.5);
-
-          // draw only following event draw_model
+          // draw upcoming event icons only
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, alpha, false); }
           glPopMatrix();
         }
+
         // draw objects without outline
         if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
         drawDay(weekday, day);
@@ -716,8 +733,9 @@ void Visualisation::prototype_2() {
   selected = appModel->getSelected();
   unsigned int current_index;
   unsigned int current_day = calendar.getWeekDay()-1+7;
+  int selected_date = appModel->getSelectedDateIndex()-1;
   tile_dimension = 0.5f;
-  float alpha;
+  float alpha = 1.0;
 
   // picking mode - disable lighting effects
   if(pickerMode || pickerModeDebug) {	
@@ -758,10 +776,12 @@ void Visualisation::prototype_2() {
       event_importance = days[i].event_importance;
 
       // days tile past?
-      int value = (selected*-1)-1;
+      int value = (selected_date*-1)-1;
       if(i<(unsigned)value) {
         int diff = value-i;
         alpha = 0.15f-diff*0.02f;
+      } else {
+        alpha = 1;
       }
 
       // check selected date
@@ -779,19 +799,13 @@ void Visualisation::prototype_2() {
         if(pickerMode || pickerModeDebug) { 
           object_id_array.at(i).set_colour();
         } else {  // normal mode draws objects in its usual colour
-
-          // highlight current day
-          if(i==current_day) {
-          glColor3f(1.0,0.7,0.7);
-          } else {
           glColor3f(1.0,1.0,1.0);
-          }
         }
 
         // draw objects with outline
         glPushMatrix();
           glScalef(4.0, 1.0, 0.5);
-
+          glTranslatef(0.3, 0.0,0.0);
           // highlight current day
           if(i==current_day) {
             draw_outline(1, alpha, true);
@@ -804,7 +818,7 @@ void Visualisation::prototype_2() {
         // draw event icon
         if(event_id>=0) { 
           glPushMatrix();
-          glTranslatef(-2.8,0.15,0.0);
+          glTranslatef(-2.8,-0.5,-1.0);
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
           glPopMatrix();
         }
@@ -1093,10 +1107,16 @@ void Visualisation::pickerCheck() {
       // determine selected week
       //  printf("value: %d\n", days[id_index].week);
       appModel->setSelectedWeek(days[id_index].week);
-
     }
   }
 
+  // check if selected date has event
+  int event_id = days[id_index].event_id;
+  if(event_id >= 0) {
+    hasEvent = true;
+  } else {
+    hasEvent = false;
+  }
 
   // make translation
   if(id_index>=0) {

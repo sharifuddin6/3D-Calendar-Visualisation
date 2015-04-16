@@ -331,10 +331,10 @@ void AppView::updateEventText() {
   char* location = visualisation->getEventLocation();
 
   // store into buffer
-  sprintf(event_subject, "%s", subject);
-  sprintf(event_startdate, "%s", startdate);
-  sprintf(event_enddate, "%s", enddate);
-  sprintf(event_location, "%s", location);
+  sprintf(event_subject, "SUBJECT:%s", subject);
+  sprintf(event_startdate, "START:%s", startdate);
+  sprintf(event_enddate, "END:  %s", enddate);
+  sprintf(event_location, "LOCATION:%s", location);
 }
 
 void AppView::reset() {

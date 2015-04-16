@@ -138,7 +138,7 @@ class Visualisation {
     bool pickerMode;
     bool pickerModeDebug;
     bool wire_mode;
-    
+    bool hasEvent;
 };
 
 #endif
