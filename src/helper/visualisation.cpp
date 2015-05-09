@@ -1,3 +1,33 @@
+/*
+ * The visualisation class implementation for the visualisation software. 
+ * Implementation code of various structures and draw methods for related
+ * visualisations.
+ *
+ * Copyright (c) 2015 Sharif UDDIN
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+
 #include "visualisation.h"
 #include "../../include/drawtext/text3d.h"
 
@@ -115,9 +145,7 @@ void Visualisation::initLoad() {
 }
 
 void Visualisation::render(int frame) {
-
   smooth_selection(frame);
-
   switch(mode) {
     case 1:
       prototype_1();
@@ -137,7 +165,6 @@ void Visualisation::render(int frame) {
     default:
       break;  
   } 
-
 }
 
 void Visualisation::drawDay(int weekday, int day) {
@@ -153,7 +180,6 @@ void Visualisation::drawDay(int weekday, int day) {
     glTranslatef(0.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
-
 }
 
 void Visualisation::drawDate(int weekday, int day) {
@@ -194,10 +220,8 @@ void Visualisation::drawText(const char* text) {
 
 // draw loaded objects
 void Visualisation::draw_giftbox(float alpha) {
-//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(0.4,0.4,0.4);
-//    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
     objLoader->renderObject(6);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.6,0.3,alpha); }
@@ -208,10 +232,8 @@ void Visualisation::draw_giftbox(float alpha) {
 }
 
 void Visualisation::draw_memo(float alpha) {
-//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-//    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(9);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
@@ -222,10 +244,8 @@ void Visualisation::draw_memo(float alpha) {
 }
 
 void Visualisation::draw_work(float alpha) {
-//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(0.6,0.6,0.6);
-//    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.5,0.9,alpha); }
     objLoader->renderObject(12);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
@@ -236,10 +256,8 @@ void Visualisation::draw_work(float alpha) {
 }
 
 void Visualisation::draw_holiday(float alpha) {
-//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-//    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(15);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
@@ -250,10 +268,8 @@ void Visualisation::draw_holiday(float alpha) {
 }
 
 void Visualisation::draw_meeting(float alpha) {
-//  float angle = appModel->getRotationAngle();
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-//    glRotatef(angle, 0.0, -1.0, 0.0);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(18);
     if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
@@ -288,9 +304,7 @@ void Visualisation::draw_flattile() {
 }
 
 void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight) {
-  
   float importance = scale*2.0;
-
   switch(value) {
     case 0:
       break;
@@ -317,7 +331,6 @@ void Visualisation::draw_icon(int value, int scale, float alpha, bool highlight)
     default:
       break;
   }
-
 }
 
 void Visualisation::draw_importance(int value) {
@@ -343,9 +356,7 @@ void Visualisation::draw_importance(int value) {
         break;
       default:
         break;
-      
     }
-
   glPopMatrix();
   glDepthMask(GL_TRUE);
   glEnable(GL_CULL_FACE);
@@ -354,7 +365,6 @@ void Visualisation::draw_importance(int value) {
 
 // draw objects with outline
 void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
-  // draw objects with outline
   // draw solid object 
   glPushAttrib (GL_POLYGON_BIT);
   glEnable (GL_CULL_FACE);
@@ -430,10 +440,8 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
     default:
       break;
   };
-
   glPopAttrib (); // GL_LIGHTING_BIT | GL_LINE_BIT | GL_DEPTH_BUFFER_BIT
   glPopAttrib (); // GL_POLYGON_BIT
-
 }
 
 // getters
@@ -472,9 +480,6 @@ int Visualisation::getPrototypeNameLen() {
 char* Visualisation::getEventSubject() {
   if(hasEvent) {
     int selected_id = appModel->getSelectedDateIndex() *-1;
-  //  printf("SELECTED : %d\n", selected_id);
-  //  printf("SUBJECT: %s\n", days[selected_id].event_subject);
-  //  printf("ARRAY SIZE: %lu\n", days.size());
     if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
       return days[selected_id].event_subject;
     } else {
@@ -517,13 +522,6 @@ char* Visualisation::getEventEndDateTime() {
       std::string buf(days[selected_id].event_endDate);
       buf.append(" ");
       buf.append(days[selected_id].event_endTime);
-      // minor editing of date format
-    //  if(!buf.empty()) {
-    //    size_t f = buf.find(",");
-    //    buf.replace(f, 1, "/");
-    //    f = buf.find(",");
-    //    buf.replace(f, 1, "/");
-    //  }
       char* datetime = new char[buf.length() +1];
       strcpy(datetime, buf.c_str());
       return datetime;
@@ -539,7 +537,7 @@ char* Visualisation::getEventLocation() {
   if(hasEvent) {
     int selected_id = appModel->getSelectedDateIndex() *-1;
     if(days.size()!=0 && (unsigned int)selected_id < days.size()) {
-      return days[selected_id].event_location;                                                                              // <-- WORKING HERE !
+      return days[selected_id].event_location;
     } else {
       return (char*)"EMPTY";
     }
@@ -573,10 +571,7 @@ void Visualisation::prototype_1() {
   int event_importance;
   unsigned int current_day = calendar.getWeekDay()-1+7;
   int selected = appModel->getSelectedDateIndex()-1;
-  //printf("current:%d, selected:%d\n", current_day, selected);
-
   pickerMode = appModel->getPickingMode();
-  //printf("pickerMode:%s\n", pickerMode?"true":"false");
 
   // picking mode - disable lighting effects
   if(pickerMode) {	
@@ -596,24 +591,6 @@ void Visualisation::prototype_1() {
     glRotatef(today*segment_angle, 0.0,0.0,1.0);
     glRotatef(selected*segment_angle, 0.0,0.0,1.0);
     draw_radialface();
-
-//    // guide lines
-//    for (float i = 0.0; i < segments; i += 1.0) {
-//      float angle = M_PI * i * 2.0 / segments ;
-//      float nextAngle = M_PI * (i + 1.0) * 2.0 / segments;
-
-//      /* compute sin & cosine */
-//      float x1 = size * sin(angle), y1 = size * cos(angle);
-//      float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
-
-//      glBegin(GL_LINE_LOOP);
-//        glColor3f(1.0,1.0,1.0);
-//        // near
-//        glVertex3f(x1, y1, 0.0);
-//        glVertex3f(x2, y2, 0.0);
-//        glVertex3f( 0,  0, 0.0);
-//      glEnd();
-//    }
 
     glPushMatrix();
     glTranslatef(0.0,0.0,selected*-0.075);  // translate date tiles
@@ -698,7 +675,6 @@ void Visualisation::prototype_1() {
         float nextAngle = -M_PI * ((float)i + 1.0) * 2.0 / segments;
         float x1 = size * sin(angle), y1 = size * cos(angle);
         float x2 = size * sin(nextAngle), y2 = size * cos(nextAngle);
-//        int value = (selected*-1)-1;
         glPushMatrix();
           glTranslatef((x1+x2)*0.5, (y1+y2)*0.5, 0.0);
           radial_pos(i);
@@ -706,10 +682,6 @@ void Visualisation::prototype_1() {
           glScalef(0.25, 0.15, 0.2);
           event_id = days[i].event_id;
           event_importance = days[i].event_importance;
-//          if(event_id>=0) { // has event
-//            // level of importance by depth indicator
-//            if(i>=(unsigned)value) { draw_importance(event_importance); }
-//          }
         glPopMatrix();
       }
     }
@@ -752,12 +724,11 @@ void Visualisation::prototype_2() {
     }
   }
 
-  // DRAWS ALL DAYS CREATED IN INIT FUNCTION
+  // draw visualisation
   glPushMatrix();
     glTranslatef(-1.0, -1.45, -3.0);
     glRotatef(10.0, 1.0, 0.0,0.0);
     glRotatef(-25.0, 0.0, 1.0,0.0);
-
     //int week;
     int day;
     int weekday;
@@ -765,7 +736,6 @@ void Visualisation::prototype_2() {
     int today = days[0].weekday;
     int event_icon;
     int event_importance;
-
 
     for(unsigned int i=0; i<days.size(); i++) {
       //week = days[i].week;
@@ -788,7 +758,6 @@ void Visualisation::prototype_2() {
       current_index = appModel->getSelectedDateIndex();
       if((i+current_index-today)==0.0) { 
         current_index = i;
-        //printf("DAY:%d, %d,%d\n", day, i, current_index);
       }
 
       glPushMatrix();
@@ -801,7 +770,6 @@ void Visualisation::prototype_2() {
         } else {  // normal mode draws objects in its usual colour
           glColor3f(1.0,1.0,1.0);
         }
-
         // draw objects with outline
         glPushMatrix();
           glScalef(4.0, 1.0, 0.5);
@@ -812,7 +780,6 @@ void Visualisation::prototype_2() {
           } else {
             draw_outline(1, alpha, false);
           }
-
         glPopMatrix();
   
         // draw event icon
@@ -822,10 +789,8 @@ void Visualisation::prototype_2() {
           if(i>=(unsigned)value) { draw_icon(event_icon, event_importance, 1.0, false); }
           glPopMatrix();
         }
-
         // draw objects without outline
         drawDate(weekday, day);
-
       glPopMatrix();
     }
   glPopMatrix();
@@ -895,7 +860,6 @@ void Visualisation::prototype_3() {
       current_index = appModel->getSelectedDateIndex();
       if((i+current_index-today)==0.0) { 
         current_index = i-1;
-        //printf("Day:%d, Week:%d\n", days[current_index].day, days[current_index].week);
       }
 
       // days tile past?
@@ -975,6 +939,7 @@ void Visualisation::prototype_4() {
 void Visualisation::prototype_5() {
   // EMPTY
 }
+
 
 void Visualisation::radial_pos(int index) {
   float gap = 1.0;
@@ -1090,7 +1055,6 @@ void Visualisation::pickerCheck() {
   glReadPixels(picked_x,picked_y,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
   glFlush();
   glFinish();
-  //printf("[%d,%d] = [%d,%d,%d]\n", picked_x, picked_y, data[0], data[1], data[2]);
 
   // determine object by colour id
   bool match;
@@ -1105,7 +1069,6 @@ void Visualisation::pickerCheck() {
     if(match) { 
       id_index = i;
       // determine selected week
-      //  printf("value: %d\n", days[id_index].week);
       appModel->setSelectedWeek(days[id_index].week);
     }
   }
@@ -1120,17 +1083,11 @@ void Visualisation::pickerCheck() {
 
   // make translation
   if(id_index>=0) {
-//    printf("Object ID: %d [%d,%d,%d]\n", id_index, 
-//          object_id_array.at(id_index).r, object_id_array.at(id_index).g, object_id_array.at(id_index).b);
-
     int current_index = -appModel->getSelectedDateIndex();
     int next_move = id_index - current_index;
     //printf("current:%d next:%d, change:%d\n", current_index, id_index, next_move);
     appModel->setSelectedDateIndex(-next_move);
 
-  } else {
-//    printf("Object ID: NOT OBJECT. [%d,%d,%d]\n", data[0], data[1], data[2]);
-  }
-  
+  }  
   appModel->setPickingMode(false);
 }

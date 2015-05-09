@@ -1,13 +1,41 @@
+/*
+ * The model class implementation for the visualisation software. 
+ * Implementation for handling the methods and accessors on
+ * the data model.
+ *
+ * Copyright (c) 2015 Sharif UDDIN
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
+
 #include "appModel.h"
 
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
-
-#include <stdio.h>
 #include <string.h>
-
 using namespace std;
+
 
 // constructor
 AppModel::AppModel() {
@@ -24,7 +52,6 @@ AppModel::AppModel() {
   pickingModeDebug_enabled = false;
   pickingMode_enabled = false;
   swapBuffer = true;
-
 }
 
 // methods
@@ -44,9 +71,9 @@ void AppModel::parseCSV(const char* filePath) {
 
       // store each attributes for this event
       while (!ss.eof()) {
-        string out;               // here's a nice, empty string
-        getline( ss, out, ',' );  // try to read the next field into it
-        trim(out);                // trim leaing/trailing/multiple spacing
+        string out;               
+        getline( ss, out, ',' );  
+        trim(out);
         attributes.push_back(out);
       }
 
@@ -72,11 +99,9 @@ void AppModel::parseCSV(const char* filePath) {
       event.setIcon(icon);
       event.setImportance(importance);
       event_array.push_back(event);
-
     }
   }
   infile.close();
-
 }
 
 void AppModel::parseICS(const char* filePath) {
@@ -88,7 +113,6 @@ void AppModel::parseICS(const char* filePath) {
   string line;
   
   while(getline(infile, line)) {
-
     if(infile) { 
       // search for begin event
       if(has_prefix(line.c_str(), "BEGIN:VEVENT")) {
@@ -134,23 +158,20 @@ void AppModel::parseICS(const char* filePath) {
           strImportance >> importance;
           event_array[index].setImportance(importance);
         }
-         
       }
     }
   }
   infile.close();
-
 }
 
 void AppModel::trim(string &str) {
+  // remove space at the end of line  
   int size=str.size();
-  // remove space at the end   
   if (str [size-1] == ' ')
     str.erase(str.end()-1);
-  // remove space at the begin
+  // remove space at the begin of line
   if (str [0] == ' ')
     str.erase(str.begin());
-
   //remove spaces which follow another space
   size = 0;
   for (unsigned int i=0; i<str.size(); ++i) {
@@ -166,7 +187,6 @@ void AppModel::trim(string &str) {
 bool AppModel::has_suffix(const char *word, const char *suffix) {
   string str = string(word);
   string suff = string(suffix);
-
   bool value = false;
   int suff_size = suff.length();
   int str_size = str.length();  
@@ -196,7 +216,6 @@ bool AppModel::has_prefix(const char *word, const char *prefix) {
   string pref = string(prefix);
   int pref_size = pref.length();
   int str_size = str.length();  
-
   bool value = false;
   bool check_1 = false;
   bool check_2 = false;
@@ -217,11 +236,8 @@ bool AppModel::has_prefix(const char *word, const char *prefix) {
     value = true;
   }
   //printf("%s==%s? %s\n", str.c_str(), prefix, value?"true":"false");
-  
   return value;
 }
-
-
 
 
 // getter
@@ -421,6 +437,5 @@ int AppModel::compareDateEvent(int day, int month, int year) {
       index = i;
     }
   }
-
   return index;
 }

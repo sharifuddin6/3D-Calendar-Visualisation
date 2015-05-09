@@ -1,9 +1,38 @@
+/*
+ * The controller class implementation for the visualisation sofware. 
+ * Implementation for handling various mouse and keyboard actions
+ * as well as handling right-click context menu.
+ *
+ * Copyright (c) 2015 Sharif UDDIN
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 #include "appController.h"
+
 
 // constructor
 AppController::AppController(AppModel *newAppModel) { 
   appModel = newAppModel;
-
 }
 
 // handle menu selection
@@ -27,20 +56,15 @@ void AppController::menu(int item) {
     default:
       break;
    }
-
-//  prototype_name = visualisation.getPrototypeName();
   glutPostRedisplay();
   return;
 }
 
 // handle mouse input
 void AppController::mouse(int button, int state, int x, int y) {
-  // Wheel reports as button 3(scroll up) and button 4(scroll down)
-  if ((button == 3) || (button == 4)) // It's a wheel event
-  {
+  if ((button == 3) || (button == 4)) { // mouse wheel event, scroll up and down
     // Each wheel event reports like a button click, GLUT_DOWN then GLUT_UP
     if (state == GLUT_UP) return; // Disregard redundant GLUT_UP events
-     
     // scroll wheel actions
     if(button == 3) { // scroll up
       pos_z = appModel->getPosition_z() +0.25f;
