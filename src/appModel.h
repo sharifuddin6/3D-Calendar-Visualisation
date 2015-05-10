@@ -75,9 +75,7 @@ class AppModel {
     char* getEventLocation(int index);
 
     int getVisualisationMode();
-    bool getFog();
     bool getPickingMode();
-    bool getPickingModeDebug();
     int getPicked_x();
     int getPicked_y();
 
@@ -98,9 +96,7 @@ class AppModel {
     void setSelectedWeek(int new_week);
 
     void setVisualisationMode(int new_mode);
-    void setFog(bool value);
     void setPickingMode(bool value);
-    void setPickingModeDebug(bool value);
     void setPickingLocation(int x, int y);
 
     void setSwapBuffer(bool value);
@@ -121,9 +117,7 @@ class AppModel {
     int selected_week;
 
     int mode;                                   // visualisation mode is the chosen mode
-    bool fog_enabled;
     bool pickingMode_enabled;
-    bool pickingModeDebug_enabled;
     int clicked_x, clicked_y;
     bool swapBuffer;
 

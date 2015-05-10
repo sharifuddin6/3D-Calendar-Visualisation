@@ -48,8 +48,6 @@ AppModel::AppModel() {
   selected_date_index = 0;
   mode = 1;
 
-  fog_enabled = false;
-  pickingModeDebug_enabled = false;
   pickingMode_enabled = false;
   swapBuffer = true;
 }
@@ -323,16 +321,8 @@ int AppModel::getVisualisationMode() {
   return mode;
 }
 
-bool AppModel::getFog() {
-  return fog_enabled;
-}
-
 bool AppModel::getPickingMode() {
   return pickingMode_enabled;
-}
-
-bool AppModel::getPickingModeDebug() {
-  return pickingModeDebug_enabled;
 }
 
 int AppModel::getPicked_x() {
@@ -399,16 +389,8 @@ void AppModel::setVisualisationMode(int new_mode) {
   mode = new_mode;
 }
 
-void AppModel::setFog(bool value) {
-  fog_enabled = value;
-}
-
 void AppModel::setPickingMode(bool value) { 
   pickingMode_enabled = value;
-}
-
-void AppModel::setPickingModeDebug(bool value) {
-  pickingModeDebug_enabled = value;
 }
 
 void AppModel::setPickingLocation(int x, int y) {

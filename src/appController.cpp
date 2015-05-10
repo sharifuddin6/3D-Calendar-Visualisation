@@ -122,22 +122,6 @@ void AppController::keyboard(unsigned char key, int x, int y) {
       appModel->setSelectedDateIndex(change+current);
       appModel->setSelectedWeek(1);
       break;   
-    case 'f':
-      if(appModel->getFog()) {
-        glDisable(GL_FOG);
-        appModel->setFog(false);
-      } else {
-        glEnable(GL_FOG);
-        appModel->setFog(true);
-      }
-    case 'p':
-      if(appModel->getPickingModeDebug()) {
-        appModel->setPickingModeDebug(false);
-      } else {
-        appModel->setPickingModeDebug(true);
-      }
-
-      break;
     case 27: // Escape key
       printf("See you later..\n");  
       exit(0);    

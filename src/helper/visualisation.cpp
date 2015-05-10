@@ -191,14 +191,14 @@ void Visualisation::drawDate(int weekday, int day) {
   snprintf(buff_day, 11, "%s", calendar.getDayToString(weekday));
   // day in number form
   glPushMatrix();
-    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
+    if(!pickerMode) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.1, 0.6, 0.1);
     glTranslatef(2.0, 0.5, 0.0);
     drawText(buff);    
   glPopMatrix();
   // weekday in string form
   glPushMatrix(); 
-    if(!pickerMode && !pickerModeDebug) { glColor3f(0.8,0.2,0.2); }
+    if(!pickerMode) { glColor3f(0.8,0.2,0.2); }
     glScalef(0.15, 0.7, 0.2);
     glTranslatef(7.0, 0.5, 0.0);
     drawText(buff_day);
@@ -222,11 +222,11 @@ void Visualisation::drawText(const char* text) {
 void Visualisation::draw_giftbox(float alpha) {
   glPushMatrix();
     glScalef(0.4,0.4,0.4);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
     objLoader->renderObject(6);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.6,0.3,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,0.6,0.3,alpha); }
     objLoader->renderObject(7);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,0.3,0.3,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,0.3,0.3,alpha); }
     objLoader->renderObject(8);
   glPopMatrix();	
 }
@@ -234,11 +234,11 @@ void Visualisation::draw_giftbox(float alpha) {
 void Visualisation::draw_memo(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(9);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(10);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(11);
   glPopMatrix();
 }
@@ -246,11 +246,11 @@ void Visualisation::draw_memo(float alpha) {
 void Visualisation::draw_work(float alpha) {
   glPushMatrix();
     glScalef(0.6,0.6,0.6);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.5,0.9,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(0.5,0.5,0.9,alpha); }
     objLoader->renderObject(12);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(13);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(14);
   glPopMatrix();
 }
@@ -258,11 +258,11 @@ void Visualisation::draw_work(float alpha) {
 void Visualisation::draw_holiday(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(15);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(0.5,0.9,0.5,alpha); }
     objLoader->renderObject(16);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
     objLoader->renderObject(17);
   glPopMatrix();
 }
@@ -270,11 +270,11 @@ void Visualisation::draw_holiday(float alpha) {
 void Visualisation::draw_meeting(float alpha) {
   glPushMatrix();
     glScalef(1.0,1.0,1.0);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(18);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(0.9,0.5,0.5,alpha); }
     objLoader->renderObject(19);
-    if(!pickerMode && !pickerModeDebug && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
+    if(!pickerMode && !wire_mode) { glColor4f(1.0,1.0,0.7,alpha); }
     objLoader->renderObject(20);
   glPopMatrix();
 }
@@ -343,15 +343,15 @@ void Visualisation::draw_importance(int value) {
       case 0:
         break;
       case 1:
-        if(!pickerMode && !pickerModeDebug) { glColor4f(0.2,0.8,0.2, 0.4); }
+        if(!pickerMode) { glColor4f(0.2,0.8,0.2, 0.4); }
         objLoader->renderObject(3);
         break;
       case 2:
-        if(!pickerMode && !pickerModeDebug) { glColor4f(0.6,0.6,0.2, 0.4); }
+        if(!pickerMode) { glColor4f(0.6,0.6,0.2, 0.4); }
         objLoader->renderObject(4);
         break;
       case 3:
-        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.2,0.2, 0.4); }
+        if(!pickerMode) { glColor4f(0.8,0.2,0.2, 0.4); }
         objLoader->renderObject(5);
         break;
       default:
@@ -410,7 +410,7 @@ void Visualisation::draw_outline(int draw_id, float alpha, bool highlight) {
 	      
   // draw wire object
   glLineWidth (3.0f);
-  if(!pickerMode && !pickerModeDebug) { glColor4f(0.0,0.0,0.0,alpha); }
+  if(!pickerMode) { glColor4f(0.0,0.0,0.0,alpha); }
   if(highlight) { glColor4f(0.8,0.2,0.2,alpha); }
   wire_mode = true;
 
@@ -661,14 +661,14 @@ void Visualisation::prototype_1() {
         }
 
         // draw objects without outline
-        if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
+        if(!pickerMode) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
         drawDay(weekday, day);
 
       glPopMatrix();
     }
 
     // draw all alpha blended items
-    if(!pickerMode && !pickerModeDebug) {
+    if(!pickerMode) {
       for (unsigned int i=0; i<days.size(); i++) {
         // compute sin & cosine
         float angle = -M_PI * (float)i * 2.0 / segments ;
@@ -701,7 +701,6 @@ void Visualisation::prototype_2() {
 // Pathway Visualisation perspective mode
   // current variables
   pickerMode = appModel->getPickingMode();
-  pickerModeDebug = appModel->getPickingModeDebug();
   selected = appModel->getSelected();
   unsigned int current_index;
   unsigned int current_day = calendar.getWeekDay()-1+7;
@@ -710,7 +709,7 @@ void Visualisation::prototype_2() {
   float alpha = 1.0;
 
   // picking mode - disable lighting effects
-  if(pickerMode || pickerModeDebug) {	
+  if(pickerMode) {	
     // disable effects
     glDisable(GL_DITHER);
     glDisable(GL_LIGHTING);
@@ -719,9 +718,6 @@ void Visualisation::prototype_2() {
     // enable effects
     glEnable(GL_DITHER);
     glEnable(GL_LIGHTING);
-    if(appModel->getFog()) {
-      glEnable(GL_FOG);
-    }
   }
 
   // draw visualisation
@@ -765,7 +761,7 @@ void Visualisation::prototype_2() {
         curve_pos(i+selected);
         
         // picking mode draws objects related to a day in its unique colour
-        if(pickerMode || pickerModeDebug) { 
+        if(pickerMode) { 
           object_id_array.at(i).set_colour();
         } else {  // normal mode draws objects in its usual colour
           glColor3f(1.0,1.0,1.0);
@@ -814,7 +810,6 @@ void Visualisation::prototype_3() {
   float alpha = 1.0;
 
   pickerMode = appModel->getPickingMode();
-  pickerModeDebug = appModel->getPickingModeDebug();
   selected = appModel->getSelected();
   int selected_date = appModel->getSelectedDateIndex()-1;
 
@@ -822,7 +817,7 @@ void Visualisation::prototype_3() {
   unsigned int current_day = calendar.getWeekDay()-1+7;
 
   // picking mode - disable lighting effects
-  if(pickerMode || pickerModeDebug) {	
+  if(pickerMode) {	
     // disable effects
     glDisable(GL_DITHER);
     glDisable(GL_LIGHTING);
@@ -831,9 +826,6 @@ void Visualisation::prototype_3() {
     // enable effects
     glEnable(GL_DITHER);
     glEnable(GL_LIGHTING);
-    if(appModel->getFog()) {
-      glEnable(GL_FOG);
-    }
   }
 
   // draw grid
@@ -875,13 +867,13 @@ void Visualisation::prototype_3() {
       // draw date
       grid_pos(week, weekday, day);
       glScalef(0.6, 0.6, 0.6);
-      if(!pickerMode && !pickerModeDebug) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
+      if(!pickerMode) { glColor4f(0.8,0.4,0.4, alpha+0.05); }
       drawDay(weekday, day);
 
       // draw tile and icons
       glScalef(0.8, 0.6, 0.8);
       // picking mode draws objects related to a day in its unique colour
-      if(pickerMode || pickerModeDebug) { 
+      if(pickerMode) { 
         object_id_array.at(i).set_colour();
       } else {  // normal mode draws objects in its usual colour
         if(month%2==0) {
@@ -901,7 +893,7 @@ void Visualisation::prototype_3() {
       }
 
       // picking mode draws objects related to a day in its unique colour
-      if(pickerMode || pickerModeDebug) { 
+      if(pickerMode) { 
         object_id_array.at(i).set_colour();
       } else {  // normal mode draws objects in its usual colour
         if(month%2==0) {
